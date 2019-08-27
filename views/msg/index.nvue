@@ -1,0 +1,136 @@
+<template lang="pug">
+	view.flex.bg-f3
+		view.flex.py-20.px-50.around.bg-white.mb-30
+			view.column(v-for="(item, index) in tabs", @click="changeTab(index)")
+				view.ra-8.w-80.h-80.center(:class="[index == tabIndex ? 'bg-primary' : 'bg-aa']")
+					image(:style="{width: item.width, height: item.height}", :src="item.src")
+				text.menu.tc(:class="[index == tabIndex ? 'c-primary' : 'c-66']") {{item.text}}
+			//- view.column
+			//- 	view.flex.ra-6.w-80.h-80(style="background-color: #aaa;")
+			//- 		image(style="width: 42rpx; height: 41rpx;", src="/static/icon/commonity.png")
+			//- 	text.menu.tc 社区
+			//- view.column
+			//- 	view.flex.ra-6.w-80.h-80(style="background-color: #aaa;")
+			//- 		image(style="width: 41rpx; height: 41rpx;", src="/static/icon/property.png")
+			//- 	text.menu.tc 物业
+			//- view.column
+			//- 	view.flex.ra-6.w-80.h-80(style="background-color: #aaa;")
+			//- 		image(style="width: 44rpx; height: 41rpx;", src="/static/icon/shop-stroew.png")
+			//- 	text.menu.tc 商家
+		//- 消息列表 - 社区
+		commonItem1(
+			v-if="tabIndex == 0 || tabIndex == 1",
+			v-for="(item, index) in list.community_msg",
+			:title="item.title",
+			:desc="item.content",
+			:time="item.created | dateLapse",
+			:img="item.img",
+			background="#F4EA2A",
+			imgW="54",
+			imgH="35",
+			@click="navigate('/views/msg/detail?id=' + item.id)"
+		)
+		//- 消息列表 - 系统
+		commonItem1(
+			v-if="tabIndex == 0 || tabIndex == 2",
+			v-for="(item, index) in list.system_msg",
+			:title="item.title", 
+			:desc="item.content", 
+			:time="item.created | dateLapse", 
+			:img="item.img",
+			background="#1296DB",
+			imgW="24", 
+			imgH="33", 
+			@click="navigate('/views/msg/detail?id=' + item.id)"
+		)
+		//- 消息列表 - 商家
+		commonItem1(
+			v-if="tabIndex == 0 || tabIndex == 3",
+			v-for="(item, key) in list.trade_msg",
+			:title="item.title", 
+			:desc="item.content", 
+			:time="item.created | dateLapse", 
+			:img="item.icon", 
+			imgW="70", 
+			imgH="70",
+			@click="navigate('/views/msg/msgList?id=' + item.author_id)"
+		)
+		//- 消息列表 - 未关注商家
+		commonItem1(
+			v-if="tabIndex == 0 || tabIndex == 3",
+			title="全部商家",
+			:desc="list.no_trade_msg[0].title", 
+			:time="list.no_trade_msg[0].created | dateLapse", 
+			:img="list.no_trade_msg[0].icon", 
+			imgW="70", 
+			imgH="70",
+			@click="navigate('/views/msg/tradeNoSubscribe?id=' + list.no_trade_msg[0].author_id)"
+		)
+		view.flex.fixed.bottom-0.left-0.w-100p.h-100.bone
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/msg/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tabIndex: 0,
+				tabs: [
+					{
+						src: '/static/icon/all.png',
+						text: '全部',
+						width: '41rpx',
+						height: '41rpx'
+					},
+					{
+						src: '/static/icon/community.png',
+						text: '社区',
+						width: '42rpx',
+						height: '41rpx'
+					},
+					{
+						src: '/static/icon/property.png',
+						text: '系统',
+						width: '41rpx',
+						height: '41rpx'
+					},
+					{
+						src: '/static/icon/shop-stroew.png',
+						text: '商家',
+						width: '44rpx',
+						height: '41rpx'
+					}
+				]
+			}
+		},
+		onLoad() {
+			/**
+			 * 获取消息首页
+			 */
+			SERVICE.load(this);
+		},
+		methods: {
+			changeTab(index) {
+				this.tabIndex = index;
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.menu {
+		font-size: 28rpx;
+		margin-top: 18rpx;
+	}
+	.bg-aa {
+		background-color: #aaa;
+	}
+	.ra-8 {
+		border-radius: 8rpx;
+	}
+</style>

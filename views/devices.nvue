@@ -1,0 +1,186 @@
+<template>
+	<view>
+		<div>openId:{{ userInfo.openId }}</div>
+	
+		<view class="login" @click="loginwechat">
+			点击微信登陆登录
+		</view>
+		
+		<view class="pay"  @click="getPay">
+			测试下单支付
+		</view>
+		
+		<view class="mini" @click="callminiG">
+			跳小程序
+		</view>
+		
+		<map style="width: 100%; height: 300px;" :latitude="latitude" :longitude="longitude" :markers="markers">
+			这里是地图
+		</map>
+
+	</view>
+</template>
+
+<script>
+
+		export default {
+			data(){
+				return {
+					userInfo:{
+						//获取的头像
+						avatarUrl:'',
+						//获取的昵称
+						nickName:'',
+						//获取的openid
+						openId:'',
+					},
+					
+					//经度
+					latitude:'',	
+									
+					//纬度
+					longitude:'',
+					markers:[
+						{
+							latitude: 39.90,
+							longitude: 116.39,
+							iconPath: '../../static/selflocation.png'
+						}
+					]
+				}
+			},
+			mounted() {
+				//此方法为定位 使用高德地图
+				uni.getLocation({
+					type: 'wgs84',
+					success: (res) => {
+						//高德地图的appkey 3c7bd3430d697c0d76595325ce3d8d64
+						
+						console.log('当前位置的经度：' + res.longitude);
+						console.log('当前位置的纬度：' + res.latitude);
+						
+						this.longitude = res.longitude;						
+						this.latitude = res.latitude;
+						this.markers[0].longitude = res.longitude;						
+						this.markers[0].latitude = res.latitude;
+						
+					}
+				});
+			},
+			methods:{
+				loginwechat(){
+					//点击登录微信
+					uni.login({
+					  provider: 'weixin',
+					  success: (loginRes) => {
+						// 获取用户信息
+						uni.getUserInfo({
+						  provider: 'weixin',
+						  success: (infoRes) => {
+								console.log(infoRes.userInfo);
+								this.userInfo.openId = infoRes.userInfo.openId;
+								this.userInfo.avatarUrl = infoRes.userInfo.avatarUrl;
+								this.userInfo.nickName = infoRes.userInfo.nickName;
+								
+								console.log('用户信息：' + infoRes.userInfo);
+						  }
+						});
+					  }
+					});
+				},
+				
+				getPay(){
+					uni.request({
+						//中央项链接
+						url:"http://centrum.mscript.cn/face/wechat/pay/index.php?action=unify",
+						method:'POST',
+						//下单信息  
+						data:{
+							key:"heshequwuyewxapp",
+							attach:"shop",
+							body:"测试商品",
+							out_trade_no:"123456789das111adstes22t",
+							total_fee:"1",
+							openid:"oKDhy5t9O5nOIb5e1KfevRtV4q74",
+							trade_type:"APP",
+							get_all:1,
+						},
+						header:{
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						success:(res)=>{
+							console.log(res);																	
+							uni.requestPayment({
+								provider:"wxpay",
+								orderInfo:JSON.stringify(res.data.data),
+								success:(res)=>{
+									console.log('支付成功',res);
+								},
+								fail:(err)=>{
+									console.log('支付失败',err);
+								}
+							})													
+						}
+						
+					})
+				},
+									
+				callminiG(){
+					//调起小程序方法
+					plus.share.getServices(function(s){
+						var shares={};
+						for(var i in s){
+							var t=s[i];
+							shares[t.id]=t;
+						}
+						var sweixin = shares['weixin'];
+						sweixin.launchMiniProgram(
+							{
+								//小程序 原始id 不是小程序appid
+								"id":"gh_0db1fd491e68",
+								//初始页面
+								"path":"/screen/home/location",
+								//类型
+								"type":0,
+								//不支持小程序的微信  需要跳转的网址
+								"webUrl":"http://www.html5plus.org"
+							},(res)=>{
+								console.log("成功调起小程序", res);
+							},(err) => {
+								console.log("调起小程序失败", err);
+							}
+						);						
+					}, function(e){
+						alert("获取分享服务列表失败："+e.message);
+					});				
+				}
+			}
+		}
+</script>
+
+<style>
+	.login{
+		width: 750rpx; 
+		height: 200rpx; 
+		background: #4CD964; 
+		color: #FFFFFF; 
+		text-align: center; 
+		line-height: 200rpx;
+	}
+	.pay{
+		width: 750rpx; 
+		height: 200rpx; 
+		background: #f00; 
+		color: #FFFFFF; 
+		text-align: center; 
+		line-height: 200rpx;
+	}
+	.mini{
+		width: 750rpx; 
+		height: 200rpx; 
+		background: #f60; 
+		color: #FFFFFF; 
+		text-align: center; 
+		line-height: 200rpx;
+	}
+</style>

@@ -1,0 +1,273 @@
+<template lang="pug">
+	view.flex
+		view.flex.bg-f3.f-1
+
+			//- 待付款
+			status2.tail-sm(
+				v-if="order.status == 0"
+				icon="/static/icon/dengdai-2.png", 
+				title="等待买家付款", 
+				text1="需付款：", 
+				text2="￥30", 
+				text3="剩余：", 
+				text4="05小时34分钟", 
+				:btn3="{text:'取消订单', click: ()=> {onCancel()}}", 
+				:btn2="{text:'去支付', click: ()=> {toastTest()}}", 
+			)
+			//- 待发货
+			status2.tail-sm(
+				v-if="order.status == 1"
+				icon="/static/icon/dengdai-2.png", 
+				title="等待卖家发货", 
+				text1="包裹正在整装待发", 
+				:btn3="{text:'申请退款', click: ()=> {toastTest()}}", 
+			)
+			//- 待收货
+			status2.tail-sm(
+				v-if="order.status == 2"
+				icon="/static/icon/dengdai-2.png", 
+				title="等待买家收货", 
+				text1="包裹距离您越来越近了", 
+				:btn3="{text:'确认收货', click: ()=> {toastTest()}}", 
+			)
+			//- 已完成
+			status2.tail-sm(
+				v-if="order.status == 3"
+				icon="/static/icon/dengdai-2.png", 
+				title="交易成功", 
+				:btn3="{text:'去评价', click: ()=> {toastTest()}}", 
+			)
+			//- 已取消
+			status2.tail-sm(
+				v-if="order.status == 4"
+				icon="/static/icon/dengdai-2.png", 
+				title="已取消.", 
+			)
+			//- 已退货
+			status2.tail-sm(
+				v-if="order.status == 5"
+				icon="/static/icon/dengdai-2.png", 
+				title="已退货", 
+			)
+
+
+			//- 地址栏
+			expressItem3.tail-sm(
+				:name="order.take_name", 
+				:mobile="order.take_mobile", 
+				:address="order.take_address", 
+				img="/static/icon/location-4.png"
+			)
+
+			//- 商品列表
+			view.flex.bg-white.tail-sm
+
+				//- head
+				view.flex.card-head.row.tail-line.wing
+					image.w-26.h-26(src="/static/icon/shangjia-2.png")
+					text.store.ml-10.s-28.c-66 社区商城
+
+				//- 商品列表
+				view.flex.tail-line.pb-20
+					view.flex.py-20.wing
+						prod3(
+							:img="dir.shop_prod(order.img)", 
+							:title="order.name", 
+							:tag="['满减']", 
+							num="1", 
+							price="25"
+						)
+
+				//- 商品相关统计信息
+				view.flex.wing
+					view.between.py-10
+						text.text 商品总价
+						text.text {{order.amount}}
+					view.between.py-10
+						text.text 配送费用
+						text.text ￥{{order.fare}}
+					view.between.py-10
+						text.text 使用优惠券优惠金额
+						text.text ￥100
+					view.between.py-10
+						text.title1  订单总价
+						text.title1 ￥{{order.amount + order.fare}}
+					view.flex.py-10.tail-line
+					view.between.pb-10.pt-20
+						text.title3  已优惠金额
+						text.text3 -100
+					view.between.pt-10.pb-30
+						text.title1  实付款
+						text.text1 ￥{{order.amount + order.fare}}
+
+			//- 订单统计信息
+			view.flex.wing.bg-white.tail-lg.py-20
+				view.between.py-10
+					text.title2 订单信息
+				view.between.py-10
+					text.text 订单编号
+					text.text {{order.orderid}}
+				view.between.py-10
+					text.text 订单状态
+					text.text {{order.status | status}}
+				view.between.py-10
+					text.text 下单时间
+					text.text {{order.time_submit | dateFormat('Y-m-d H:i')}}
+				view.between.py-10(v-if="order.time_receive")
+					text.text 收货时间
+					text.text {{order.time_receive | dateFormat('Y-m-d H:i')}}
+				view.between.py-10(v-if="order.time_completed")
+					text.text 完成时间
+					text.text {{order.time_completed | dateFormat('Y-m-d H:i')}}
+				view.between.py-10(v-if="order.time_cancel")
+					text.text 取消时间
+					text.text {{order.time_cancel | dateFormat('Y-m-d H:i')}}
+				view.between.py-10
+					text.text 支付方式
+					text.text {{order.paytype | paytype}}
+				view.between.py-10
+					text.text 是否支付
+					text.text {{order.ispay ? '是' : '否'}}
+				view.between.py-10
+					text.text 获取积分
+					text.text {{order.point}}
+
+		//- 占位
+		div.h-100
+
+		//- 底部按钮栏
+		view.row.bg-white.ac.je.h-100.footer.w-750.border-top
+			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(@click="goback") 返回列表
+			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 0 || order.status == 1", @click="onCancel") 取消订单
+			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 3", @click="toastTest") 评论
+			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 0", @click="toastTest") 支付
+			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 2", @click="toastTest") 确认收货</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/order/detail';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 获取订单详情
+			 * 
+			 * @param {number} id 订单id
+			 */
+			SERVICE.load(this,{id: param.id});
+		},
+		filters: {
+			status: (value) => {
+				switch (value) {
+					case 0:
+						return '未付款';
+					case 1:
+						return '未发货';
+					case 2:
+						return '已发货';
+					case 3:
+						return '已完成';
+					case 4:
+						return '已取消';
+					case 5:
+						return '已退货';
+				}
+			},
+			paytype: (value) =>{
+				switch (value) {
+					case 0:
+						return '余额全额支付';
+					case 1:
+						return '微信支付';
+					case 2:
+						return '货到付款';
+				}
+			}
+		},
+		methods: {
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			
+			/**
+			 * 取消订单
+			 * 
+			 * @param {number} id	订单id
+			 */
+			onCancel() {
+				SERVICE.cancel(this, {id: this.order.id}, ()=>{
+					uni.showToast({
+						title: '取消成功'
+					})
+					setTimeout(() => {
+						this.order.status = 4;
+					}, 1500);
+				});
+			},
+			/**
+			 * 订单评论
+			 * 
+			 * @param {number} id		订单id
+			 * @param {number} comment	评论内容
+			 */
+			onComment() {
+				SERVICE.comment(this, {id: 1, comment: "评论内容"});
+			},
+			/**
+			 * 获取下单信息
+			 * 
+			 * @param {number} id	订单id
+			 */
+			onPay() {
+				SERVICE.get_pay(this, {id: 1});
+			},
+			/**
+			 * 支付成功
+			 * 
+			 * @param code		订单号码
+			 */
+			pay_ok() {
+				SERVICE.pay_ok(this, {code: 'MDPE1565331736'});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.text {
+		font-size: 22rpx;
+		color: #999;
+	}
+	.title1 {
+		font-size: 26rpx;
+		color: #333;
+	}
+	.title2 {
+		font-size: 24rpx;
+		color: #333;
+	}
+	.title3 {
+		font-size: 22rpx;
+		color: #666;
+	}
+	.text3 {
+		font-size: 22rpx;
+		color: #CF1322;
+	}
+	.text1 {
+		font-size: 22rpx;
+		color: #CF1322;
+	}
+	.border-top {
+		border-top-style: solid;
+		border-top-width: 1px;
+		border-top-color: #f3f3f3;
+	}
+</style>

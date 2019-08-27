@@ -1,0 +1,140 @@
+<template lang="pug">
+	view.flex.py-20
+		text.title(v-if="title", :style="{'font-size': titleSize + 'rpx'}") {{title}}
+		textarea.textarea.ra-20.f-1(
+			:style="{'font-size': size + 'rpx', height: height + 'rpx', 'border-color': bc}",
+			:class='[inputClass]',
+
+			:value="value",
+			:placeholder="placeholder",
+			:disabled="disabled",
+			:maxlength="maxlength",
+			:focus="focus",
+			:fixed="fixed",
+			:cursor="cursor",
+			
+
+			@focus="$emit('focus')",
+			@blur="$emit('blur')",
+			@linechange="$emit('linechange')",
+			@confirm="$emit('confirm')",
+			@input="onInput",
+		)
+		//- :cursor-spacing="cursor-spacing",
+		//- :auto-height="auto-height",
+		//- :placeholder-style="placeholder-style",
+		//- :show-confirm-bar="show-confirm-bar",
+		//- :selection-start="selection-start",
+		//- :selection-end="selection-end",
+		//- :adjust-position="adjust-position",
+</template>
+
+<script>
+	export default {
+		props: {
+			title: {
+				type: String
+			},			
+			titleSize: {
+				type: String,
+				default: '28'
+			},
+			
+			// 样式传值
+			inputClass: {
+				type: String,
+			},
+			size: {
+				type: String,
+				default: '28'
+			},
+			height: {
+				type: String,
+				default: '200'
+			},
+			bc: {
+				type: String,
+				default: '#eee'
+			},
+
+			// input属性
+			value: {
+				type: String,
+				default: '',
+			},
+			placeholder: {
+				type: String,
+				default: '',
+			},
+			"placeholder-style": {
+				type: String,
+				default: '',
+			},
+			"placeholder-class": {
+				type: String,
+				default: '',
+			},
+			disabled: {
+				type: Boolean,
+				default: false,
+			},
+			maxlength: {
+				type: Number,
+				default: 140,
+			},
+			focus: {
+				type: Boolean,
+				default: false,
+			},
+			"auto-height": {
+				type: Boolean,
+				default: false,
+			},
+			fixed: {
+				type: Boolean,
+				default: false,
+			},
+			"cursor-spacing": {
+				type: Number,
+				default: 0,
+			},
+			cursor: {
+				type: Number
+			},
+			"show-confirm-bar": {
+				type: Boolean,
+				default: true,
+			},
+			"selection-start": {
+				type: Number,
+				default: -1,
+			},
+			"selection-end": {
+				type: Number,
+				default: -1,
+			},
+			"adjust-position": {
+				type: Boolean,
+				default: true,
+			}
+		},
+		methods: {
+			onInput(e) {
+				this.$emit('input', e)
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.title {
+		color: #666;
+		padding: 24rpx 0;
+	}
+	.textarea {
+		color: #333;
+		border-style: solid;
+		border-width: 1px;
+		padding: 18rpx;
+	}
+</style>

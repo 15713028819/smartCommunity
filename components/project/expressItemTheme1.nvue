@@ -1,0 +1,136 @@
+<template lang="pug">
+	view.between.bg-white.box.ra-20(@click="$emit('click')")
+
+		view.flex.f-7.pa-30
+			text.text {{text1}}
+			text.text {{text2}}
+			view.between.f-1
+				view.column.f-1.as
+					text.name {{text3}}
+					text.text {{text4}}
+				view.flex.imgBox
+					image.imgLeft(:src="imgLeft")
+				view.column.f-1.ae
+					text.name {{text5}}
+					text.text {{text6}}
+		//- 右侧内容
+		view.column.right.f-2.jc.ac
+			image.imgRight(:src="imgRight")
+			text.textRight(:style="{color: color}") {{textRight}}
+</template>
+
+<script>
+	
+
+	export default {
+		
+
+		props: {
+			text1: {
+				type: String,
+				default: "属性名称：text1"
+			},
+			text2: {
+				type: String,
+				default: "属性名称：text2"
+			},
+			text3: {
+				type: String,
+				default: "text3"
+			},
+			text4: {
+				type: String,
+				default: "text4"
+			},
+			text5: {
+				type: String,
+				default: "text5"
+			},
+			text6: {
+				type: String,
+				default: "text6"
+			},
+			textRight: {
+				type: String,
+				default: "textRight"
+			},
+			imgLeft: {
+				type: String,
+				default: '../../../static/image/progress1.png'
+			},
+			imgRight: {
+				type: String,
+				default: '../../../static/icon/check-on-1.png'
+			},
+			color: {
+				typeo: String,
+				default: '#666666'
+			}
+		},
+		computed: {
+			colorClass: function() {
+				if(this.color.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			},
+			sizeClass: function() {
+				if(this.size.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			},
+			iconClass: function() {
+				if(this.icon && this.icon.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		height: 200rpx;
+	}
+	.text {
+		font-size: 24rpx;
+		color: #999;
+		padding: 1rpx 0;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.name {
+		font-size: 28rpx;
+		color: #333;
+		padding-top: 10rpx;
+		padding-bottom: 4rpx;
+		lines: 1;
+		text-overflow: clip;
+	}
+	.textRight {
+		font-size: 24rpx;
+		color: #CF1322;
+		margin-top: 20rpx;
+	}
+	.imgBox {
+		height: 30rpx;
+		padding: 0 12rpx;
+	}
+	.imgLeft {
+		width: 192rpx;
+		height: 30rpx;
+	}
+	.imgRight {
+		height: 41rpx;
+		width: 41rpx;
+	}
+	.right {
+		border-left-style: dashed;
+		border-left-width: 1px;
+		border-left-color: #dcdcdc;
+		height: 200rpx;
+	}
+	
+</style>

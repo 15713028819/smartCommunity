@@ -1,0 +1,142 @@
+<template lang="pug">
+	view.flex(style="background-color: #f3f3f3;")
+		view.flex.bg-f3.f-1
+		
+			//- 轮播图
+			view.w-750.h-475.overhide
+				view.flex.w-750.h-475
+					image.w-750.h-475(:src="dir.shop_stand(list.stand[standIndex].img)")
+				
+			
+			//- 基本信息
+			view.flex.bg-white.py-20.tail.as.w-750.px-30
+				view.row
+					text.c-primary.s-30 ￥
+					text.c-primary.s-50 {{list.stand[standIndex].price.toFixed(2)}}
+					text.through
+						text.s-18.ml-16.c-g-6 ￥
+						text.s-26.c-g-6 {{list.stand[standIndex].old_price.toFixed(2)}}
+				text.s-40.py-10.c-33 {{list.info.name}}
+				//- text.s-24.c-66 原产地直供，全网热销
+
+			//- 标签
+			view.flex.bg-white.py-20.wing.tail.w-750.row.px-20(v-if="list.stand && list.stand.length")
+				view.row
+					text.bg-gray.c-66.s-30.px-24.h-50.lh-50.ml-30.ra-max(v-for="(item, index) in list.stand", :class="[index == standIndex && 'specs-active']", @click="changeIndex(index)") {{item.name}}
+
+			//- 详情
+			view.flex.bg-white.py-20.wing.tail.as
+				view.row.py-20
+					text.ml-10.c-primary.s-32 图文详情
+				view.flex.py-20.column.w-690(v-html="list.info.content")
+				//- view.flex.py-20.column
+					image.w-680.h-325(src="/static/image/prod1.png")
+					div.between.w-680.py-20
+						image.w-330.h-250(src="/static/image/prod1.png")
+						image.w-330.h-250(src="/static/image/prod1.png")
+
+					text.mt-20.mb-30.c-66.s-26.lh-40 如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。
+
+					div.between.w-680.py-20.mb-50
+						image.w-330.h-250(src="/static/image/prod1.png")
+						image.w-330.h-250(src="/static/image/prod1.png")
+
+			
+		//- 底部固定按钮
+		view.row.bg-white.fixed.bottom-left-0.w-750
+			view.column.ml-50.jc.ac.h-100(@click="toastTest")
+				image.mb-10.w-36.h-46(src="/static/icon/kefu.png")
+				text.c-66.tc.s-22 客服
+			view.column.mx-50.jc.ac.h-100(@click="navigate('/views/order/cart')")
+				image.mb-10.w-48.h-44(src="/static/icon/gouwuche-2.png")
+				text.c-66.tc.s-22 购物车
+			text.f-1.bg-warn.c-white.tc.s-36.h-100(style="line-height: 100rpx;", @click="onAddCart") 加入购物车
+			text.f-1.bg-primary.c-white.tc.s-36.h-100(style="line-height: 100rpx;", @click="navigate('/views/order/submit')") 立即购买
+
+		
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/shop/prodDetail';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				standIndex: 0,
+				specs: ['10只', '20只', '30只'],
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 获取商品详情
+			 * 
+			 * @param id 商品id
+			 */
+			SERVICE.load(this, {id: param.id});
+		},
+		methods: {
+			changeIndex(index) {
+				this.standIndex = index;
+			},
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			
+			/**
+			 * 加入购物车
+			 * 
+			 * @param product_id 	商品id
+			 * @param stid			商品id	规格id（非规格设置id）
+			 */
+			onAddCart() {
+				SERVICE.add_cart(this, {product_id: this.list.info.id, stid: this.list.stand[this.standIndex].id});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.bg-gray {
+		background-color: #ebebeb;
+		color: #333;
+	}
+	.specs-active {
+		background-color: #CF1322;
+		color: #fff;
+	}
+	.h-100 {
+		height: 100rpx;
+	}
+	.line {
+		border-right-style: solid;
+		border-right-width: 1rpx;;
+		border-right-color: #F3F3F3;
+		height: 40rpx;
+	}
+	.redLine {
+		border-right-style: solid;
+		border-right-width: 5rpx;;
+		border-right-color: #CF1322;
+		height: 20rpx;
+	}
+	.w-160 { width: 160rpx; }
+	.w-680 { width: 680rpx; }
+	.w-330 { width: 330rpx; }
+	.h-250 { height: 250rpx; }
+	.h-325 { height: 325rpx; }
+	.h-475 { height: 475rpx; }
+	.tag {
+		font-size: 20rpx;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #85A5FF;
+		border-radius: 50rpx;
+		color: #85A5FF;
+		padding: 2rpx 10rpx;
+		margin-right: 10rpx;
+	}
+</style>

@@ -1,0 +1,57 @@
+/**
+ * cover默认样式
+ */
+.cover-default-styles {
+	position: absolute;
+	z-index: 10;	
+}
+
+/**
+ * 左顶部的覆盖层
+ */
+.cover-tl {
+	@extend .cover-default-styles;
+	top: 0;
+	left: 0;
+}
+
+/**
+ * 右顶部的覆盖层
+ */
+.cover-tr {
+	@extend .cover-default-styles;
+	top: 0;
+	left: 0;
+}
+
+/**
+ * 左底部的覆盖层
+ */
+.cover-bl {
+	@extend .cover-default-styles;
+	bottom: 0;
+	left: 0;
+}
+
+/**
+ * 右底部的覆盖层
+ */
+.cover-br {
+	@extend .cover-default-styles;
+	bottom: 0;
+	left: 0;
+}
+
+/**
+ * 左顶部的覆盖层
+ */
+.cover-center {
+	@extend .cover-default-styles;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+	top: 0;
+	left: 0;
+}
+

@@ -1,0 +1,13 @@
+// ----------------------------------------------------------
+// radius.scss
+// 
+// 1、如果需要自行配置圆角，请打开/styles/variable.scss进行设置
+// 2、您可以自行增删改这里的设置，以便更好的布局
+// ----------------------------------------------------------
+
+// 最大圆角类（圆型）
+.ra-max { border-radius: 750rpx; }
+.rt-max { border-top-left-radius: 750rpx; border-top-right-radius: 750rpx; }
+.rr-max { border-top-right-radius: 750rpx; border-bottom-right-radius: 750rpx; }
+.rb-max { border-bottom-left-radius: 750rpx; border-bottom-right-radius: 750rpx; }
+.rl-max { border-top-left-radius: 750rpx; border-bottom-left-radius: 750rpx; }

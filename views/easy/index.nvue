@@ -1,0 +1,61 @@
+<template lang="pug">
+	view.flex
+		view.between.pa-80
+			itemY(img="/static/icon/easy-express.png", imgRa="8", text="快递服务", imgW="77", imgH="77", imgSize="87", size="30", @click="navigate('/views/easy/express/index')")
+			itemY(img="/static/image/logo_heshequ.png", imgRa="8", text="即买即送", imgW="77", imgH="77", imgSize="87", size="30", @click="navigate('/views/shop/index')")
+			itemY(img="/static/image/logo_meiriyida.jpg", imgRa="8", text="每日一达", imgW="77", imgH="77", imgSize="87", size="30", @click="callminiG")
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+			callminiG(){
+					//调起小程序方法
+					plus.share.getServices(function(s){
+						var shares={};
+						for(var i in s){
+							var t=s[i];
+							shares[t.id]=t;
+						}
+						var sweixin=shares['weixin'];
+						
+						sweixin.launchMiniProgram({
+							//小程序 原始id 不是小程序appid
+							"id":"gh_0db1fd491e68",
+							//初始页面
+							"path":"/screen/home/location",
+							//类型
+							"type":0,
+							//不支持小程序的微信  需要跳转的网址
+							"webUrl":"http://www.html5plus.org"
+						},(res)=>{
+							console.log("成功调起小程序", res);
+						},(err) => {
+							console.log("调起小程序失败", err);
+						}
+						);
+						
+						
+					}, function(e){
+						alert("获取分享服务列表失败："+e.message);
+					});
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.h-76 {height: 76upx;}
+</style>

@@ -1,0 +1,149 @@
+<template lang="pug">
+	view.wing
+
+		//- 占位
+		view.h-50
+
+		//- 地址栏
+		view.ra-10.overhide
+			expressItem3.tail-sm(
+				:name="list.take.name", 
+				:mobile="list.take.mobile", 
+				:address="list.take.address", 
+				img="/static/icon/location-4.png",
+				:arrow="true",
+				@click="navigate('/views/user/address/index?type=order')"
+			)
+
+		//- 商品列表
+		view.flex.bg-white.tail-sm.ra-10.overhide
+
+			//- head
+			view.flex.card-head.row.tail-line.wing
+				image.w-26.h-26(src="/static/icon/shangjia-2.png")
+				text.store.ml-10.s-28.c-66 社区商城
+
+			//- 商品列表
+			view.flex.tail-line.pb-20
+				view.flex.py-20
+					prod3(
+						v-for="(item, index) in list.cart_list"
+						:img="dir.shop_prod(item.img)", 
+						:title="item.name", 
+						:stand="item.standname", 
+						num="1", 
+						price="25",
+						class="py-14 px-20",
+						:line="index < list.cart_list.length - 1",
+						@click="navigate('/views/shop/prodDetail?id=' + item.product_id)"
+					)
+
+			//- 留言
+			view.flex.tail-line.pb-20.mx-30.pt-20
+				view.row.bg-f3.h-50.px-10.py-10.ac
+					image.w-26.h-24.ml-10.mr-18(src="/static/icon/msg3.png")
+					input.s-28.c-63.h-50.lh-50.f-1(v-model="mark", type="text", placeholder='给卖家留言')
+
+			//- 商品相关统计信息
+			view.flex.wing.py-16
+				view.between.py-10
+					text.s-26.c-99 商品总价
+					text.s-26.c-primary ￥{{list.count.toFixed(2)}}
+				view.between.py-10
+					text.s-26.c-99 配送费用
+					text.s-26.c-primary ￥{{list.send_fee.toFixed(2)}}
+			
+
+		//- 使用余额
+		view.bg-white.ra-10.overhide
+			view.between.wing.py-24.tail-line
+				view.row
+					radio(:checked='useCash', color='#cf1322', @click="changeCheck('useCash')")
+					text.ml-10.f-1.lines-1.ellipsis.s-30.c-66 使用余额
+				text.s-30.c-99 可用余额： ￥{{list.user_cash.toFixed(2)}}
+			view.row.wing.py-24
+				radio(:checked='useWechat', color='#cf1322', @click="changeCheck('useWechat')")
+				text.ml-10.f-1.lines-1.ellipsis.s-30.c-66 微信支付
+
+		//- 占位
+		view.h-120
+
+		//- 底部固定栏
+		view.row.bg-white.fixed.bottom-left-0.w-750.border-top
+			view.flex.f-1.between.wing
+				view.row
+					text.s-28 合计：
+					text.s-36.c-primary ￥{{list.sum_count.toFixed(2)}}
+
+			text.w-200.bg-primary.c-white.tc.s-36.h-100(style="line-height: 100rpx;", @click="goPay") 提交订单
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/order/submit';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				...SERVICE.data,
+				mark: '',
+				useCash: true,
+				useWechat: true
+			}
+		},
+		onLoad(param) {
+			let data = {};
+			if(param.take_id) data.take_id = param.take_id;
+			/**
+			 * 获取提交订单详情
+			 * 
+			 * @param take_id	收货地址id，如果不填就是默认id
+			 */
+			SERVICE.load(this, data);
+		},
+		methods: {
+			changeCheck(name) {
+				this[name] = !this[name];
+			},
+			/**
+			 * 获取下单支付数据
+			 * 
+			 * @param paytype	支付方式   0 余额支付 ，1  微信或者混合支付  
+			 * @param isusecash	是否使用余额  0  1 
+			 * @param takeid	收货地址id
+			 * @param mark		备注信息（非必传）
+			 */
+			goPay() {
+				let data = {
+					takeid: this.list.take.id,
+					paytype: 1,
+					mark: this.list.mark,
+					isusecash: this.useCash
+				};
+
+				SERVICE.get_pay(this, data, ()=>{
+					uni.showToast({
+						title: '等待对接支付'
+					})
+				});
+			},
+			/**
+			 * 支付成功
+			 * 
+			 * @param code		订单号码
+			 */
+			payOk(id, product_id) {
+				SERVICE.pay_ok(this, {code: 'MDPE1565331736'});
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.h-80 {height: 80upx;}
+	.h-200 {height: 200upx;}
+	.h-100 {height: 100upx;}
+	.h-160 {height: 160upx;}
+</style>

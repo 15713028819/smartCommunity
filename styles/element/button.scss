@@ -1,0 +1,240 @@
+// ----------------------------------------------------------
+// 统一变量设置
+// ----------------------------------------------------------
+
+// disabled按钮透明度
+$btn-disabled-opacity:		0.2;
+
+// 被点击按钮背景色加深百分比
+$btn-active-darken:			8%;
+
+// 主色
+$btn-primary: map-get($colors, "primary");
+
+// 辅助色
+$btn-assist: map-get($colors, "assist");
+
+// 危险色
+$btn-danger: nth(map-get($embellishs, "red"), 5);
+
+// 幽灵色（辅助按钮）
+$btn-ghost: #f9f9f9;
+$btn-ghost-border: #eee;
+
+
+// ----------------------------------------------------------
+// 统一样式占位符设置
+// ----------------------------------------------------------
+
+// 正常按钮统一样式
+%btn-place-style { text-align: center; opacity: 1 }
+
+// ----------------------------------------------------------
+// 尺寸占位符
+// ----------------------------------------------------------
+
+// app中的按钮需要加粗
+%btn-app-bold {
+	/* #ifdef APP-PLUS */
+	font-weight: bold;
+	/* #endif */
+}
+
+// 大按钮尺寸统一样式
+%btn-place-lg {
+	width: 560rpx;
+	height: 94rpx;
+	line-height: 94rpx;
+	font-size: 36rpx;
+	@extend %btn-app-bold;
+}
+
+// 中按钮尺寸统一样式
+%btn-place-md {
+	width: 400rpx;
+	height: 70rpx;
+	line-height: 70rpx;
+	font-size: 32rpx;
+	@extend %btn-app-bold;
+}
+
+// 小按钮尺寸统一样式
+%btn-place-sm {
+	padding-left: 30rpx;
+	padding-right: 30rpx;
+	height: 60rpx;
+	line-height: 60rpx;
+	font-size: 26rpx;
+	border-radius: 6rpx;
+	@extend %btn-app-bold;
+}
+
+// 微按钮尺寸统一样式
+%btn-place-xs {
+	padding-left: 24rpx;
+	padding-right: 24rpx;
+	height: 50rpx;
+	line-height: 50rpx;
+	font-size: 24rpx;
+	@extend %btn-app-bold;
+}
+
+// ----------------------------------------------------------
+// 颜色占位符
+// ----------------------------------------------------------
+
+%btn-place-primary { background-color: $btn-primary; color: #fff; }
+%btn-place-assist { background-color: $btn-assist;color: #fff; }
+%btn-place-danger { background-color: $btn-danger; color: #fff; }
+%btn-place-ghost { background-color: $btn-ghost; color: #000; border-width: 1rpx; border-style: solid; border-color: $btn-ghost-border; }
+
+// ----------------------------------------------------------
+// 形状占位符
+// ----------------------------------------------------------
+
+%btn-place-radius-lg { border-radius: 10rpx; }
+%btn-place-radius-md { border-radius: 8rpx; }
+%btn-place-radius-sm { border-radius: 6rpx; }
+%btn-place-radius-xs { border-radius: 6rpx; }
+%btn-place-capsule { border-radius: 750rpx; }
+%btn-place-rect { border-radius: 0; }
+
+// ----------------------------------------------------------
+// active样式占位符
+// ----------------------------------------------------------
+
+%btn-place-active-primary { background-color: darken($btn-primary, $btn-active-darken); }
+%btn-place-active-assist { background-color: darken($btn-assist, $btn-active-darken); }
+%btn-place-active-danger { background-color: darken($btn-danger, $btn-active-darken); }
+%btn-place-active-ghost { background-color: #eee; }
+
+// ----------------------------------------------------------
+// 大按钮设置
+// ----------------------------------------------------------
+
+.btn-lg { @extend %btn-place-style; @extend %btn-place-lg; }
+.btn-lg-primary { @extend .btn-lg; @extend %btn-place-primary; @extend %btn-place-radius-lg; }
+.btn-lg-assist {@extend .btn-lg; @extend %btn-place-assist; @extend %btn-place-radius-lg; }
+.btn-lg-danger {@extend .btn-lg; @extend %btn-place-danger; @extend %btn-place-radius-lg; }
+.btn-lg-ghost {@extend .btn-lg; @extend %btn-place-ghost; @extend %btn-place-radius-lg; }
+.btn-lg-primary-capsule { @extend .btn-lg; @extend %btn-place-primary; @extend %btn-place-capsule; }
+.btn-lg-assist-capsule {@extend .btn-lg; @extend %btn-place-assist; @extend %btn-place-capsule; }
+.btn-lg-danger-capsule {@extend .btn-lg; @extend %btn-place-danger; @extend %btn-place-capsule; }
+.btn-lg-ghost-capsule {@extend .btn-lg; @extend %btn-place-ghost; @extend %btn-place-capsule; }
+.btn-lg-primary-rect { @extend .btn-lg; @extend %btn-place-primary; @extend %btn-place-rect; }
+.btn-lg-assist-rect {@extend .btn-lg; @extend %btn-place-assist; @extend %btn-place-rect; }
+.btn-lg-danger-rect {@extend .btn-lg; @extend %btn-place-danger; @extend %btn-place-rect; }
+.btn-lg-ghost-rect {@extend .btn-lg; @extend %btn-place-ghost; @extend %btn-place-rect; }
+
+.btn-lg-primary:active {@extend %btn-place-active-primary; }
+.btn-lg-assist:active {@extend %btn-place-active-assist; }
+.btn-lg-danger:active {@extend %btn-place-active-danger; }
+.btn-lg-ghost:active {@extend %btn-place-active-ghost; }
+.btn-lg-primary-capsule:active {@extend %btn-place-active-primary; }
+.btn-lg-assist-capsule:active {@extend %btn-place-active-assist; }
+.btn-lg-danger-capsule:active {@extend %btn-place-active-danger; }
+.btn-lg-ghost-capsule:active {@extend %btn-place-active-ghost; }
+.btn-lg-primary-rect:active {@extend %btn-place-active-primary; }
+.btn-lg-assist-rect:active {@extend %btn-place-active-assist; }
+.btn-lg-danger-rect:active {@extend %btn-place-active-danger; }
+.btn-lg-ghost-rect:active {@extend %btn-place-active-ghost; }
+
+// ----------------------------------------------------------
+// 中按钮设置
+// ----------------------------------------------------------
+
+.btn-md { @extend %btn-place-style; @extend %btn-place-md; }
+.btn-md-primary { @extend .btn-md; @extend %btn-place-primary; @extend %btn-place-radius-md; }
+.btn-md-assist { @extend .btn-md; @extend %btn-place-assist; @extend %btn-place-radius-md; }
+.btn-md-danger { @extend .btn-md; @extend %btn-place-danger; @extend %btn-place-radius-md; }
+.btn-md-ghost { @extend .btn-md; @extend %btn-place-ghost; @extend %btn-place-radius-md; }
+.btn-md-primary-capsule { @extend .btn-md; @extend %btn-place-primary; @extend %btn-place-capsule; }
+.btn-md-assist-capsule {@extend .btn-md; @extend %btn-place-assist; @extend %btn-place-capsule; }
+.btn-md-danger-capsule {@extend .btn-md; @extend %btn-place-danger; @extend %btn-place-capsule; }
+.btn-md-ghost-capsule {@extend .btn-md; @extend %btn-place-ghost; @extend %btn-place-capsule; }
+.btn-md-primary-rect { @extend .btn-md; @extend %btn-place-primary; @extend %btn-place-rect; }
+.btn-md-assist-rect {@extend .btn-md; @extend %btn-place-assist; @extend %btn-place-rect; }
+.btn-md-danger-rect {@extend .btn-md; @extend %btn-place-danger; @extend %btn-place-rect; }
+.btn-md-ghost-rect {@extend .btn-md; @extend %btn-place-ghost; @extend %btn-place-rect; }
+
+.btn-md-primary:active {@extend %btn-place-active-primary; }
+.btn-md-assist:active {@extend %btn-place-active-assist; }
+.btn-md-danger:active {@extend %btn-place-active-danger; }
+.btn-md-ghost:active {@extend %btn-place-active-ghost; }
+.btn-md-primary-capsule:active {@extend %btn-place-active-primary }
+.btn-md-assist-capsule:active {@extend %btn-place-active-assist; }
+.btn-md-danger-capsule:active {@extend %btn-place-active-danger; }
+.btn-md-ghost-capsule:active {@extend %btn-place-active-ghost; }
+.btn-md-primary-rect:active {@extend %btn-place-active-primary; }
+.btn-md-assist-rect:active {@extend %btn-place-active-assist; }
+.btn-md-danger-rect:active {@extend %btn-place-active-danger; }
+.btn-md-ghost-rect:active {@extend %btn-place-active-ghost; }
+
+// ----------------------------------------------------------
+// 小按钮设置
+// ----------------------------------------------------------
+
+.btn-sm { @extend %btn-place-style; @extend %btn-place-sm; }
+.btn-sm-primary { @extend .btn-sm; @extend %btn-place-primary; @extend %btn-place-radius-sm; }
+.btn-sm-assist { @extend .btn-sm; @extend %btn-place-assist; @extend %btn-place-radius-sm; }
+.btn-sm-danger { @extend .btn-sm; @extend %btn-place-danger; @extend %btn-place-radius-sm; }
+.btn-sm-ghost { @extend .btn-sm; @extend %btn-place-ghost; @extend %btn-place-radius-sm; }
+.btn-sm-primary-capsule { @extend .btn-sm; @extend %btn-place-primary; @extend %btn-place-capsule; }
+.btn-sm-assist-capsule {@extend .btn-sm; @extend %btn-place-assist; @extend %btn-place-capsule; }
+.btn-sm-danger-capsule {@extend .btn-sm; @extend %btn-place-danger; @extend %btn-place-capsule; }
+.btn-sm-ghost-capsule {@extend .btn-sm; @extend %btn-place-ghost; @extend %btn-place-capsule; }
+.btn-sm-primary-rect { @extend .btn-sm; @extend %btn-place-primary; @extend %btn-place-rect; }
+.btn-sm-assist-rect {@extend .btn-sm; @extend %btn-place-assist; @extend %btn-place-rect; }
+.btn-sm-danger-rect {@extend .btn-sm; @extend %btn-place-danger; @extend %btn-place-rect; }
+.btn-sm-ghost-rect {@extend .btn-sm; @extend %btn-place-ghost; @extend %btn-place-rect; }
+
+.btn-sm-primary:active {@extend %btn-place-active-primary; }
+.btn-sm-assist:active {@extend %btn-place-active-assist; }
+.btn-sm-danger:active {@extend %btn-place-active-danger; }
+.btn-sm-ghost:active {@extend %btn-place-active-ghost; }
+.btn-sm-primary-capsule:active {@extend %btn-place-active-primary }
+.btn-sm-assist-capsule:active {@extend %btn-place-active-assist; }
+.btn-sm-danger-capsule:active {@extend %btn-place-active-danger; }
+.btn-sm-ghost-capsule:active {@extend %btn-place-active-ghost; }
+.btn-sm-primary-rect:active {@extend %btn-place-active-primary; }
+.btn-sm-assist-rect:active {@extend %btn-place-active-assist; }
+.btn-sm-danger-rect:active {@extend %btn-place-active-danger; }
+.btn-sm-ghost-rect:active {@extend %btn-place-active-ghost; }
+
+// ----------------------------------------------------------
+// 微按钮设置
+// ----------------------------------------------------------
+
+.btn-xs { @extend %btn-place-style; @extend %btn-place-xs; }
+.btn-xs-primary {@extend .btn-xs; @extend %btn-place-primary; @extend %btn-place-radius-xs; }
+.btn-xs-assist {@extend .btn-xs; @extend %btn-place-assist; @extend %btn-place-radius-xs; }
+.btn-xs-danger {@extend .btn-xs; @extend %btn-place-danger; @extend %btn-place-radius-xs; }
+.btn-xs-ghost {@extend .btn-xs; @extend %btn-place-ghost; @extend %btn-place-radius-xs; }
+.btn-xs-primary-capsule { @extend .btn-xs; @extend %btn-place-primary; @extend %btn-place-capsule; }
+.btn-xs-assist-capsule {@extend .btn-xs; @extend %btn-place-assist; @extend %btn-place-capsule; }
+.btn-xs-danger-capsule {@extend .btn-xs; @extend %btn-place-danger; @extend %btn-place-capsule; }
+.btn-xs-ghost-capsule {@extend .btn-xs; @extend %btn-place-ghost; @extend %btn-place-capsule; }
+.btn-xs-primary-rect { @extend .btn-xs; @extend %btn-place-primary; @extend %btn-place-rect; }
+.btn-xs-assist-rect {@extend .btn-xs; @extend %btn-place-assist; @extend %btn-place-rect; }
+.btn-xs-danger-rect {@extend .btn-xs; @extend %btn-place-danger; @extend %btn-place-rect; }
+.btn-xs-ghost-rect {@extend .btn-xs; @extend %btn-place-ghost; @extend %btn-place-rect; }
+
+.btn-xs-primary:active {@extend %btn-place-active-primary; }
+.btn-xs-assist:active {@extend %btn-place-active-assist; }
+.btn-xs-danger:active {@extend %btn-place-active-danger; }
+.btn-xs-ghost:active {@extend %btn-place-active-ghost; }
+.btn-xs-primary-capsule:active {@extend %btn-place-active-primary }
+.btn-xs-assist-capsule:active {@extend %btn-place-active-assist; }
+.btn-xs-danger-capsule:active {@extend %btn-place-active-danger; }
+.btn-xs-ghost-capsule:active {@extend %btn-place-active-ghost; }
+.btn-xs-primary-rect:active {@extend %btn-place-active-primary; }
+.btn-xs-assist-rect:active {@extend %btn-place-active-assist; }
+.btn-xs-danger-rect:active {@extend %btn-place-active-danger; }
+.btn-xs-ghost-rect:active {@extend %btn-place-active-ghost; }
+
+// ----------------------------------------------------------
+// 统一按钮样式类设置（不可用等样式）
+// ----------------------------------------------------------
+
+.btn-disabled { opacity: $btn-disabled-opacity }
+.btn-disabled:active {  }

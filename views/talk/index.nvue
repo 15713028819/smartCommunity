@@ -1,0 +1,138 @@
+<template lang="pug">
+	view.flex.bg-white
+		// 头部
+		talkHeader1.tail(:nick="list.userinfo.nick", :signature="list.userinfo.autograph", @click="navigate('/views/talk/add')", :avatar="list.userinfo.head")
+		
+		// 类别
+		scroll-view.between.pt-30.pb-10.px-10.border(scroll-x, :show-scrollbar="false", :scroll-left="tabIndexScroll ? 750 : 0")
+			view.column.mx-26.ac(v-for="(item, index) in list.cate_list", @click="changeMenu(item.id)")
+				image.w-50.h-50(:src="item.img", :style="{opacity: item.id == tabIndex ? 1 : 0.2}")
+				text.tc.menu(:class="[item.id == tabIndex && 'active']") {{item.name}}
+		
+		// 动态列表
+		talkItem1(
+			v-for="(item, index) in list.list",
+			:avatar="item.head",
+			:name="item.nick",
+			:text="item.text",
+			:picture="item.imgs.split(',')",
+			style="padding"
+		)
+			talkFooter1(
+				:time="item.created | dateFormat('m-d H:i')",
+				:likeNum="item.count_goods",
+				:likeName="item.goods",
+				:comment="item.comment",
+				:zan="item.is_good"
+				@onLike="good(item)",
+				@onComment="()=>toastTest"
+			)
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/talk/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tabIndex: null,
+			}
+		},
+		onLoad(param) {
+			let data = {};
+			if(param.last_id) data.last_id = param.last_id;
+			if(param.cate_id) data.cate_id = param.cate_id;
+			/**
+			 * 获取邻里圈列表
+			 * 
+			 * @param last_id	可选  最后（最大）一条的id 用于下拉查看  第一次获取没有
+			 * @param cate_id	可选  类别id 用于筛选   
+			 */
+			SERVICE.load(this, data);
+			
+		},
+		onShow() {
+			console.log('getApp().globalData.TALKINDEX', getApp().globalData.TALKINDEX)
+			this.tabIndex = getApp().globalData.TALKINDEX;
+		},
+		onHide() {
+			getApp().globalData.TALKINDEX = list.cate_list[0].id;
+		},
+		onReachBottom(e) {
+			console.log('我是页面触底弹框', e)
+		},
+		computed: {
+			tabIndexScroll: function() {
+				for(let index in this.list.cate_list) {
+					if(this.list.cate_list[index].id == this.tabIndex && index > 2) return true;
+				}
+				return false;
+			}
+		},
+		methods: {
+			changeMenu(index) {
+				this.tabIndex = index;
+			},
+			toToast(msg) {
+				uni.showToast({
+					title: msg,
+				})
+			},
+			
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			/**
+			 * 点赞 自动取消 或者点赞
+			 * 
+			 * @param neighbor_id	动态id
+			 */
+			good(item) {
+				SERVICE.good(this, {neighbor_id: item.id},()=>{
+					item.is_good = !item.is_good;
+				});
+			},
+			/**
+			 * 添加评论
+			 * 
+			 * @param neighbor_id	动态id
+			 * @param text			提交的字
+			 */
+			add_comment() {
+				SERVICE.add_comment(this, {neighbor_id: 23, text: 'text'});
+			},
+			/**
+			 * 删除评论
+			 * 
+			 * @param comment_id	评论的id
+			 */
+			delete_comment() {
+				SERVICE.delete_comment(this, {comment_id: 29});
+			}
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.menu {
+		font-size: 28rpx;
+		color: #D4D4D4;
+		line-height: 44rpx;
+	}
+	.active {
+		color: #464646;
+	}
+	.border {
+		border-top-style: solid;
+		border-top-width: 1px;
+		border-top-color: #f3f3f3;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #f3f3f3;
+	}
+</style>

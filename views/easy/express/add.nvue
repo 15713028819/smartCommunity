@@ -1,0 +1,195 @@
+<template lang="pug">
+	view.flex.bg-white
+		view.flex.wing.py-30
+			
+			// 发货人表单
+			filed1.py-30(left="发货信息", size="32", :border="false")
+			view.flex.wing
+				input1(@input="on_send_name", title="发货人", placeholder="请输入发货人姓名", size="32", titleSize="32")
+				input1(@input="on_send_mobile", title="发货人电话", placeholder="请输入发货人电话", size="32", titleSize="32")
+				//- 选择地址
+				view.row.file.border-bottom
+					text.label 选择地址
+					view.ix.ml-30.f-1(@click="navigate('/views/user/address/map')")
+						image(style="width: 19rpx; height: 24rpx;", src="/static/icon/location-6.png")
+						text.text 点击选择
+					image(style="width: 14rpx; height:24rpx;", src="/static/icon/arrow-right-3.png", @click="navigate('/views/user/address/map')")
+				input1(@input="on_send_address", title="详细地址", placeholder="请输入详细地址", size="32", titleSize="32")
+
+				inputArea1(@input="on_send_des", title="物品介绍", placeholder="请简单介绍您邮寄的物品", size="32", titleSize="32")
+				
+				// 上传图片
+				view.row.ae.pb-20.pt-40
+					text.title 物品图片
+					text.desc.ml-10 最多上传3张
+				view.flex.upload.ba.bc-ee
+			
+			//- 分割线
+			view.flex.tail-line.py-30.tail
+
+			// 收货信息
+			filed1.py-30(left="收货信息", size="32", :border="false")
+			view.flex.wing
+				input1(@input="on_take_name", title="收件人", placeholder="请输入收件人姓名", size="32", titleSize="32")
+				input1(@input="on_take_mobile", title="收件人电话", placeholder="请输入收件人电话", size="32", titleSize="32")
+				//- 选择地址
+				view.row.file.border-bottom
+					text.label 选择地址
+					view.ix.ml-30.f-1(@click="navigate('/views/user/address/map')")
+						image(style="width: 19rpx; height: 24rpx;", src="/static/icon/location-6.png")
+						text.text 点击选择
+					image(style="width: 14rpx; height:24rpx;", src="/static/icon/arrow-right-3.png", @click="navigate('/views/user/address/map')")
+				input1(@input="on_take_address", title="详细地址", placeholder="请输入详细地址", size="32", titleSize="32")
+				
+		// 按钮组
+		view.flex.py-80.mb-30.ac.f-1
+			text.btn-lg-primary.ra-max(@click="onSubmit") 提交
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import AREA from '@/static/data/area.json';
+	import SERVICE from '@/services/project/easy/express/add';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				area: AREA,
+
+				send_name: '',
+				send_mobile: '',
+				send_address: '',
+				send_des: '',
+				imgs: '',
+
+				take_address: '',
+				take_mobile: '',
+				take_name: '',
+			}
+		},
+		onLoad() {
+
+		},
+		methods: {
+			/**
+			 * 提交快递信息
+			 * 
+			 * @param {string} send_name	发货人姓名
+			 * @param {string} send_mobile	发货人电话
+			 * @param {string} send_address	发货人地址
+			 * @param {string} send_des		发货介绍
+			 * @param {string} imgs			图片(字符串路径，以逗号分隔，最后一位不能是逗号)
+			 */
+			onSubmit() {
+				SERVICE.submit(this,
+				{
+					send_name: this.send_name,
+					send_mobile: this.send_mobile,
+					send_address: this.send_address,
+					send_des: this.send_des,
+					imgs: this.imgs,
+
+					take_address: this.take_address,
+					take_mobile: this.take_mobile,
+					take_name: this.take_name,
+				},
+				()=>{
+					uni.showToast({title: '寄件成功'});
+					setTimeout(() => {
+						this.goback();
+					}, 1500);
+				});
+			},
+
+			// 改变表单数据
+			on_send_name(e) {
+				this.send_name = e.detail.value;
+			},
+			on_send_mobile(e) {
+				this.send_mobile = e.detail.value;
+			},
+			on_send_address(e) {
+				this.send_address = e.detail.value;
+			},
+			on_send_des(e) {
+				this.send_des = e.detail.value;
+			},
+			on_take_address(e) {
+				this.take_address = e.detail.value;
+			},
+			on_take_mobile(e) {
+				this.take_mobile = e.detail.value;
+			},
+			on_take_name(e) {
+				this.take_name = e.detail.value;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.typeButton {
+		width: 158rpx;
+		height: 72rpx;
+		line-height: 72rpx;
+		text-align: center;
+		color: #666;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #AAAAAA;
+		background-color: #fff;
+		border-radius: 5rpx;
+	}
+	.active {
+		color: #0050B3;
+		border-color: #0050B3;
+		background-color: #EBF1F9;
+	}
+	.upload {
+		width: 136rpx;
+		height: 136rpx;
+	}
+	
+	.title {
+		font-size: 32rpx;
+		color: #666;
+		
+	}
+	.desc {
+		font-size: 24rpx;
+		color: #999;
+	}
+
+	// 选择地址
+	.file {
+		height: 96rpx;
+		align-items: center;
+		padding: 0 10rpx 0 0;
+	}
+	.input {
+		height: 96rpx;
+		line-height: 96rpx;
+		color: #333;
+		font-size: 32rpx;
+	}
+	.label {
+		font-size: 32rpx;
+		color: #666;
+	}
+	.text {
+		font-size: 32rpx;
+		color: #999999;
+		margin-left: 10rpx;
+	}
+	
+	.border-bottom {
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #eee;
+	}
+</style>

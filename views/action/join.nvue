@@ -1,0 +1,210 @@
+<template lang="pug">
+	view.flex.bg-f3
+		view.flex.tail
+
+		//- 购票信息
+		view.flex.bg-white.wing.py-20.tail(v-if="list.length")
+			view.row.py-20
+				view.flex.redLine
+				text.ml-10.c-grey-1.s-30 购票信息
+			view.flex.py-20
+				filed3.tail(v-for="(item, index) in list", :name="item.name", :stock="item.count", :price="item.price", :count="item.buy", @addFun="addFun(item, index)", @subFun="subFun(item)")
+ 
+		//- 报名信息
+		view.flex.bg-white.wing.py-20
+			view.row.py-20
+				view.flex.redLine
+				text.ml-10.c-grey-1.s-30 报名信息
+			view.flex.py-20
+
+				view.row.file.tail-line
+					input.input.f-1(
+						placeholder="请输入联系人姓名", 
+						type="text", 
+						@input="onName"
+					)
+
+				view.row.file.tail-line
+					input.input.f-1(
+						placeholder="请输入联系电话", 
+						type="tel", 
+						@input="onMobile"
+					)
+
+				view.row.file.tail-line
+					text.label 性别
+					picker.between.ml-30.f-1(@change="sexPicker", :value="sexIndex", :range="sexArr")
+						text.text {{sex}}
+						image.w-10.h-20(src="/static/icon/arrow-right-3.png")
+
+				view.row.file.tail-line
+					input.input.f-1(
+						placeholder="请输入年龄", 
+						type="tel", 
+						@input="onAge"
+					)
+
+				inputArea1.mt-20(
+					title="备注", 
+					placeholder="请输入备注", 
+					size="28", 
+					titleSize="28", 
+					inputClass="inputClass",
+					@input="onRemarks"
+				)
+
+
+		//- 购票按钮
+		view.flex.pt-80.center
+			text.btn-lg.c-white.mb-50.bg-primary.center.ra-max.s-30(@click="submit") 立即购票
+
+
+			
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/action/join';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				count: 1,
+				stock: 10,
+				id: 0,
+
+
+				// 表单
+				name: '',
+				mobile: '',
+				age: '',
+				remarks: '',
+				sex: '请选择性别',
+
+				// 性别 picker 数据
+				sexIndex: 0,
+				sexArr: ['男', '女']
+			}
+		},
+		onLoad(param) {
+			this.id = param.id;
+			/**
+			 * 获取活动发行的票券
+			 * 
+			 * @param activity_id 活动id
+			 */
+			SERVICE.load_ticket(this, {activity_id: this.id});
+		},
+		methods: {
+			onRemarks: function(e) {
+				this.remarks = e.detail.value;
+			},
+			onName: function(e) {
+				this.name = e.detail.value;
+			},
+			onMobile: function(e) {
+				this.mobile = e.detail.value;
+			},
+			onAge: function(e) {
+				this.age = e.detail.value;
+			},
+			addFun(item) {
+				item.name = item.name + ' ';
+				if(item.buy < item.count) item.buy = item.buy + 1;
+				else uni.showToast({title: '没有更多票券了', icon: 'none'})
+			},
+			subFun(item) {
+				item.name = item.name + ' ';
+				if(item.buy > 0) item.buy--;
+				else uni.showToast({title: '不能再少了', icon: 'none'})
+			},
+			// 选择性别
+			sexPicker(e) {
+				console.log('eee',e)
+				this.sexIndex = e.detail.value;
+				this.sex = this.sexArr[this.sexIndex];
+			},
+			/**
+			 * 提交报名信息
+			 * 
+			 * @param	{number}	activity_id	活动id
+			 * @param	{string}	name		申请人姓名
+			 * @param	{string}	mobile		申请人电话
+			 * @param	{string}	sex			申请人性别
+			 * @param	{string}	age			申请人年龄
+			 * @param	{string}	mark		备注
+			 * @param	{string}	ticket_info	购票信息  用 ',' 分割   1（票务id）：2（票务数量）
+			 */
+			submit(item) {
+				if(this.name == '请填写姓名') uni.showToast({title: '请先填写姓名', icon: 'none'})
+				if(this.mobile == '请填写电话') uni.showToast({title: '请先填写电话', icon: 'none'})
+				if(this.sex == '请选择性别') uni.showToast({title: '请先选择性别', icon: 'none'})
+				if(this.age == '请填写年龄') uni.showToast({title: '请先填写年龄', icon: 'none'})
+				let ticket_info = '';
+				if(this.list.length) {
+					for(let item of this.list) {
+						ticket_info += item.id + ':' + item.buy + ',';
+					}
+					ticket_info = ticket_info.substring(0, ticket_info.length - 1)
+				}
+				SERVICE.submit(this, {activity_id: this.id, name: this.name, mobile: this.mobile, sex: this.sex, age: this.age, mark: this.remarks, ticket_info},
+				()=>{
+					uni.showToast({title: '报名成功'});
+					setTimeout(() => {
+						this.goback();
+					}, 1500);
+				});
+			},
+			/**
+			 * 支付成功
+			 * 
+			 * @param {string} code 订单号码
+			 */
+			payOk() {
+				SERVICE.pay_ok(this, {code: 'XUIC1565336581'});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.redLine {
+		border-right-style: solid;
+		border-right-width: 5rpx;;
+		border-right-color: #CF1322;
+		height: 20rpx;
+	}
+	.file {
+		height: 90rpx;
+		align-items: center;
+		padding: 0 10rpx;
+	}
+	.input {
+		height: 90rpx;
+		line-height: 90rpx;
+		color: #333;
+		font-size: 28rpx;
+	}
+	.placeholderClass {
+		color: #999999;
+		font-size: 28rpx;
+	}
+	.label {
+		font-size: 28rpx;
+		color: #666;
+	}
+	.text {
+		font-size: 28rpx;
+		color: #999999;
+		margin-left: 10rpx;
+	}
+	.inputClass {
+		border-style: solid!important;
+		border-width: 1rpx!important;
+		border-color: #f3f3f3!important;
+		border-radius: 10rpx!important;
+	}
+</style>

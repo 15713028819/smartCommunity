@@ -1,0 +1,152 @@
+<template lang="pug">
+	view.flex.rel.box
+	
+		//- titlebar
+		view(style="width: 750rpx")
+			// #ifdef APP-PLUS-NVUE
+			view(:style="{height: statusBarHeight}")
+			// #endif
+			view.between.box(:style="{height: '44px'}")
+				
+		//- 内容
+		view.flex.abs.backbox.top-left-0
+			image.background(:src="background", resize="cover")
+			view.row.between.btnImgBox.wing-xl.w-750
+				view.w-60.h-60.center.ra-max(v-if="goback", style="background-color: #0005", @click="ongoback")
+					image( style="width: 20rpx; height: 35rpx;margin-left: -3rpx;", src="/static/icon/arrow-left.png")
+				image.btnImg(:src="btnImg", @click="$emit('click')", resize="cover")
+ 
+		view.row.abs.content.wing-xl
+			view.flex.ra-20.overhide(:src="avatar", :class="[raClass && 'ra-' + ra, border && 'avatarBorder']", :style="[!raClass && {'border-radius': ra + 'rpx'}]")
+				image.avatarPage.ra-20(:src="avatar", :class="[raClass && 'ra-' + ra]", :style="[!raClass && {'border-radius': ra + 'rpx'}]", resize="cover")
+			view.between.text.f-1.ac
+				text.nick {{nick}}
+				text.signature {{signature}}
+</template>
+
+<script>
+	export default {
+		props: {
+			statusBarHeight: '24px',
+			// 内容 props
+			background: {
+				type: String,
+				default: '/static/image/talkBG.png'
+			},
+			avatar: {
+				type: String,
+				default: '/static/image/avatar1.png'
+			},
+			btnImg: {
+				type: String,
+				default: '/static/icon/btn-add.png'
+			},
+			nick: {
+				type: String,
+				default: '昵称'
+			},
+			signature: {
+				type: String,
+			},
+			// 样式 props
+			border: {
+				type: Boolean,
+				default: true
+			},
+			ra: {
+				type: String,
+				default: 'lg'
+			},
+			goback: {
+				type: Boolean,
+				default: false
+			}
+
+		},
+		created() {
+			uni.getSystemInfo({
+				success: (res)=> {
+					this.statusBarHeight = res.statusBarHeight + 'px';
+				}
+			})
+		},
+		computed: {
+			raClass: function() {
+				if(this.ra.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			}
+		},
+		methods: {
+			test() {
+				uni.showToast({title: '管用'})
+			},
+			ongoback() {
+				uni.navigateBack({
+					delta: 1
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		width: 750rpx;
+		height: 480rpx;
+	}
+	.backbox {
+		width: 750rpx;
+		height: 398rpx;
+	}
+	.background {
+		position:absolute;
+		top: 0;
+		left: 0;
+		width: 750rpx;
+		height: 398rpx;
+	}
+	.content {
+		width: 750rpx;
+		// padding: 0 38rpx 0 42rpx;
+		top: 318rpx;
+		left: 0;
+		// margin-top: -80rpx;
+	}
+	.avatarPage {
+		flex: 1;
+		width: 160rpx;
+		height: 160rpx;
+	}
+	.avatarPageBorder {
+		width: 160rpx;
+		height: 160rpx;
+		background-color: #E3E3E3;
+		padding: 3rpx;
+		// border-style: solid;
+		// border-width: 2rpx;
+		// border-color: #c37;
+	}
+	.text {
+		padding-top: 80rpx;
+		margin-left: 38rpx;
+	}
+	.nick {
+		font-size: 45rpx;
+		color: #6B6B6B;
+	}
+	.signature {
+		font-size: 24rpx;
+		padding-top: 6rpx;
+		color: #787878;
+	}
+	.btnImgBox {
+		width: 750rpx;
+		height: 200rpx;
+	}
+	.btnImg {
+		width: 48rpx;
+		height: 48rpx;
+	}
+</style>

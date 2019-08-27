@@ -1,0 +1,83 @@
+<template lang="pug">
+	view.between.bg-white.ac.bg-white.px-20.py-30
+
+		view.column.as.f-1(@click="$emit('click')")
+			view.row.ac
+				text.isDefault(v-if="isDefault") 默
+				view.row.mx-20
+					text.name {{name}}
+					text.mobile {{mobile}}
+			text.address.mx-20(:style="[isDefault && {'margin-left': '54rpx'}]") {{address}}
+
+		view.center
+			text.textRight.pl-20(@click="$emit('rightFun')") {{textRight}}
+</template>
+
+<script>
+	export default {
+		props: {
+			isDefault: {
+				type: Boolean,
+				default: false
+			},
+			name: {
+				type: String,
+				require: true
+			},
+			mobile: {
+				type: String,
+			},
+			address: {
+				type: String,
+			},
+			textRight: {
+				type: String,
+				default: "编辑"
+			}
+		},
+	}
+</script>
+
+<style lang="scss">
+	.isDefault {
+		width: 34rpx;
+		height: 34rpx;
+		font-size: 20rpx;
+		line-height: 34rpx;
+		text-align: center;
+		background-color: #CF1322;
+		border-radius: 34rpx;
+		color: #fff;
+		// margin-right: 20rpx;
+	}
+	.name {
+		font-size: 34rpx;
+		color: #333;
+	}
+	.mobile {
+		font-size: 30rpx;
+		color: #999;
+		margin-left: 15rpx;
+	}
+	.address {
+		font-size: 26rpx;
+		color: #666;
+		lines: 3;
+		margin-top: 8rpx;
+		line-height: 40rpx;
+	}
+	.mx-20 {
+		// margin-left: 20rpx;
+		margin-right: 20rpx;
+	}
+	.textRight {
+		font-size: 28rpx;
+		color: #999;
+		height: 50rpx;
+		line-height: 50rpx;
+		border-left-style: solid;
+		border-left-width: 1px;
+		border-left-color: #BBBBBB;
+	}
+	
+</style>

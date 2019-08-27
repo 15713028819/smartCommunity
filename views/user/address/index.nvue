@@ -1,0 +1,67 @@
+<template lang="pug">
+	view.flex.bg-f3.f-1
+		view.flex.bg-gery-1.f-1
+			view.flex.tail-line.w-750
+			expressItem2.tail8(
+				v-for="item in list",
+				:isDefault="item.is_default",
+				:name="item.name",
+				:mobile="item.mobile",
+				:address="item.address",
+				textRight="编辑",
+				@rightFun="navigate('/views/user/address/form?id=' + item.id)",
+				@click="expressClick(item.id)"
+			)
+		
+		//- 占位
+		div.h-100
+
+		//- 底部按钮
+		text.footer.btn-full-page.bg-primary.c-white(@click="navigate('/views/user/address/form')") 新增地址
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/user/address/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad(param) {
+			if(param.type) this.type = param.type;
+		},
+		onShow() {
+			// 获取用户地址列表
+			SERVICE.load(this);
+		},
+		methods: {
+			toast(msg) {
+				uni.showToast({
+					title: msg
+				})
+			},
+			expressClick(id) {
+				if(this.type && this.type == 'order') uni.navigateTo({
+					url: '/views/order/submit?take_id=' + id
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	// 按钮
+	.btn-full-page {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+</style>

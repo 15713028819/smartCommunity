@@ -1,0 +1,90 @@
+<template lang="pug">
+	view.bg-white.ra-20.overhide.pb-20(@click="$emit('click')")
+
+		view.between.head.py-20.wing.tail-line
+			view.row.jc.ac
+				image.w-34.h-34(:src="stateImg")
+				text.title.s-30.lh-34 {{title}}
+			text.rightTitle.s-26 {{rightTitle}}
+
+		view.wing
+			view.content.row.rel.mt-20
+				text.s-22.tagPage.abs.left-0(v-if="tag", :style="[tag.color && {'border-color': tag.color, color: tag.color}, {'margin-top': '2rpx'}]") {{tag.text ? tag.text : tag}}
+				text.s-30.text-1.f-1.c-66.lh-40 {{tag ? "                " + text : text}}
+			view.mt-6.row(v-if="img.length")
+				view.flex.ra-10.overhide.imgBox(v-for="(item, index) in img")
+					image.img.ra-10.overhide(v-if="index < 5", :src="item")
+</template>
+
+<script>
+	export default {
+		props: {
+			stateImg: {
+				type: String
+			},
+			text: {
+				type: String
+			},
+			title: {
+				type: String
+			},
+			rightTitle: {
+				type: String
+			},
+			tag: {
+				type: [String, Object],
+			},
+			img: {
+				type: Array,
+				default: []
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		background-color: #fff;
+	}
+	.icon {
+		font-size: 33rpx;
+		width: 33rpx;
+		text-overflow: clip;
+	}
+	.title {
+		font-size: 30rpx;
+		color: #333333;
+		margin-left: 12rpx;
+	}
+	.rightTitle {
+		font-size: 26rpx;
+		color: #999;
+	}
+	.text {
+		font-size: 30rpx;
+		color: #666666;
+		line-height: 46rpx;
+		margin-bottom: 15rpx;
+	}
+	.imgBox {
+		width: 115rpx;
+		height: 115rpx;
+		margin-right: 14rpx;
+	}
+	.img {
+		width: 115rpx;
+		height: 115rpx;
+	}
+	.tagPage {
+		font-size: 22rpx;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #003A8C;
+		border-radius: 5rpx;
+		color: #003A8C;
+		padding: 5rpx 7rpx;
+		margin-right: 10rpx;
+	}
+	
+	
+</style>

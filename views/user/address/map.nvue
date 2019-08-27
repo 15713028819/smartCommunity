@@ -1,0 +1,35 @@
+<template lang="pug">
+	view.flex.bg-white.f-1
+		map.w-750.h-600
+		scroll-view(:scroll-y="true").flex.pt-30.f-1.w-750
+			commonItem8.pt-10(@click="toastTest", title="四通房产（源盛嘉禾店源盛嘉禾店源盛嘉禾店源盛嘉禾店源盛嘉禾店）", address="河北省保定市莲池区瑞祥大街河北省保定市莲池区瑞祥大街河北省保定市莲池区瑞祥大街100号", circleColor="#CF1322", titleColor="#CF1322")
+			commonItem8(@click="toastTest", title="四通房产（源盛嘉禾店源盛嘉禾店源盛嘉禾店源盛嘉禾店源盛嘉禾店）", address="河北省保定市莲池区瑞祥大街河北省保定市莲池区瑞祥大街河北省保定市莲池区瑞祥大街100号")
+			commonItem8(@click="toastTest", title="四通房产（源盛嘉禾店源盛嘉禾店源盛嘉禾店源盛嘉禾店源盛嘉禾店）", address="河北省保定市莲池区瑞祥大街河北省保定市莲池区瑞祥大街河北省保定市莲池区瑞祥大街100号")
+			commonItem8(@click="toastTest", title="四通房产（源盛嘉禾店）", address="河北省保定市莲池区瑞祥大街100号")
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+</style>

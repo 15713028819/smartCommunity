@@ -1,0 +1,136 @@
+<template lang="pug">
+	view.flex
+		// tab
+		//- view.row.tabBar.bg-white
+		//- 	view.column.jc.f-1(v-for="(item, index) in tabs", @click="()=>changeTab(index)")
+		//- 		text.tabTitle(:class="[tabIndex == index && 'titleActive']") {{item}} 
+		//- 		view.flex.tabLine.f-1(:class="[tabIndex == index && 'lineActive']")
+		//- tab
+		view.row.tabBar.bg-white.w-750.header
+			view.column.jc.f-1.ac.f-1(v-for="(item, index) in tabs", @click="changeTab(index)")
+				text.tabTitle(:class="[tabIndex == index && 'titleActive']") {{item}} 
+				view.flex.tabLine.f-1(:class="[tabIndex == index && 'lineActive']")
+		
+		//- 内容
+		view.flex.f-1.mb-100.mt-80
+			view.flex.tail
+			view.flex.wing
+				expressItem1.tail(
+					v-for="item in list",
+					:text1="item.send_des | send_des",
+					:text2="item.created | created",
+					:text3="item.send_address | address(item.take_address)",
+					:text4="item.send_name",
+					:text5="item.take_address | address(item.send_address)",
+					:text6="item.take_name",
+					:textRight="item.state ? '已取件' : '待取件'",
+					:imgRight="item.state ? '/static/icon/check-on-1.png' : '/static/icon/dengdai-2.png'",
+					:color="item.state ? '#666666' : '#CF1322'",
+					@click="navigate('/views/easy/express/detail?id=' + item.id)"
+				)
+		
+		//- 底部按钮
+		text.footer.btn-full.bg-primary.c-white(@click="navigate('/views/easy/express/add')") 我要寄件
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/easy/express/index';
+	import { dateFormat } from '@/functions/date';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tabIndex: 0,
+				tabs: ['全部', '待取件', '已取件']
+			}
+		},
+		onLoad() {
+			
+		},
+		onShow() {
+			/**
+			 * 获取获取快递首页
+			 */
+			SERVICE.load(this);
+		},
+		filters: {
+			send_des: (value) => {
+				return '物品介绍：' + value;
+			},
+			created: (value) => {
+				return '寄送时间：' + dateFormat('Y.m.d H:i', value * 1000)
+			},
+			address(value, address) {
+				let str = value.substring(0, value.indexOf('省') + 1);
+				return str;
+				// 以下 对比value和address的省份是否相同，相同则取市
+				// console.log('value', value)
+				// console.log('address', address)
+				// // 整理value数组
+				// let valueArr = [];
+				// if(value.indexOf('省') != -1) valueArr[0] = value.substring(0, value.indexOf('省') + 1);
+				// else valueArr[0] = value.substring(0, value.indexOf('市') + 1);
+				// valueArr[1] = value.substring(valueArr[0].length, value.indexOf('市') + 1);
+				// console.log('valuearr', valueArr)
+				// // 整理address数组
+				// let addressArr = [];
+				// if(address.indexOf('省') != -1) addressArr[0] = address.substring(0, address.indexOf('省') + 1);
+				// else addressArr[0] = address.substring(0, address.indexOf('市') + 1);
+				// addressArr[1] = address.substring(addressArr[0].length, address.indexOf('市') + 1);
+				// console.log('addressArr', addressArr)
+
+				// // 对比value和address的省份是否相同，相同则取市
+				// if(valueArr[0] == addressArr[0] && valueArr[1] && addressArr[1]) return valueArr[1];
+
+				// else return valueArr[0];
+			}
+		},
+		methods: {
+			changeTab(index) {
+				this.tabIndex = index;
+				let param = {};
+				if(this.tabIndex) param.state = this.tabIndex-1;
+				SERVICE.load(this, param);
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	// tab
+	.tabBar {
+	}
+	.tabTitle {
+		font-size: 32rpx;
+		color: #333;
+		height: 80rpx;
+		line-height: 80rpx;
+		margin-top: 3rpx;
+	}
+	.tabLine {
+		height: 3rpx;
+		background-color: transparent;
+		width: 125rpx;
+		border-radius: 5rpx;
+	}
+	.titleActive {
+		color: #CF1322;
+	}
+	.lineActive {
+		background-color: #CF1322;
+	}
+	// 按钮
+	.btn-full {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+</style>

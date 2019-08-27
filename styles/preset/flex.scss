@@ -1,0 +1,149 @@
+// ----------------------------------------------------------
+// 文件说明
+// 
+// 1、column, row, around, between, center, 以及它们之下的换行辅助类都为块布局类
+// 2、ix, iy为小元素布局类
+// 3、您可以自行增删改这里的设置，以便更好的布局
+// ----------------------------------------------------------
+
+// 修补h5平台转换nvue样式时的误差
+/* #ifdef H5 */
+view.row, view.around, view.between, view.center, view.ix {
+    flex-direction: row;
+    align-items: center;
+}
+view.iy {
+    align-items: center;
+}
+/* #endif */
+
+// ----------------------------------------------------------
+// flex占位符
+// ----------------------------------------------------------
+
+// 行对齐样式占位符
+%flex-place-row { 
+    // display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+}
+
+// 列对齐样式占位符
+%flex-place-column { 
+    // display: flex; 
+    flex-direction: column; 
+    align-items: stretch; 
+}
+
+// ----------------------------------------------------------
+// 纵向布局
+// ----------------------------------------------------------
+
+// column布局（默认flex），与weex默认flex布局完全一致（横向撑开，纵向顶对齐）
+.column {
+    @extend %flex-place-column;
+    justify-content: flex-start;
+    align-items: stretch; 
+}
+
+// iy布局，通常用于小型纵向横向居中组合元素（横向中对齐，纵向顶对齐）
+.iy {
+    @extend %flex-place-column;
+    justify-content: flex-start;
+    align-items: center; 
+}
+
+// ----------------------------------------------------------
+// 横向布局
+// ----------------------------------------------------------
+
+// row布局（横向左对齐、纵向中对齐）
+.row { 
+    @extend %flex-place-row;
+    justify-content: flex-start;
+}
+
+// around布局（横向around对齐、纵向中对齐）
+.around {
+    @extend %flex-place-row;
+    justify-content: space-around;
+}
+
+// between布局（横向between对齐、纵向中对齐）
+.between {
+    @extend %flex-place-row;
+    justify-content: space-between;
+}
+
+// center布局（横向中对齐、纵向中对齐）
+.center {
+    @extend %flex-place-row;
+    justify-content: center;
+}
+
+// ix布局，通常用于小型横向且纵向居中组合元素（横向中对齐，纵向顶对齐）
+.ix {
+    @extend %flex-place-row;
+    justify-content: flex-start;
+}
+
+// ----------------------------------------------------------
+// 换行与反向修饰
+// ----------------------------------------------------------
+
+// row换行
+.row-wrap { 
+    @extend .row; 
+    flex-wrap: wrap;
+}
+
+// around换行
+.around-wrap { 
+    @extend .around; 
+    flex-wrap: wrap;
+}
+
+// between换行
+.between-wrap { 
+    @extend .between; 
+    flex-wrap: wrap;
+}
+
+// 单纯换行
+.wrap { 
+    flex-wrap: wrap; 
+}
+
+// ----------------------------------------------------------
+// 对齐
+// ----------------------------------------------------------
+
+// 主轴对齐
+.js { justify-content: flex-start !important; }
+.jc { justify-content: center !important; }
+.je { justify-content: flex-end !important; }
+.jb { justify-content: space-between !important; }
+.ja { justify-content: space-around !important; }
+
+// 侧轴对齐
+.as { align-items: flex-start !important; }
+.ac { align-items: center !important; }
+.ae { align-items: flex-end !important; }
+.at { align-items: stretch !important; }
+
+// ----------------------------------------------------------
+// 12格flex占比
+// ----------------------------------------------------------
+
+.f-1 { flex: 1 }
+.f-2 { flex: 2 }
+.f-3 { flex: 3 }
+.f-4 { flex: 4 }
+.f-5 { flex: 5 }
+.f-6 { flex: 6 }
+.f-7 { flex: 7 }
+.f-8 { flex: 8 }
+.f-9 { flex: 9 }
+.f-10 { flex: 10 }
+.f-11 { flex: 11 }
+.f-12 { flex: 12 }

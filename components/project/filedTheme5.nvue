@@ -1,0 +1,70 @@
+<template lang="pug">
+	view.between.py-20.wing.box(@click="$emit('click')")
+		image.w-38.h-38(:src="img")
+		text.title.f-1.c-66 {{title}}
+		view.row.ac
+			text.mark(v-if="mark") {{mark}}
+			view.flex.dot(v-if="dot")
+			image.imgright.ra-max.overhide(v-if="imgright || arrow", :src="imgright")
+</template>
+
+<script>
+	export default {
+		props: {
+			title: {
+				type: String,
+				default: 'title',
+				require: true
+			},
+			mark: {
+				type: [String, Boolean],
+				default: false,
+			},
+			img: {
+				type: String,
+				default: '../static/icon/msg1.png'
+			},
+			dot: {
+				type: [String, Boolean],
+				default: false
+			},
+			arrow: {
+				type: [String, Boolean],
+				default: true
+			},
+			imgright: {
+				type: [Boolean, String],
+				default: '../static/icon/arrow-right-3.png'
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box{
+		background-color: #FFF8D4;
+	}
+	.title {
+		font-size: 30rpx;
+		color: #333;
+		margin-left: 15rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.mark {
+		font-size: 26rpx;
+		color: #ACACAC;
+	}
+	.dot {
+		width: 22rpx;
+		height: 22rpx;
+		border-radius: 22rpx;
+		background-color: #FE403D;
+		margin-left: 15rpx;
+	}
+	.imgright {
+		width: 14rpx;
+		height: 25rpx;
+		margin-left: 10rpx;
+	}
+</style>

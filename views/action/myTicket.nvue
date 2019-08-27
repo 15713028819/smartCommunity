@@ -1,0 +1,108 @@
+<template lang="pug">
+	view.flex.bg-f3
+		//- tab
+		view.row.tabBar.bg-white.tail.w-750.header
+			view.column.ac.jc.f-1(v-for="(item, index) in tabs", @click="()=>changeTab(index)")
+				text.tabTitle(:class="[tabIndex == index && 'titleActive']") {{item}} 
+				view.flex.tabLine.f-1(:class="[tabIndex == index && 'lineActive']")
+
+		//- 占位
+		view.h-100
+		
+		//- 列表
+		view.flex.f-1
+			view.flex.wing
+				coupon5.tail(
+					v-for="item in list"
+					:title="item.name", 
+					:text="item.address", 
+					:desc="item.time_start | time_start_end(item.time_end)", 
+					:textRight="item.is_free ? '' : '免费'", 
+					:money="0", 
+					:tag="item.state | state", 
+					color="#f3f3f3", 
+					@click="navigate('/views/action/ticketDetail?id=' + item.id)"
+				)
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/action/myTicket';
+	import { dateFormat } from '@/functions/date';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tabIndex: 0,
+				tabs: ['全部', '待付款', '待参加', '审核中', '已验票', '退票中', '已退票']
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 我的票务列表
+			 * 
+			 * @param {string} state 状态（待付款，待参加，审核中，已验票，待退票，退票）
+			 */
+
+			SERVICE.load(this,{state: param.state});
+		},
+		filters: {
+			time_start_end: function(start, end) {
+				start = dateFormat('Y.m.d H:i', start * 1000);
+				end = dateFormat('Y.m.d H:i', end * 1000);
+				return start + ' 至 ' + end;
+			},
+			state: function(value) {
+				switch (value) {
+					case 0:
+						return '待付款';
+					case 1:
+						return '待参加';
+					case 2:
+						return '审核中';
+					case 3:
+						return '已验票';
+					case 4:
+						return '退票中';
+					case 5:
+						return '已退票';
+				}
+			}
+		},
+		methods: {
+			changeTab(index) {
+				this.tabIndex = index;
+				let state = '';
+				if(this.tabIndex) state = this.tabIndex - 1;
+				SERVICE.load(this, {state});
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	// tab
+	.tabTitle {
+		font-size: 32rpx;
+		color: #333;
+		height: 80rpx;
+		line-height: 80rpx;
+		margin-top: 3rpx;
+	}
+	.tabLine {
+		height: 3rpx;
+		background-color: transparent;
+		width: 80rpx;
+		border-radius: 5rpx;
+	}
+	.titleActive {
+		color: #CF1322;
+	}
+	.lineActive {
+		background-color: #CF1322;
+	}
+</style>

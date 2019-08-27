@@ -1,0 +1,131 @@
+<template lang="pug">
+	view.flex
+		//- 头部
+		view.flex.wing-lg.bg-primary.headerBox(style="padding-bottom: 20rpx;")
+			//- 个人信息
+			avatar1(:img="list.head", :nick="list.nick", textRight="修改资料", @click="navigate('/views/user/userInfo')")
+
+			//- 菜单按钮Like people
+			view.around.pb-20.px-40.pt-50
+				view.column(@click="navigate('/views/user/cash/index')")
+					text.tc.emphasis.c-white {{list.cash.toFixed(2)}}
+					text.s-28.tc.menu.c-white.bold.among 余额
+				view.column(@click="navigate('/views/user/coupon/index')")
+					text.tc.emphasis.c-white {{list.count_card.toFixed(2)}}
+					text.s-28.tc.menu.c-white.bold.among 卡券
+				view.column(@click="navigate('/views/user/point/index')")
+					text.tc.emphasis.c-white {{list.point.toFixed(2)}}
+					text.s-28.tc.menu.c-white.bold.among 积分
+		//- 功能组
+		view.flex.user-cart.ra-30.wing-xl.bg-white.overhide
+			//- 我的订单
+			view.flex.pb-30(style="border-bottom-style: solid; border-bottom-width: 1rpx; border-bottom-color: #f5f5f5;")
+				view.between.py-30(@click="navigate('/views/order/list')")
+					text.user-title 我的订单
+					view.row
+						text.s-28.c-99 全部
+						image.ml-10(style="width: 12rpx; height: 19rpx;", src="../../static/icon/arrow-right-6.png")
+				view.between.px-40
+					itemY(@click="navigate('/views/order/list?status=1')", img="../../static/icon/order-daifukuan.png", text="待付款", :num="list.countWaitPay")
+					itemY(@click="navigate('/views/order/list?status=2')", img="../../static/icon/order-daifahuo.png", text="待发货", :num="list.countWaitSend", imgW="36", imgH="36")
+					itemY(@click="navigate('/views/order/list?status=3')", img="../../static/icon/order-daishouhuo.png", text="待收货", :num="list.countWaitTake", imgW="42", imgH="34")
+					itemY(@click="navigate('/views/order/list?status=4')", img="../../static/icon/order-yishouhuo.png", text="已完成", imgW="36", imgH="35")
+					itemY(@click="navigate('/views/order/list?status=5')", img="../../static/icon/order-yiquxiao1.png", text="已取消",  imgW="42", imgH="38")
+			//- 服务工具
+			view.flex.pb-30(style="border-bottom-style: solid; border-bottom-width: 1rpx; border-bottom-color: #f5f5f5;")
+				view.row.py-30
+					text.user-title 服务工具
+				view.between.px-40
+					itemY(img="/static/icon/user-location.png", text="收货地址", imgW="34", imgH="40", imgSize="56", @click="navigate('/views/user/address/index')")
+					itemY(img="/static/icon/user-trade.png", text="关注的商家", imgW="50", imgH="40", imgSize="56", @click="navigate('/views/user/trade/index')")
+					itemY(img="/static/icon/user-ticket.png", text="我的票务", imgW="41", imgH="40", imgSize="56", @click="navigate('/views/action/myTicket')")
+					itemY(img="/static/icon/user-talk.png", text="我的动态", imgW="41", imgH="43", imgSize="56", @click="navigate('/views/user/talk/index')")
+			//- 我的活动
+			view.flex.pb-30(style="border-bottom-style: solid; border-bottom-width: 1rpx; border-bottom-color: #f5f5f5;")
+				view.between.py-30(@click="navigate('/views/action/myActivities')")
+					text.user-title 我的活动
+					view.row
+						text.s-28.c-99 全部
+						image.ml-10(style="width: 12rpx; height: 19rpx;", src="../../static/icon/arrow-right-6.png")
+				view.flex.px-40
+					commonItem5.mb-20(
+						v-for="(item,index) in list.activity_log",
+						:title="item.activity_name", 
+						:textRight="item.state | actionState", 
+						:text1="item.time_start | actionTime(item.time_end)", 
+						:text2="'地址：' + item.address", 
+						:btnText="item.state == 1 && '设置提醒'",
+						@click="navigate('/views/action/detail?id=' + item.activity_id)", 
+						@btnFun="toastTest"
+					)
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/user/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	import {dateFormat} from '@/functions/date/index'
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+			// 获取用户中心首页信息
+			SERVICE.load(this);
+		},
+		filters: {
+			actionState: (value)=> {
+				switch (value) {
+					case 0:
+						return '待购票';
+					case 1:
+						return '待参加';
+					case 2:
+						return '参加中';
+					case 3:
+						return '已结束';
+				}
+			},
+			actionTime: (start, end)=> {
+				return "活动时间：" + dateFormat('Y.m.d', start * 1000) + '-' + dateFormat('Y.m.d', end * 1000);
+				// switch (item.state) {
+				// 	case 0:
+				// 		return "活动时间：" + dateFormat('Y.m.d', item.time_start * 1000) + '-' + dateFormat('Y.m.d', item.time_end * 1000);
+				// 	case 1:
+				// 		return "开始时间：" + dateFormat('Y.m.d', item.time_start * 1000);
+				// 	case 2:
+				// 		return "结束时间：" + dateFormat('Y.m.d', item.time_end * 1000);
+				// 	case 3:
+				// 		return "结束时间：" + dateFormat('Y.m.d', item.time_end * 1000);
+				// }
+			},
+		},
+		methods: {
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.emphasis {
+		font-size: 40rpx;
+		font-weight: bold;
+	}
+	.headerBox {
+		padding-top: 110rpx;
+	}
+	.user-cart{
+		margin-top: -30rpx;
+	}
+	.user-title {
+		font-size: 32rpx;
+		color: #333;
+	}
+</style>

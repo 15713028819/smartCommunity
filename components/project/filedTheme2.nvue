@@ -1,0 +1,60 @@
+<template lang="pug">
+	view.flex.box(@click="$emit('click')")
+		image(:style="{width: imgW + 'rpx', height: imgH + 'rpx'}", :src="img")
+		text.text.f-1 {{text}}
+		image.w-10.h-20(:src="imgRight")
+</template>
+
+<script>
+	export default {
+		props: {
+			img: {
+				type: [Boolean, String],
+				default: '../../static/icon/user-1.png'
+			},
+			imgW: {
+				type: String,
+				default: '24'
+			},
+			imgH: {
+				type: String,
+				default: '24'
+			},
+			text: {
+				type: String,
+				require: true
+			},
+			imgRight: {
+				type: [Boolean, String],
+				default: '../../static/icon/arrow-right-4.png'
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding-top: 20rpx;
+		padding-bottom: 20rpx;
+		border-top-style: solid;
+		border-top-width: 1rpx;
+		border-top-color: #f3f3f3;
+	}
+	.img {
+		font-size: 20rpx;
+		color: #999;
+		width: 50rpx;
+		text-overflow: clip;
+		lines: 1;
+	}
+	.text {
+		font-size: 28rpx;
+		color: #555;
+		margin: 0 15rpx;
+		lines: 2;
+		text-overflow: ellipsis;
+	}
+</style>

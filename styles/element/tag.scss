@@ -1,0 +1,82 @@
+// ----------------------------------------------------------
+// 默认颜色占位
+// ----------------------------------------------------------
+
+%tag-color {
+	background-color: #999;
+	color: #fff;
+}
+
+// ----------------------------------------------------------
+// 尺寸占位符
+// ----------------------------------------------------------
+
+// 小型标签尺寸
+%tag-sm {
+	padding-top: 2rpx;
+	padding-bottom: 2rpx;
+	padding-left: 4rpx;
+	padding-right: 4rpx;
+	font-size: 18rpx;
+}
+
+// 中型标签尺寸
+%tag-md {
+	padding-top: 4rpx;
+	padding-bottom: 4rpx;
+	padding-left: 8rpx;
+	padding-right: 8rpx;
+	font-size: 24rpx;
+}
+
+// ----------------------------------------------------------
+// 小尺寸标签
+// ----------------------------------------------------------
+
+// 小尺寸圆角标签
+.tag-sm {
+	@extend %tag-color;
+	@extend %tag-sm;
+	border-radius: 4rpx;
+}
+
+// 小尺寸圆形标签
+.tag-sm-capsule {
+	@extend %tag-color;
+	@extend %tag-sm;
+	padding-left: 8rpx;
+	padding-right: 8rpx;
+	border-radius: 750rpx;
+}
+
+// 小尺寸正常标签
+.tag-sm-rect {
+	@extend %tag-color;
+	@extend %tag-sm;
+}
+
+// ----------------------------------------------------------
+// 中尺寸标签
+// ----------------------------------------------------------
+
+// 中尺寸圆角标签
+.tag {
+	@extend %tag-color;
+	@extend %tag-md;
+	border-radius: 8rpx;
+}
+
+// 中尺寸圆形标签
+.tag-capsule {
+	@extend %tag-color;
+	@extend %tag-md;
+	padding-left: 12rpx;
+	padding-right: 12rpx;
+	border-radius: 750rpx;
+}
+
+// 中尺寸正常标签
+.tag-rect {
+	@extend %tag-color;
+	@extend %tag-md;
+}

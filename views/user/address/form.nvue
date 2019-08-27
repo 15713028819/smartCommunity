@@ -1,0 +1,166 @@
+<template lang="pug">
+	view.flex.bg-f3.f-1
+		view.flex.px-40.py-80.bg-white
+			view.row.file.tail-line
+				input.input.f-1(:value="list.name", @input="onName", placeholder="请输入联系人姓名", placeholder-class="placeholderClass", type="text")
+			view.row.file.tail-line
+				input.input.f-1(:value="list.mobile", @input="onMobile", placeholder="请输入联系电话", placeholder-class="placeholderClass", type="tel")
+			view.row.file.tail-line
+				text.label 选择地址
+				view.ix.ml-30.f-1(@click="navigate('/views/user/address/map')")
+					image(style="width: 19rpx; height: 24rpx;", src="/static/icon/location-4.png")
+					text.text 点击选择
+				image(style="width: 14rpx; height:24rpx;", src="/static/icon/arrow-right-6.png")
+			view.between.file
+				text.label 设为默认地址
+				jm-switch(:active="list.is_default | boolDefault", @change="switchChange")
+				//- jm-switch(active, @change="switchChange", :type="switchType")
+		view.flex.pt-80.ac
+			text.btnPage.bg-primary.c-white(@click="onSubmit") 保存
+			text.btnPage.btn-default.bg-white.c-33.mt-30(v-if="id", @click="onDelete") 删除
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import STYLE from '@/styles/component/switch';
+	import SERVICE from '@/services/project/user/address/form';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				...SERVICE.data,
+				switchType: STYLE.config.cycle,
+				
+			}
+		},
+		onLoad(param) {
+			if(param.type) this.type = param.type;
+			if(param.id) {
+				this.id = param.id;
+				SERVICE.load(this, {id: param.id});
+			}else {
+				this.list = {
+					name: '',
+					mobile: '',
+					address: '',
+					is_default: '',
+					longitude: 0,
+					latitude: 0,
+				}
+			}
+		},
+		filters: {
+			boolDefault: (value) => {
+				return Boolean(value);
+			}
+		},
+		methods: {
+			onName(e) {
+				this.list.name = e.detail.value;
+			},
+			onMobile(e) {
+				this.list.mobile = e.detail.value;
+			},
+			switchChange() {
+				if(this.list.is_default) this.list.is_default = 0;
+				else
+					this.list.is_default = 1;
+			},
+			onDelete() {
+				SERVICE.delete(this, {id: this.id}, ()=>{
+					uni.showToast({title: '删除成功'});
+					setTimeout(()=>{
+						this.goback();
+					}, 1500)
+				})
+			},
+			onSubmit() {
+				if(!this.list.name) return uni.showToast({title: '请填写姓名', icon: 'none'});
+				if(!this.list.mobile) return uni.showToast({title: '请填写电话', icon: 'none'});
+				if(this.id) {
+					SERVICE.update(this, {
+						id: this.id,
+						is_default: this.list.is_default,
+						name: this.list.name,
+						mobile: this.list.mobile,
+						address: this.list.address,
+						longitude: this.list.longitude,
+						latitude: this.list.latitude,
+					},
+					()=>{
+						uni.showToast({
+							title: '修改成功'
+						})
+						setTimeout(() => {
+							this.goback(0);
+						}, 1500);
+					});
+				}else {
+					SERVICE.add(this, {
+						is_default: this.list.is_default,
+						name: this.list.name,
+						mobile: this.list.mobile,
+						address: this.list.address,
+						longitude: this.list.longitude,
+						latitude: this.list.latitude,
+					},
+					()=>{
+						uni.showToast({
+							title: '添加成功'
+						})
+						setTimeout(() => {
+							if(this.type)
+							return uni.redirectTo({
+								url: '/views/user/address/index?type=' + this.type
+							})
+							this.goback();
+						}, 1500);
+					});
+				}
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.file {
+		height: 102rpx;
+		align-items: center;
+		padding: 0 10rpx;
+	}
+	.input {
+		height: 102rpx;
+		line-height: 102rpx;
+		color: #333;
+		font-size: 32rpx;
+	}
+	.label {
+		font-size: 32rpx;
+		color: #666;
+	}
+	.text {
+		font-size: 32rpx;
+		color: #999999;
+		margin-left: 10rpx;
+	}
+
+	// 按钮
+	.btnPage {
+		height: 84rpx;
+		width: 556rpx;
+		line-height: 84rpx;
+		align-items: center;
+		border-radius: 100rpx;
+		
+		text-align: center;
+		font-size: 28rpx;
+	}
+	.btn-default {
+		border-style: solid;
+		border-width: 1wx;
+		border-color: #878787;
+	}
+</style>

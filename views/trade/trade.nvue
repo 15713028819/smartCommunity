@@ -1,0 +1,82 @@
+<template lang="pug">
+	view.flex.bg-f3
+		
+		//- 轮播图
+		//-- slider.slider.overhide(:show-indicators="true", :auto-play="true")
+			view.flex.sliderBox
+				image.sliderImg(src="/static/image/active1.png")
+			view.flex.sliderBox
+				image.sliderImg(src="/static/image/swiper2.png")
+			view.flex.sliderBox
+				image.sliderImg(src="/static/image/swiper3.png")
+			indicator(item-color="#f3f3f3", item-selected-color="#CF1322", :item-size="10")
+		//- view.flex.sliderBox.slider.overhide
+			image.sliderImg(src="/static/image/swiper3.png")
+		// 轮播图
+		view.center
+			swiper.sliderBox.wing.tail.overhide(:indicator-dots="true", autoplay, indicator-color="#fff", indicator-active-color="#CF1322", circular)
+				swiper-item.flex.sliderBox
+					image.sliderImg(src="/static/image/swiper3.png")
+				swiper-item.flex.sliderBox
+					image.sliderImg(src="/static/image/swiper0.png")
+				swiper-item.flex.sliderBox
+					image.sliderImg(src="/static/image/swiper2.png")
+		
+		//- 商家列表 -- 筛选器 暂时为空
+		view.center.py-30
+			text(style="font-size: 20rpx; color: #999;") 筛选器暂时为空
+		
+		//- 商家列表 -- 商家
+		view.flex.wing
+			trade1.mt-20(
+				v-for="(item, index) in list",
+				:img="item.icon",
+				:title="item.name", 
+				:tradeType="item.link_name", 
+				:starDesc="'月售'+item.count_sale", 
+				:starNum="item.grade / 10", 
+				:text2="item.time_busess", 
+				text1="3.6公里",
+				:insignia="['/static/icon/zhang.png', '/static/icon/zhang.png', '/static/icon/zhang.png', '/static/icon/zhang.png']",
+				:tag="[...item.coupon_list , ...item.package_list ]",
+				@click="navigate('/views/trade/tradeDetail?id=' + item.id)"
+			)
+			
+			
+			view.column.py-50
+				text.s-30.c-c3.tc 已经没有更新的商家……
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/trade/trade';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+			/**
+			 * 商户列表
+			 * 
+			 * @param cate_id	类别id
+			 * @param condition	排序根据  count_sale  销量  (暂时就一个状态)
+			 * @param keywords	关键字
+			 */
+			SERVICE.load(this);
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.sliderBox, .sliderImg, .slider {
+		height: 348rpx;
+		width: 750rpx;
+	}
+</style>

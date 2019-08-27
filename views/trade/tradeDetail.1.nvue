@@ -1,0 +1,354 @@
+<template lang="pug">
+	view.flex.bg-white
+	
+		// 头部
+		view.flex.rel.tail(style="padding-top: 230rpx;")
+		
+			// 背景图
+			image.abs.top-left-0.w-750.h-350(src="/static/image/swiper3.png")
+			
+			// 商家卡片
+			view.flex.rel.mx-20.pt-50
+				view.flex.bg-white.wing-sm.ra-20.pt-10.pb-20.ba.bc-f3
+					text.title 华莱士炸鸡汉堡（隆昌路分店）
+					
+					view.row.py-6
+						text.tradeType.mr-20 西式快餐
+						text.text 3.6公里
+					view.row.ac.py-6.py-6
+						view.flex.starBox.rel
+							view.flex.star.abs.top-left-0.row
+								image.starImg(src="/static/icon/star_grey.png" v-for="index of 5")
+							view.flex.starOn.abs.top-left-0.row.overhide(:style="{width: starOnWidth + 'rpx'}")
+								image.starImg(src="/static/icon/star.png" v-for="index of 5")
+						text.starNum {{starNum}}
+						text.starDesc 月售24561
+					view.row
+						text.notice.f-1.pr-40 公告：华莱士简单有滋味，如您对我们的餐有任何意见或建议，恳求您先与我们服务员沟通反馈, 我们会考虑您的反馈建议!
+						image.arrow-down.mx-20(src="/static/icon/arrow-down-8.png")
+						
+				// 商家头像
+				view.flex.abs.top-0.w-100.h-30.h-150(style="right: 30rpx;")
+					image.ra-20.w-100.h-100(src="/static/image/avatar6.png")
+					text.center.follow.mt-10(:class="[follow && 'follow_on']", @click="onFollow") {{follow ? '已关注' : '+ 关注'}}
+		
+		// 商家列表 -- tab
+		view.flex.mx-20.between
+			view.column(v-for="(item, index) in tab", @click="changeTab(index)", style="align-items: center;")
+				view.row
+					text.tabText(:class="[index == tabIndex && 'activeText']") {{item.title}}
+					text.tabRightNum(v-if="item.rightNum") {{item.rightNum}}
+				view.flex.tabItem(:class="[index == tabIndex && 'activeItem']")
+				
+		// 满减券
+		view.flex.mx-20.pt-30(v-if="tabIndex == 0")
+			coupon3.mt-20.bg-f6(leftText="满减券", title="吃饭消费满吃饭消费满吃饭消费满吃饭消费满50减10", text1="原价369", text2="2019.3.3 - 2019.5.5", money="269", @btnFun="toastTest", @moreFun="navigate('/views/user/coupon/detail')", @click="navigate('/views/user/coupon/detail')")
+		
+		// 套餐券
+		view.flex.mx-20.pt-30(v-if="tabIndex == 1")
+			coupon3.mt-20.bg-f6(leftText="套餐券", title="吃饭消费满50减10", text1="原价369", text2="2019.3.3 - 2019.5.5", money="269", @btnFun="toastTest", @moreFun="navigate('/views/user/coupon/detail')", @click="navigate('/views/user/coupon/detail')")
+		
+		// 尊享券
+		view.flex.mx-20.pt-30(v-if="tabIndex == 2")
+			coupon4.mt-20.bg-f6(title="满50减10", desc="最多可使用365次", integral="+300", tradeLogo="../../static/image/logo.jpg", tradeName="保定十秒到过桥米线", text="每1天可使用1次", :progress="400", :max="600", btnText="50元抢购", @btnFun="toastTest", @moreFun="navigate('/views/user/coupon/detail')", @click="navigate('/views/user/coupon/detail')")
+		
+		// 评价
+		view.flex.mx-20.pt-30(v-if="tabIndex == 3")
+		
+			// 评价标签
+			view.flex.row-wrap.evaluateTagBox
+				text.evaluateTag(v-for="item in evaluate") {{item}}
+		
+			// 评论列表
+			talkItem1.px-20(v-for="index of 5", avatar="../../static/image/avatar2.png", name="王五", text="如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。", :picture="['../../static/image/avatar1.png', '../../static/image/avatar1.png', '../../static/image/avatar1.png']", time="2019.7.8", :starNum="index")
+				view.between.mt-30.ac
+					text.bottomTag 价格实惠
+					text.bottomText 浏览413
+		// 商家
+		view.flex(v-if="tabIndex == 4")
+			view.flex.greyStrip
+			
+			// 第一栏 商家简介
+			view.flex.pl-30.bg-white
+				view.between.ac.py-20
+					view.row.ac
+						image.mr-20(style="width: 30rpx; height: 37rpx", src="/static/icon/location-3.png")
+						text.cardTitle 河北省保定市隆昌路34号
+					view.center.cardRight
+						image.imgBL(style="width: 36rpx; height: 36rpx", src="/static/icon/phone-2.png")
+				scroll-view.row.js.ac.commonBT(:scroll-x="true", style="height: 170rpx;", :show-scrollbar="true")
+					image(v-for="(item, index) in images", style="width: 187rpx; height: 123rpx;", :class="[index && 'ml-md']", :src="item")
+				view.row.ac.py-20.commonBT
+					image.mr-20(style="width: 32rpx; height: 32rpx", src="/static/icon/dengdai-1.png")
+					text.cardTitle 河北省保定市隆昌路34号
+			view.flex.greyStrip
+			
+			// 商家资质
+			view.flex.pl-30.bg-white
+				view.between.ac.py-20
+					view.row.ac
+						image.mr-20(style="width: 31rpx; height: 37rpx", src="/static/icon/safe-1.png")
+						text.cardTitle 商家资质
+				view.row.commonBT.pr-30.py-20
+					image.f-1(style="height: 380rpx", src="/static/image/tradeImage1.png")
+			view.flex.greyStrip
+			
+			// 商家信息
+			view.flex.pl-30.bg-white
+				view.between.ac.py-20
+					view.row.ac
+						image.mr-20(style="width: 34rpx; height: 34rpx", src="/static/icon/info-2.png")
+						text.cardTitle 商家信息
+				view.flex.commonBT.center.py-20
+					text.tradeInfo {{tradeInfo}}
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				starNum: 4.3,
+				starMax: 5,
+				follow: false,
+				// tab
+				tabIndex: 0,
+				tab: [
+					{
+						title: "满减券"
+					},
+					{
+						title: "套餐券"
+					},
+					{
+						title: "尊享券"
+					},
+					{
+						title: "评价",
+						rightNum: 169
+					},
+					{
+						title: "商家"
+					},
+				],
+				// evaluate
+				evaluate: ['晒图评价 651', '最新评价', '价格实惠', '回头客667', '服务热情321'],
+				
+				// 商家实体店图片
+				images: ['../../static/image/swiper7.png', '../../static/image/swiper6.png', '../../static/image/swiper4.png', '../../static/image/swiper5.png'],
+				
+				// 商家信息
+				tradeInfo: '    如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。',
+				
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+			starOnWidth: function() {
+				let diff = this.starNum / this.starMax;
+				console.log('diff',diff)
+				console.log('result11',diff * 122)
+				return diff * 122;
+			},
+			changeTab(index) {
+				this.tabIndex = index;
+			},
+			alertTest() {
+				uni.showToast({
+					title: 'this is toast',
+				})
+			},
+			onFollow() {
+				let msg = "关注成功"
+				
+				if(this.follow) {
+					this.follow = false;
+					msg = "取消成功"
+				}else this.follow = true;
+				
+				// toast 提示
+				uni.showToast({
+					title: msg,
+					icon: 'none',
+				})
+			},
+			
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	
+	// 头部
+	.title {
+		font-size: 34rpx;
+		color: #434343;
+		font-weight: bold;
+		line-height: 45rpx;
+		padding-right: 165rpx;
+	}
+	.tradeType {
+		font-size: 22rpx;
+		color: #D17027;
+	}
+	
+	// start
+	.starNum {
+		color: #CF1322;
+		font-size: 22rpx;
+		margin-right: 40rpx;
+		margin-left: 8rpx;
+	}
+	.starDesc {
+		font-size: 22rpx;
+		color: #aaa;
+	}
+	.starBox {
+		width: 122rpx;
+		height: 18rpx;
+	}
+	.star {
+		width: 122rpx;
+		height: 18rpx;
+	}
+	.starOn {
+		height: 18rpx;
+	}
+	.starImg {
+		width: 18rpx;
+		height: 18rpx;
+		margin-right: 8rpx;
+	}
+	.text {
+		font-size: 22rpx;
+		color: #515151;
+	}
+	
+	// 箭头
+	.arrow-down {
+		width: 22rpx;
+		height: 10rpx;
+	}
+	
+	// 公告
+	.notice {
+		font-size: 24rpx;
+		color: #aaa;
+		line-height: 28rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.notice_on {
+		lines: 0;
+	}
+	
+	// 关注按钮
+	.follow {
+		width: 98rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		font-size: 22rpx;
+		text-align: center;
+		color: #FF2929;
+		background-color: #FFF5E9;
+	}
+	.follow_on {
+		background-color: #CF1322;
+		color: #fff;
+	}
+	
+	// tab title
+	.tabText {
+		font-size: 30rpx;
+		color: #333;
+		line-height: 50rpx;
+	}
+	.tabRightNum {
+		font-size: 22rpx;
+		line-height: 28rpx;
+		color: #bbb;
+		padding-top: 8rpx;
+		padding-left: 3rpx;
+	}
+	.tabItem {
+		width: 55rpx;
+		height: 4rpx;
+		background-color: transparent;
+	}
+	.activeText {
+		font-weight: bold;
+	}
+	.activeItem {
+		background-color: #F5A74E;
+	}
+	
+	// 评论底部
+	.bottomTag {
+		font-size: 24rpx;
+		color: #999;
+		border-style: solid;
+		border-width: 1rpx;
+		border-color: #bbb;
+		padding: 0 10rpx;
+		height: 32rpx;
+		line-height: 32rpx;
+		border-radius: 30rpx;
+	}
+	.bottomText {
+		font-size: 24rpx;
+		color: #999;
+	}
+	
+	// 商家
+	.cardTitle {
+		font-size: 24rpx;
+		color: #515151;
+	}
+	.commonBT {
+		border-top-style: solid;
+		border-top-width: 1rpx;
+		border-top-color: #E3E3E3;
+	}
+	.cardRight {
+		width: 136rpx;
+		height:  37rpx;
+	}
+	.imgBL {
+		border-left-style: solid;
+		border-left-width: 1rpx;
+		border-left-color: #E3E3E3;
+	}
+	.tradeInfo {
+		font-size: 24rpx;
+		color: #666;
+		line-height: 34rpx;
+		width: 660rpx;
+	}
+	
+	// 评价标签tag 红色
+	.evaluateTagBox {
+		margin-left: -18rpx;
+	}
+	.evaluateTag {
+		font-size: 24rpx;
+		color: #CF1322;
+		border-style: solid;
+		border-width: 1rpx;
+		border-color: #CF1322;
+		padding: 0 17rpx;
+		height: 38rpx;
+		line-height: 38rpx;
+		margin-left: 18rpx;
+		margin-top: 18rpx;
+		border-radius: 30rpx;
+	}
+</style>

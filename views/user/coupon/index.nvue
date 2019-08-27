@@ -1,0 +1,122 @@
+<template lang="pug">
+	view.flex.bg-f3
+
+		// 顶部 快捷入口
+		view.flex.pt-30.center.tail-sm
+			itemY.mx-20(
+			v-for="(item,index) in tablist",
+			:img="item.img", 
+			:text="item.text", imgSize="120", imgW="72", imgH="72" @click="changeTab(index)")
+
+		// 满减券
+		view(v-if="tabIndex == 0")
+			view.between.pt-30.pb-20.wing
+				text.title 满减券
+				
+			view.flex.wing.tail-sm
+				coupon3.mt-20.bg-white(
+				v-for="(item, index) in list.user_trade_coupon",
+				
+				leftText="满减券",
+				:title="item.name", 
+				:text1="'原价：'+item.enough", 
+				:text2="item.time_start*1000 | couponTime(item.time_end * 1000)", 
+				:money="item.price", 
+				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
+				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
+				borderColor="#f3f3f3",
+				:btn="false")
+
+		// 套餐资格券
+		view(v-if="tabIndex == 1")
+			view.between.pt-30.pb-20.wing
+				text.title 套餐资格券
+				
+			view.flex.wing.tail-sm
+				coupon3.mt-20.bg-white(
+					v-for="(item, index) in list.user_trade_package",
+					
+					leftText="套餐资格券", 
+					:title="item.name", 
+					:text1="'原价' + item.old_price",
+					:text2="item.time_start*1000 | couponTime(item.time_end * 1000)", 
+					:money="item.now_price", 
+					borderColor="#f3f3f3", 
+					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package&pagetype=user')", 
+					@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package&pagetype=user')", 
+					:btn="false"
+				)
+
+		// 尊享券
+		view(v-if="tabIndex == 2")
+			view.between.pt-30.pb-20.wing
+				text.title 尊享券
+				
+			view.flex.wing.tail
+				coupon4.mt-20.bg-white(
+					v-for="(item, index) in list.user_trade_vip",
+					:title="'满' + item.enough +'减' + item.discount", 
+					:desc="item.name", 
+					:integral="'+' + item.get_point", 
+					:tradeLogo="item.icon", 
+					:tradeName="保定十秒到过桥米线", 
+					:text="'每' + item.useday + '天可使用' + item.usenum +'次'", 
+					btnText=" item.price +'元抢购'", 
+					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip&pagetype=user')", 
+					@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip&pagetype=user')", 
+					borderColor="#f3f3f3", 
+					:btn="false"
+				)
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/user/coupon/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	import { dateFormat } from '@/functions/date/index';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				tabIndex: 0,
+                ...SERVICE.data,
+				tablist:[
+					{'img':'/static/icon/coupon-1.png','text':'满减券'},
+					{'img':'/static/icon/coupon-3.png','text':'套餐资格券'},
+					{'img':'/static/icon/coupon-2.png','text':'尊享券'},
+					
+				]
+			}
+		},
+		onLoad() {
+			// 获取用户用户券的列表
+			SERVICE.load(this);
+		},
+		filters: {
+			couponTime(start, end) {
+				start = dateFormat('Y.m.d', start);
+				end = dateFormat('Y.m.d', end);
+				return start + '-' + end;
+			}
+		},
+		methods: {
+			changeTab(index) {
+				this.tabIndex = index;
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.title {
+		font-size: 34rpx;
+		color: #333;
+	}
+	.text {
+		font-size: 24rpx;
+		color: #999999;
+	}
+</style>

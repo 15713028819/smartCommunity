@@ -1,0 +1,86 @@
+<template lang="pug">
+	view.flex.bg-f3
+
+		//- 头部
+		view.row.bg-primary.wing.tail.as.py-30
+			image.mr-20.ra-max.w-105.h-105(:src="list.author.icon")
+			view.flex.f-1.jb
+				text.bold.c-white.mt-6(style="font-size: 32rpx;") {{list.author.name}}
+				text.c-white.mt-10.s-22.lh-32 {{list.author.des}}
+
+		//- 活动列表
+		view.flex.bg-white.py-20.tail.wing
+			view.row.py-20
+				view.flex.redLine
+				text.ml-10.c-grey-1.s-28 活动列表
+			commonItem3.tail-line(
+				v-for="item in list.list"
+				:img="item.listimg", 
+				:title="item.name", 
+				:text1="item.address", 
+				:text2="item.time_start | time_start_end(item.time_end)", 
+				:tag="item.state | state", 
+				:textRight="item.is_free ? '' : '免费'"
+				@click="navigate('/views/action/detail?id=' + item.id)"
+			)
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/action/organiger';
+	import { dateFormat } from '@/functions/date';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				follow: true,
+			}
+		},
+		onLoad(param) {
+			console.log('param', param)
+			/**
+			 * 主办方 活动列表和信息
+			 * 
+			 * @param {number} author_id 主办方id
+			 * @param {number} type 类型id
+			 */
+			SERVICE.load(this,{author_id: param.id, type: param.type});
+		},
+		filters: {
+			time_start_end: function(start, end) {
+				start = dateFormat('Y.m.d H:i', start * 1000);
+				end = dateFormat('Y.m.d H:i', end * 1000);
+				return start + ' 至 ' + end;
+			},
+			state: function(value) {
+				switch (value) {
+					case 0:
+						return '报名中';
+					case 1:
+						return '进行中';
+					case 2:
+						return '已结束';
+					case 3:
+						return '违规';
+				}
+			}
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	// 活动列表左侧红线
+	.redLine {
+		border-right-style: solid;
+		border-right-width: 5rpx;;
+		border-right-color: #CF1322;
+		height: 20rpx;
+	}
+</style>

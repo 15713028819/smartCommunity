@@ -1,0 +1,362 @@
+<template lang="pug">
+	view.bg-f3
+
+		//- 头部
+		view.flex.wing-lg.bg-primary.headerBox
+		
+			//- 个人信息
+			view.row.tail-lg
+				view.row.f-1.jc.among
+					view.flex.avatarPage.ra-max.overhide.mr-20(v-if="list.user_info.head")
+						image.avatarPage.ra-max.mr-20(:src="list.user_info.head")
+						//- image.avatarPage.ra-max.mr-20(:src="list.user_info.head")
+					view.between.iy.f-1.as
+						text.nick.c-white.mb-8 {{list.user_info.nick}}
+						text.location.c-white {{list.user_info.house_info}}
+				view.row.right
+					//- jm-icon.icon-1.c-white &#xe690;
+					//- image.w-50.h-50(src="/static/icon/jia.png")
+					
+			//- 菜单按钮
+			view.between.pb-20.px-20
+				view.column.jc.ac(@click="navigate('/views/prop/index')")
+					image(style="width: 78rpx; height: 76rpx;", src="/static/icon/home_menu_wuye.png")
+					text.tc.menu.c-white.bold.among.s-24 物业
+				view.column.jc.ac(@click="navigate('/views/trade/index')")
+					image(style="width: 68rpx; height: 75rpx;", src="/static/icon/home_menu_map.png")
+					text.tc.menu.c-white.bold.among.s-24 周边
+				view.column.jc.ac(@click="switchTab('/views/easy/index')")
+					image(style="width: 76rpx; height: 76rpx;", src="/static/icon/home_menu_life.png")
+					text.tc.menu.c-white.bold.among.s-24.w-76.tc 便捷生活
+				view.column.jc.ac(@click="navigate('/views/action/index')")
+					image(style="width: 77rpx; height: 76rpx;", src="/static/icon/home_menu_active.png")
+					text.tc.menu.c-white.bold.among.s-24 活动
+					
+		//- 通知消息
+		filed5.tail(
+			img="../static/icon/msg1.png",
+			:title="list.message[0].title", 
+			:mark="list.message[0].created | dateLapse", 
+			dot, 
+			imgRight="list.message[0].img", 
+			@click="navigate('/views/msg/detail?id='+list.message[0].id)"
+		)
+		
+		//- 轮播图
+		//-- slider.slider.wing.tail.ra-10.overhide(:show-indicators="true")
+			.flex.sliderBox
+				image.sliderImg(:src="/static/image/active1.png")
+			.flex.sliderBox
+				image.sliderImg(:src="/static/image/active2.png")
+			.flex.sliderBox
+				image.sliderImg(:src="/static/image/active3.png")
+			indicator(item-color="#f3f3f3", item-selected-color="#CF1322", :item-size="10")
+		
+		//- 主内容区
+		view.flex.wing
+		
+			//- 广告位
+			ADBtheme1.tail(:src="[list.adleft[0].img,list.adright[0].img,list.adright[1].img]")
+			
+			//- 优惠券
+			view.between.py-20
+				text.c-33.s-32.title-home 推荐商家优惠券
+				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/trade')") 更多优惠券
+			view.between.tail
+				coupon1(
+					@click="navigate('/views/user/coupon/detail?id=' + list.coupon[0].id + '&type=coupon')",
+					bg="#9B1FDD",
+					:itemText="list.coupon[0].time_start | couponTime(list.coupon[0].time_end)",
+					:money="list.coupon[0].price",
+					:name="list.coupon[0].trade_name",
+					:desc="list.coupon[0].name"
+				)
+				coupon1(
+					@click="navigate('/views/user/coupon/detail?id=' + list.coupon[1].id + '&type=coupon')",
+					bg="#B42676",
+					:itemText="list.coupon[1].time_start | couponTime(list.coupon[1].time_end)",
+					:money="list.coupon[1].price",
+					:name="list.coupon[1].trade_name",
+					:desc="list.coupon[1].name"
+				)
+			view.between.tail
+				coupon1(
+					@click="navigate('/views/user/coupon/detail?id=' + list.coupon[2].id + '&type=coupon')",
+					bg="#5FA56D",
+					:itemText="list.coupon[2].time_start | couponTime(list.coupon[2].time_end)",
+					:money="list.coupon[2].price",
+					:name="list.coupon[2].trade_name",
+					:desc="list.coupon[2].name"
+				)
+				coupon1(
+					@click="navigate('/views/user/coupon/detail?id=' + list.coupon[3].id + '&type=coupon')",
+					bg="#B42626",
+					:itemText="list.coupon[3].time_start | couponTime(list.coupon[3].time_end)",
+					:money="list.coupon[3].price",
+					:name="list.coupon[3].trade_name",
+					:desc="list.coupon[3].name"
+				)
+			
+			//- 尊享券
+			view.between.py-20
+				text.c-33.s-32.title-home 推荐商家尊享券
+				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/trade')") 更多优惠券
+			view.between.tail
+				coupon2(
+					v-for="(item, index) in list.vip"
+					v-if="index < 3",
+					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')",
+					:name="item.name",
+					:money="item.price",
+					:trade="item.trade_name",
+					:descText1="item.limitday  + '天'",
+					:descText2="'每天限用' + item.limitnum + '次'",
+				)
+			//- 即买即送
+			//-view.between.py-20
+				text.c-33.s-32.title-home 即买即送
+				text.c-99.s-28.title-home-right(@click="navigate('/views/shop/index')") 更多即买即送
+				view.between.tail
+					prod1(@click="()=>navigate('/views/shop/prodDetail')", name="绿鲜知 上海青 小油菜 小青菜 约400g 火锅食材 新鲜蔬菜", src="../static/image/product2.png", money="16.2")
+					prod1(@click="()=>navigate('/views/shop/prodDetail')", name="绿鲜知 上海青 小油菜 小青菜 约400g 火锅食材 新鲜蔬菜", src="../static/image/product2.png", money="16.2")
+		view.flex.wing
+		
+			//- 活动
+			view.row.py-20
+				text.title-home.c-33.s-32 最新活动
+			view.between-wrap.tag-home-box
+				text.tag-home(v-for="(item,index) in list.activity", @click="navigate('/views/action/detail?id=' + item.id)") # {{item.name.length > 3 ? item.name.substring(0, 3) + '...' : item.name}} #
+			
+			view.row.py-20
+				text.title-home.c-33.s-32 邻里互动
+			view.between-wrap.tag-home-box
+				text.tag-home(v-for="(item,index) in list.neighbor_cate", @click="onTalk(item.id)") # {{item.name}} #
+		
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/index';
+	import { LOADER, PARSE, PIPE, REQUEST } from '@/services/preset';
+	import { URL } from '@/jm.config';
+	import { dateFormat } from '@/functions/date';
+	import { httpGet, httpPost } from '@/functions/http';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		created() {
+
+		},
+		onLoad() {
+			/**
+			 * 获取首页数据
+			 */
+			SERVICE.load(this, {}, ()=>{
+			});
+		},
+		mounted() {
+			this.check_update();
+		},
+		filters: {			
+			couponTime(start, end) {
+				start = dateFormat('m.d', start);
+				end = dateFormat('m.d', end);
+				return '活动时间：' + start + '到' + end;
+			}
+		},
+		methods:{
+				onTalk(index) {
+					getApp().globalData.TALKINDEX = index;
+					uni.switchTab({
+						url: '/views/talk/index'
+					})
+				},
+				//获取是否需要更新
+				check_update(){
+					
+					//通过appid  获取 版本信息  和 app的名字
+					plus.runtime.getProperty(plus.runtime.appid, (Info) => {
+							
+						console.log("当前的版本号", Info.version);
+						console.log("当前名称", Info.name);
+						httpGet({
+								vue: this,
+								preurl: URL.data,
+								url: 'views/update.php?action=load',
+								data: {
+									version:Info.version,
+									name:Info.name,
+								},
+								loader: LOADER.loading,
+								parse: PARSE.restful,
+								success: (res, vue) => {
+									// console.log('首页', res)
+									//标识一个变量  bool 为接口判断的 是否需要更新
+									var update_bool = res.data.update;
+									console.log("是否需要更新",update_bool);
+									//取回接口返回的数据
+									var res_data = res.data;
+									//如果需要更新  弹出更新提示
+									if(update_bool){
+										uni.showModal({
+											title: '检测到有新版本更新',
+											content: '是否需要下载最新版本？',
+											success: (res) => {
+												if (res.confirm) {
+													//确认更新的话 去执行下载安装
+													this.download_update(res_data.url);
+												}
+											}
+										});
+									}
+								},
+								fail: {
+									power: PIPE.alert('权限出错'),
+									logic: PIPE.alert('逻辑出错'),
+									error: PIPE.alert('系统出错'),
+									network: PIPE.alert('网络出错'),
+									offline: PIPE.alert('未联网')
+								}
+						});
+						// uni.request({
+						// 	//这个是获取当前app版本  是否需要更新的验证接口
+						// 	url:"http://hsqapp.sgboke.com/face/restful/views/update.php?action=load",
+						// 	//这里上传 获取的版本号和app名字
+						// 	data:{
+						// 		version:Info.version,
+						// 		name:Info.name,
+						// 	},
+						// 	//需要带的auth
+						// 	header:{
+						// 		Authorization:"123123",
+						// 	},
+						// 	//返回成功后 查看是否需要更新  如果需要更新  弹出更新提示
+						// 	success:(res) => {
+						// 		//标识一个变量  bool 为接口判断的 是否需要更新
+						// 		var update_bool = res.data.update;
+						// 		console.log("是否需要更新",update_bool);
+						// 		//取回接口返回的数据
+						// 		var res_data = res.data;
+						// 		//如果需要更新  弹出更新提示
+						// 		if(update_bool){
+						// 			uni.showModal({
+						// 				title: '检测到有新版本更新',
+						// 				content: '是否需要下载最新版本？',
+						// 				success: (res) => {
+						// 					if (res.confirm) {
+						// 						//确认更新的话 去执行下载安装
+						// 						this.download_update(res_data.url);
+						// 					}
+						// 				}
+						// 			});
+						// 		}
+						// 	}
+						// })
+					})					
+				},
+				
+				
+				//热更新 或者安装包 都是此方法  官方统一了方法
+				download_update(url){
+					//执行下载  并且赋值给一个变量对象  以便于后面的监控下载进度
+					var downloadTask  = uni.downloadFile({
+						url:url,
+						success:(file)=>{
+							//再次打印 返回的file对象的数据接口
+							console.log("获取的资源文件数据结构", file);
+							
+							//安装下载好的安装包 或者 热更新文件   官方统一了方法
+							plus.runtime.install(file.tempFilePath,{
+								//强制安装  不验证版本号码
+								force:true,
+							}, ()=>{
+								//更新成功后续操作  ！！安装包不会执行到此
+								// uni.showToast({
+								// 	title:"更新成功",
+								// });
+								
+								// 自动重启
+								plus.runtime.restart();  
+							}, (e)=>{
+								//更新成功后续操作  ！！安装包不会执行到此
+								
+								//如果更新失败的话 再次打印失败原因 
+								console.log("更新失败的原因，",e);
+								
+								//更新失败的后续操作
+								// uni.showToast({
+								// 	title:"更新失败",
+								// })
+							})
+						}
+					})
+					
+					//监控下载进度  
+					downloadTask.onProgressUpdate((res) => {
+						//  res.progress  为返回的百分比数值
+						//如有需要的话  请把进度值 赋值给一个 data内的变量使用比较方便
+						// this.update_progress = res.progress;
+					})
+					
+					
+				},
+				
+				toastTest() {
+					uni.showToast({title: '暂未开启此功能',icon: 'none'})
+				}
+				
+			}
+	}
+</script>
+
+<style lang="scss">
+	
+	.avatarPage {
+		width: 100rpx;
+		height: 100rpx;
+	}
+	.nick {
+		font-size: 38rpx;
+	}
+	.location {
+		font-size: 28rpx;
+	}
+	.menu-lg {
+		font-size: 70rpx;
+	}
+	.headerBox {
+		padding-top: 100rpx;
+	}
+	.sliderBox, .sliderImg, .slider {
+		height: 166rpx;
+	}
+	
+	// 首页活动样式专用 tag
+	.tag-home-box {
+		margin-left: -15rpx;
+	}
+	.tag-home {
+		font-size: 26rpx;
+		color: #636363;
+		border-style: solid;
+		border-width: 1rpx;
+		border-color: #707070;
+		border-radius: 10rpx;
+		// min-width: 203rpx;
+		height: 50rpx;
+		line-height: 50rpx;
+		padding: 0 34rpx;
+		margin-left: 12rpx;
+		margin-bottom: 14rpx;
+		background-color: #fff;
+
+		width: 220rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+</style>

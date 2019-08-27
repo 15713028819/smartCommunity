@@ -1,0 +1,126 @@
+<template lang="pug">
+	view.flex.ra-20.overhide.pb-30.bg-white.box
+		view.flex.imgBox(@click="$emit('click')")
+			image.img(:src="img")
+		view.flex.content.px-30(@click="$emit('click')")
+			text.name.pb-20.pt-30 {{name}}
+			view.between
+				image.mr-10(style="width: 22rpx; height: 26rpx;", :src="icon1")
+				text.s-24.c-99.f-1.ts.js.as.textLine {{text1}}
+				text.text {{textRight1}}
+			view.between.mt-8
+				image.mr-10(style="width: 22rpx; height: 22rpx;", :src="icon2")
+				text.s-24.c-99.f-1.ts.js {{text2}}
+				text.text2 {{textRight2}}
+		view.flex.bottom.row-wrap.pt-20.px-30(v-if="tag.length")
+			text.tagPage(v-for="(item,index) in tag", @click="tagClick(item, index) ? tagClick(item) : ()=>{}") {{item.text ? item.text : item}}
+			//text.tag(v-for="(item,index) in tag", :style="item.color && {'border-color': item.color, color: item.color}", @click="tagClick(item, index) ? tagClick(item) : ()=>{}") {{item.text ? item.text : item}}
+</template>
+
+<script>
+	export default {
+		props: {
+			img: {
+				type: String,
+				require: true
+			},
+			name: {
+				type: String,
+				default: 'name'
+			},
+			icon1: {
+				type: String,
+				default: '../../static/icon/location-4.png'
+			},
+			icon2: {
+				type: String,
+				default: '../../static/icon/dengdai-4.png'
+			},
+			text1: {
+				type: String,
+				default: 'text1'
+			},
+			textRight1: {
+				type: String,
+				default: 'textRight1'
+			},
+			text2: {
+				type: String,
+				default: 'text2'
+			},
+			textRight2: {
+				type: String,
+				default: 'textRight2'
+			},
+			tag: {
+				type: Array,
+				default: []
+			},
+
+			// 方法
+			tagClick: {
+				type: Function,
+				default: ()=>{}
+			},
+			click: {
+				type: Function,
+				default: ()=>{}
+			}
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		width: 690rpx;
+	}
+	// img
+	.imgBox, .img {
+		width: 690rpx;
+		height: 340rpx;
+	}
+	// 中部内容
+	.name {
+		font-size: 34rpx;
+		color: #333;
+	}
+	.icon {
+		font-size: 20rpx;
+		color: #999;
+		width: 50rpx;
+		text-overflow: clip;
+		// lines: 1;
+	}
+	.text {
+		font-size: 24rpx;
+		color: #878787;
+	}
+	.text2 {
+		font-size: 26rpx;
+		color: #CF1324;
+	}
+	
+	// 底部内容
+	.bottom {
+		border-top-style: solid;
+		border-top-width: 1px;
+		border-top-color: #F3F3F3;
+		margin-top: 10rpx;
+	}
+	.tagPage {
+		font-size: 26rpx;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #85A5FF;
+		border-radius: 50rpx;
+		color: #85A5FF;
+		padding: 2rpx 10rpx;
+		margin-right: 10rpx;
+	}
+
+	.textLine {
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+</style>

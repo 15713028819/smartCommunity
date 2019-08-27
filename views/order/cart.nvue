@@ -1,0 +1,180 @@
+<template lang="pug">
+	view.page
+	
+		view.tail
+		
+		//- 商品列表
+		scroll-view.f-1(scroll-y)
+			view.bg-white.row.wing.py-30.mb-10( v-for="(item, index) in list")
+				radio(:checked='item.checked', color='#cf1322', @click="changeCheck(item, index)")
+				view.flex.f-1.row.ml-20.ac
+					image.w-130.h-130.mr-26.ra-6(:src="dir.shop_prod(item.img)")
+					view.flex.f-1
+						text.s-30.c-33.tl {{item.name}}
+						text.my-20.s-24.c-99.tl {{item.standname}}
+						view.between
+							div.ix
+								text.c-primary.s-30 ￥
+								text.c-primary.s-34 {{item.price}}
+							view.row.w-150
+								image.w-40.h-40(src="/static/icon/shop-add.png", @click="addCount(item, index)")
+								text.f-1.s-30.c-66.tc {{item.count}}
+								image.w-40.h-40(src="/static/icon/shop-sub.png", @click="subCount(item, index)")
+		
+		//- 占位符
+		view.h-100
+
+		//- 底部固定栏
+		view.row.bg-white.fixed.bottom-left-0.w-750.border-top
+			view.flex.f-1.between.wing
+				view.row(@click="checkAll")
+					radio.mr-14(:checked='check', color='#cf1322', @click="check != check")
+					text.s-32 全选
+				view.row
+					text.s-28 合计：
+					text.s-28.c-primary ￥{{price}}
+
+			text.w-200.bg-primary.c-white.tc.s-36.h-100(style="line-height: 100rpx;", @click="check_by_ids") 结算
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/order/cart';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				check: true,
+				price: 0,
+			}
+		},
+		onNavigationBarButtonTap(e) {
+			let indexs = [];
+			for(let item in this.list) {
+				if(this.list[item].checked) indexs.unshift(item);
+			}
+			console.log('indexs', indexs)
+			uni.showModal({
+				title: "删除",
+				content: "确认删除吗？",
+				success: (e) => {
+					if(e.confirm) {
+						SERVICE.deletepro(this, {}, ()=>{
+							for(let index of indexs) {
+								this.list.splice(index,1);
+							}
+							this.count_total();
+						});
+					}
+				}
+			})
+		},
+		onLoad() {
+			console.log('this.dir',this.dir)
+			/**
+			 * 获取购物车列表
+			 */
+			SERVICE.load(this, {}, ()=>{
+				// 计算总额
+				this.count_total();
+
+				// 是否是全选状态
+				this.checked();
+			});
+		},
+		methods: {
+			changeCheck(item, index) {
+				// 改变状态
+				item.checked = !item.checked;
+				// 计算总额
+				this.count_total();
+				// 是否是全选状态
+				this.checked();
+			},
+			checkAll() {
+				let check = !this.check;
+				for(let item of this.list) {
+					item.checked = check;
+				}
+				// 计算总额
+				this.count_total();
+			},
+			// 是否是全选状态
+			checked() {
+				console.log('this', this)
+				for(let item of this.list) {
+					if(!item.checked) return this.check = false;
+					else this.check = true;
+				}
+			},
+			/**
+			 * 商品 + 1
+			 * 
+			 * @param id 购物车条目的id号（用于提交数据）
+			 * 
+			 * @param key 条目的索引值（用于更新页面数据）
+			 */
+			addCount(item, index) {
+				SERVICE.addpro(this, {id: item.id, index}, ()=>{
+					// 计算总额
+					this.count_total();
+				});
+
+			},
+			/**
+			 * 商品 - 1
+			 * 
+			 * @param id 购物车条目的id号（用于提交数据）
+			 * 
+			 * @param key 条目的索引值（用于更新页面数据）
+			 */
+			subCount(item, index) {
+				if(item.count < 2) {
+					return uni.showToast({title: '最少选择1件商品', icon: "none"})					
+				}
+				SERVICE.reducepro(this, {id: item.id, index}, ()=>{
+					// 计算总额
+					this.count_total();
+				});
+			},
+			count_total(){
+				let total = 0;
+
+				for(let item of this.list) {
+					if(item.checked) total += parseFloat((parseFloat(item.price) * parseInt(item.count)).toFixed(2))
+				}
+
+				this.price = total.toFixed(2);
+			},
+			check_by_ids() {
+				let ids = '';
+				for(let item of this.list) {
+					if(item.checked) ids += item.id + ',' 
+				}
+				ids = ids.slice(0, ids.length - 1);
+
+				SERVICE.check_by_ids(this, {ids}, ()=>{
+					uni.navigateTo({
+						url: '/views/order/submit'
+					})
+				});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.h-140 {height: 140rpx;}
+	.h-130 {height: 130rpx;}
+	.h-100 {height: 100rpx;}
+	.w-130 { width: 130rpx; }
+	.border-top {
+		border-top-style: solid;
+		border-top-width: 1px;
+		border-top-color: #f3f3f3;
+	}
+</style>

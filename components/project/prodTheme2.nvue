@@ -1,0 +1,84 @@
+<template lang="pug">
+	view.flex.box.bg-white.overhide.ra-20
+		view.center.prodImage(@click="$emit('click')")
+			image.prodImage(:src="src")
+		text.name.c-66.px-20.pt-20 {{name}}
+		text.desc.c-99.px-20.pt-14(v-if="desc") {{desc}}
+
+		view.between.px-20.pb-20
+			view.row(@click="$emit('click')")
+				text.money.c-primary {{price}}
+				text.origin.c-99.through.ml-20.pt-10 {{originPrice}}
+			view.ba.bc-primary.ra-max.center.w-44.h-44
+				image.w-24.h-22(src="/static/icon/gouwuche-1.png", @click="$emit('iconFun')")
+</template>
+
+<script>
+	
+	export default {
+		
+		props: {
+			name: {
+				type: String,
+				default: '商品名称'
+			},
+			src: {
+				type: String,
+				require: true
+			},
+			money: {
+				type: [Number, String],
+				default: 0
+			},
+			origin: {
+				type: [Number, String],
+				default: 0.00
+			},
+			icon: {
+				type: String,
+				default: 'icon'
+			},
+			desc: {
+				type: String,
+				require: true
+			},
+		},
+		computed: {
+			price: function() {
+				return Number(this.money).toFixed(2);
+			},
+			originPrice: function() {
+				return Number(this.origin).toFixed(2);
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		// height: 312rpx;
+		width: 335rpx;
+	}
+	.prodImage {
+		width: 346rpx;
+		height: 284rpx;
+	}
+	.money {
+		font-size: 36rpx;
+	}
+	.name {
+		font-size: 28rpx;
+		lines: 2;
+		text-overflow: ellipsis;
+	}
+	.desc {
+		font-size: 24rpx;
+		margin-bottom: 10rpx;
+		color: #9E9E9E;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.origin {
+		font-size: 24rpx;
+	}
+</style>

@@ -1,0 +1,202 @@
+<template lang="pug">
+	view.flex.bg-f3
+		view.flex.pt-30.wing
+
+			//- 票券
+			view.flex.bg-white.ra-20
+
+				//- 二维码一栏
+				view.between.wing.pt-30.pb-20
+					text.c-33.s-30 入场券
+					view.row
+						text.bg-success.c-white.px-10.py-6.mr-20.ra-6.s-20 {{list.info.state | state}}
+						text.c-primary(style="font-size: 28rpx;") ￥{{list.info.price}}
+				view.flex.jc.ac.py-30
+					image.mb-20(style="width: 280rpx; height: 280rpx;", src="/static/image/qrcode1.png")
+					text.mb-10.c-99.tc.s-20 为了保障您的合法权益
+					text.mb-20.c-99.tc.s-20 请勿在使用之前随意分享给其他人
+					view.between.w-450
+						text.c-66.s-28 取票码
+						text.c-33.s-28 {{list.info.code}}
+				
+				//- 分割线
+				view.centerCircle.between
+					view.flex.circle.left.ra-max.bg-f3
+					view.flex.f-1.line
+					view.flex.circle.right.ra-max.bg-f3
+				
+				//- 第二栏
+				view.flex.px-80.py-40
+					view.between.py-14(@click="navigate('/views/action/detail?id=' + list.info.activity_id)")
+						view.row
+							text.title 活动
+							text.text {{list.info.activity_name}}
+						view.row
+							text.rightText.mr-20 详情
+							image.w-10.h-16(src="/static/icon/arrow-right-3.png")
+					view.between.py-14(@click="navigate('/views/action/organiger?id=' + list.info.author_id + '&type=' + list.info.activity_type)")
+						view.row
+							text.title 主办
+							text.text {{list.info.author_name}}
+						view.row
+							text.rightText.mr-20 详情
+							image.w-10.h-16(src="/static/icon/arrow-right-3.png")
+					view.between.py-10
+						view.row
+							text.title 时间
+							text.text {{list.info.time_start | time_start_end(list.info.time_end)}}
+						view.row
+					view.between.py-10.js
+						view.row.as
+							text.title 地点
+							text.text.w-450 {{list.info.address}}
+
+				//- 分割线
+				view.centerCircle.between
+					view.flex.circle.left.ra-max.bg-f3
+					view.flex.f-1.line
+					view.flex.circle.right.ra-max.bg-f3
+				
+				//- 第三栏
+				view.flex.px-80.pb-40
+					text.py-20.tc.c-99.s-26 报名信息
+					view.between.py-10
+						text.title 姓名
+						text.text {{list.info.apply_name}}
+					view.between.py-10
+						text.title 电话
+						text.text {{list.info.apply_mobile}}
+
+			//- 底部信息
+			view.between.wing.py-30
+				text.bottomText 购票时间：{{list.info.time_pay * 1000 | dateFormat('Y-m-d H:i')}}
+				text.bottomText(@click="toastTest") 申请退票
+
+			//- 按钮
+			view.between.pt-80.wing(style='padding-bottom: 80rpx;')
+				text.btnOnly(@click="toastTest") 继续购票
+				text.btnOnly(@click="toastTest") 邀请好友参加
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/action/ticketDetail';
+	import { dateFormat } from '@/functions/date';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 票务详情
+			 * 
+			 * @param {number} id	我的票务id
+			 */
+			SERVICE.load(this, {id: param.id});
+		},
+		filters: {
+			state: function(value) {
+				switch (value) {
+					case 0:
+						return '待付款';
+					case 1:
+						return '待参加';
+					case 2:
+						return '审核中';
+					case 3:
+						return '已验票';
+					case 4:
+						return '待退票';
+					case 5:
+						return '退票';
+				}
+			},
+			time_start_end: function(start, end) {
+				start = dateFormat('Y.m.d H:i', start * 1000);
+				end = dateFormat('Y.m.d H:i', end * 1000);
+				return start + ' 至 ' + end;
+			},
+		},
+		methods: {
+			/**
+			 * 支付成功
+			 * 
+			 * @param {string} code 订单号码
+			 */
+			payOk() {
+				SERVICE.pay_ok(this, {code: 'MDPE1565331736'});
+			},
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	// 票券样式
+	.title {
+		font-size: 26rpx;
+		color: #333;
+		width: 75rpx;
+	}
+	.text {
+		font-size: 26rpx;
+		color: #666;
+		flex: 1;
+		lines: 2;
+		text-overflow: ellipsis;
+	}
+	.rightText {
+		font-size: 24rpx;
+		color: #999;
+	}
+
+	// 分割线样式
+	.line {
+		border-bottom-width: 1px;
+		border-bottom-style: dashed;
+		border-bottom-color: #ccc;
+		height: 1rpx;
+	}
+	.centerCircle {
+		height: 50rpx;
+	}
+	.circle {
+		width: 50rpx;
+		height: 50rpx;
+	}
+	.left {
+		margin-left: -25rpx;
+	}
+	.right {
+		margin-right: -25rpx;
+	}
+
+	// 底部文字
+	.bottomText {
+		font-size: 24rpx;
+		color: #333;
+	}
+
+	// 底部按钮
+	.btnOnly {
+		height: 84rpx;
+		width: 296rpx;
+		line-height: 84rpx;
+		align-items: center;
+		border-radius: 100rpx;
+		background-color: #cf1322;
+		
+		text-align: center;
+		font-size: 28rpx;
+		color: #fff;
+	}
+</style>

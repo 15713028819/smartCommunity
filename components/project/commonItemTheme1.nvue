@@ -1,0 +1,110 @@
+<template lang="pug">
+	view.between.box.ac.px-50.bg-white.tail-line(@click="$emit('click')")
+		view.flex.imgBox.center(:style="{'background-color': background, 'border-radius': ra + 'rpx'}")
+			image.ra-20(:src="img", :class="[!img && 'bg-ee']", :style="{width: imgW + 'rpx', height: imgH + 'rpx'}")
+		view.flex.f-1.column.as
+			text.title {{title}}
+			text.desc {{desc}}
+		view.flex.js.as.box.timeBox
+			text.time {{time}}
+</template>
+
+<script>
+	
+
+	export default {
+
+		props: {
+			img: {
+				type: String,
+				require: true
+			},
+			title: {
+				type: String,
+				require: true
+			},
+			desc: {
+				type: String,
+			},
+			time: {
+				type: String,
+			},
+			background: {
+				type: String,
+				default: 'transparent'
+			},
+			imgW: {
+				type: String,
+				default: '33'
+			},
+			imgH: {
+				type: String,
+				default: '33'
+			},
+			ra: {
+				type: String,
+				default: '750'
+			}
+			
+		},
+		computed: {
+			colorClass: function() {
+				if(this.color.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			},
+			sizeClass: function() {
+				if(this.size.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			},
+			iconClass: function() {
+				if(this.icon && this.icon.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		height: 124rpx;
+	}
+	.imgBox {
+		width: 70rpx;
+		height: 70rpx;
+		margin-right: 28rpx;
+	}
+	.title {
+		font-size: 30rpx;
+		color: #515151;
+		margin-bottom: 14rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+	.desc {
+		font-size: 24rpx;
+		color: #A7A7A7;
+		lines: 1;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+	.timeBox {
+		padding-top: 26rpx;
+		padding-left: 10rpx;
+	}
+	.time {
+		font-size: 24rpx;
+		color: #a3a3a3;
+	}
+	.tail-line {
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #f3f3f3;
+	}
+</style>

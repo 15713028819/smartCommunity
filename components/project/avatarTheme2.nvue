@@ -1,0 +1,42 @@
+<template lang="pug">
+	div.column.ac
+		text.number {{num}}
+		div.center.rel
+			text.text {{text}}
+			image.abs.top-right-0(v-if="img", style="width: 23rpx; height: 23rpx;", :src="img", @click="$emit('imgFun')")
+</template>
+
+<script>
+	export default {
+		props: {
+			number: {
+				type: [Number, String],
+				default: '0.00'
+			},
+			text: {
+				type: String,
+				default: '总余额(元)'
+			},
+			img: {
+				type: String,
+			},
+		},
+		computed: {
+			num: function() {
+				return Number(this.number).toFixed(2)
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.number {
+		font-size: 109rpx;
+		color: #CF1322;
+	}
+	.text {
+		font-size: 28rpx;
+		padding: 10rpx 30rpx;
+		color: #333;
+	}
+</style>

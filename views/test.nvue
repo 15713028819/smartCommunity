@@ -1,0 +1,91 @@
+<template lang="pug">
+	view
+
+		view.row {{time | dateLapse}}
+
+		image.avatar(src='/static/avatar/1.png')
+		image.avatar-sm(src='/static/avatar/1.png')
+		image.avatar-lg(src='/static/avatar/1.png')
+		image.avatar-xl(src='/static/avatar/1.png')
+		text.avatar A
+
+		.row
+			.dot.bg-primary
+		.row
+			.row.w-50.h-50.bg-69.rel
+				.dot-float
+
+		view.between
+			view.row
+				text 123
+			view.row
+				text 234
+			view.iy
+				text T
+				text B
+
+		view.around
+			text.badge.bg-red-5 3
+			text.badge.bg-red-5 3
+		view.row
+			.row.w-100.h-100.bg-99.rel
+				text.badge-float 99
+
+		view.row-wrap
+			text.tag.ma-10 测试
+			text.tag.bg-red-1.c-red-5.ma-10 测试
+			text.tag-rect.bg-red-1.c-red-5.ma-10 测试
+			text.tag-capsule.bg-geek-1.c-geek-5.ma-10 测试
+
+		view.row-wrap
+			text.tag-sm.ma-10 测试
+			text.tag-sm.bg-red-1.c-red-5.ma-10 测试
+			text.tag-sm-rect.bg-red-1.c-red-5.ma-10 测试
+			text.tag-sm-capsule.bg-geek-1.c-geek-5.ma-10 测试
+
+
+		view.row
+			checkbox.ma-10
+			switch(color='#000').ma-10
+			switch.radius.ma-10
+			radio.ma-10
+
+		view.column.mx-50.my-10
+			progress(percent='60')
+
+		view.column
+			text.btn-lg-primary.btn-disabled.ma-10 测试
+			text.btn-lg-primary-capsule.ma-10 测试
+			text.btn-lg-primary-rect.ma-10 测试
+			text.btn-md-assist.ma-10 测试
+			text.btn-md-assist-capsule.ma-10 测试
+			text.btn-md-assist-rect.ma-10 测试
+
+		view.row
+			text.btn-sm-danger.ma-10 测试
+			text.btn-sm-danger-capsule.ma-10 测试
+			text.btn-sm-danger-rect.ma-10 测试
+
+		view.row
+			text.btn-xs-ghost.ma-10 测试
+			text.btn-xs-ghost-capsule.ma-10 测试
+			text.btn-xs-ghost-rect.ma-10 测试
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data() {
+			return {
+				time: 1565544212
+			}
+		}
+	}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,150 @@
+<template lang="pug">
+	view.f-1
+		
+		//- titlebar
+		navigateBar(bg="#CF1322")
+			image(style="width: 22rpx; height: 38rpx;", src="/static/icon/arrow-left.png", @click="goback()")
+			view.h-60.mx-30.bg-white.ra-max.row.ac.f-1(@click="navigate('/views/common/search?type=shop')")
+				image.ml-28.mr-20(style="width: 29rpx; height: 29rpx;", src="/static/icon/search-1.png")
+				text.h-60.lh-60.s-28.f-1.c-66 {{searchWord}}
+				//- input.h-60.s-28.f-1(placeholder="芒果", placeholder-style="color: #666;", style="font-size: 28rpx;")
+			itemY(img="/static/icon/sphere.png", imgW="38", imgH="38", imgSize="50", space="0", text="商圈", color="#fff", @click="navigate('/views/shop/area')")
+
+			
+		scroll-view.f-1.w-750(scroll-y)
+			// 头部
+			view.flex.bg-white
+				//热搜词
+				view.flex.px-80.py-30.row.center(v-if="list.search_rec")
+					text.c-primary.s-30.mr-10 热搜：
+					text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(v-for="(item, index) in list.search_rec", v-if="index < 5", @click="navigate('/views/shop/prodList?keyword=' + item.keyword)") {{item.keyword}}
+				// 轮播图
+				view.center(v-if="list.banner")
+					swiper.slider.wing.tail.ra-10.overhide(:indicator-dots="list.banner.length - 1", autoplay, indicator-color="#fff", indicator-active-color="#CF1322", circular)
+						swiper-item.flex.sliderBox(v-for="item in list.banner", @click="navigate(item.url)")
+							image.sliderImg(:src="item.img")
+			// 菜单
+			view.row.between-wrap.pt-16.bg-white.tail
+				//- 返回的数据中index=0的分类是推荐分类，不显示
+				itemY.mb-24.mx-30(v-for="(item, index) in list.cate", v-if="index < 10 && index != 0", :img="dir.shop_cate(item.img)", :text="item.name", imgW="80", imgH="80", imgSize="90", @click="navigate('/views/shop/prodList?cbid=' + item.id)")
+				itemY.mb-24.mx-30(img="/static/icon/serve_gengduo.png", text="更多", imgW="80", imgH="80", imgSize="90", @click="navigate('/views/shop/prodList')")
+			
+			// 主内容区
+			view.flex.wing
+
+				// 广告位
+				ADBtheme1.tail(:src="['','','']")
+				
+
+				// 热销推荐
+				view.between.py-20
+					text.c-33.s-32.title-home.c-primary 热销推荐
+				image.bg-e3.ra-10(style="width: 690rpx; height: 260rpx;", src="/static/image/banner1.jpg")
+					
+				
+				// 商品列表 -- tab
+				view.row.py-20
+					view.column.jc.ac.mr-30(v-for="(item, index) in list.pro", @click="changeTab(index)")
+						text.tabText(:class="[tabIndex == index && 'activeText']") {{item.name}}
+						view.flex.tabItem(:class="[tabIndex == index && 'activeItem']")
+				
+				// 商品列表 -- 商品
+				div.row.between-wrap
+					prod2.mr-10.mt-20(v-for="item in list.pro[tabIndex].list", @click="navigate('/views/shop/prodDetail?id=' + item.id)", :name="item.name", :src="dir.shop_prod(item.img_small)", :money="item.price", :origin="item.old_price", @iconFun="addcart(item.id)")
+
+				
+				view.column.py-50.center
+					text(style="font-size: 30rpx; color: #C1C1C1") 已经没有更新的商品……
+			
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/shop/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				...SERVICE.data,
+				tabIndex: 0,
+			}
+		},
+		onLoad() {
+			/**
+			 * 获取商城首页数据
+			 */
+			SERVICE.load(this);
+		},
+		computed: {
+			searchWord: function() {
+				if(this.list.search_rec && this.list.search_rec.length) {
+					let random = Math.round(Math.random() * this.list.search_rec.length);
+					return this.list.search_rec[random].keyword;
+				}
+				else return '请输入关键词搜索';
+			}
+		},
+		methods: {
+			changeTab(index) {
+				this.tabIndex = index;
+			},
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			
+			/**
+			 * 获取商圈列表
+			 */
+			loadArea() {
+				SERVICE.load_area(this);
+			},
+			/**
+			 * 设置用户自身商圈
+			 * 
+			 * @param area_id	商圈id
+			 */
+			setArea() {
+				SERVICE.set_area(this, {area_id: 2});
+			},
+			/**
+			 * 添加购物车
+			 * 
+			 * @param product_id	商品id
+			 * @param stid			规格id（非规格设置id） 非必传
+			 */
+			addcart(product_id) {
+				SERVICE.addcart(this, {product_id});
+			},
+		}
+	}
+</script>
+
+<style>
+	
+	.sliderBox, .sliderImg, .slider {
+		width: 690rpx;
+		height: 240rpx;
+	}
+	.tabText {
+		font-size: 30rpx;
+		color: #B5B5B5;
+		line-height: 50rpx;
+	}
+	.tabItem {
+		width: 55rpx;
+		height: 8rpx;
+		background-color: transparent;
+	}
+	.activeText {
+		color: #CF1322;
+	}
+	.activeItem {
+		background-color: #CF1322;
+	}
+
+	.h-60 {
+		height: 60rpx;
+	}
+</style>

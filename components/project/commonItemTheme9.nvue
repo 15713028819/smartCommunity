@@ -1,0 +1,44 @@
+<template lang="pug">
+	view.column.ra-20(@click="$emit('click')")
+		text.text {{text}}
+		view.flex.img.ra-20.overhide(v-if="img")
+			image.img.ra-20(:src="img")
+		text.title {{title}}
+</template>
+
+<script>
+	export default {
+		props: {
+			text: {
+				type: String
+			},
+			img: {
+				type: String
+			},
+			title: {
+				type: String
+			}
+		}
+	}
+</script>
+
+<style>
+	.text {
+		font-size: 20rpx;
+		color: #A2A2A2;
+		line-height: 22rpx;
+		margin-bottom: 20rpx;
+		text-align: center;
+	}
+	.img {
+		width: 698rpx;
+		height: 286rpx;
+	}
+	.title {
+		font-size: 36rpx;
+		color: #333333;
+		padding: 36rpx 40rpx;
+		line-height: 50rpx;
+		background-color: #fff;
+	}
+</style>

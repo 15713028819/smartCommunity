@@ -1,0 +1,24 @@
+<template lang="pug">
+	view
+		slot(name='slot_0', v-if="active == '0'")
+		slot(name='slot_1', v-else-if="active == '1'")
+		slot(name='slot_2', v-else-if="active == '2'")
+		slot(name='slot_3', v-else-if="active == '3'")
+		slot(name='slot_4', v-else-if="active == '4'")
+		slot(name='slot_5', v-else-if="active == '5'")
+		slot(name='slot_6', v-else-if="active == '6'")
+		slot(name='slot_7', v-else-if="active == '7'")
+		slot(name='slot_8', v-else-if="active == '8'")
+		slot(name='slot_9', v-else-if="active == '9'")
+</template>
+
+<script>
+	export default {
+		props: {
+			active: {
+				type: String,
+				required: true
+			}
+		}
+	}
+</script>

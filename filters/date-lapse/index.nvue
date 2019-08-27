@@ -1,0 +1,66 @@
+<template lang="pug">
+	text(:style="JM_STYLE_TEXT") {{lapse}}
+</template>
+
+<script>
+	import mixinStyleText from '@/mixins/jm/style/text';
+	import { LAPSE } from '@/presets/theme/component';
+	import { getTime10 } from '@/functions/jm/date';
+	export default {
+		mixins: [mixinStyleText],
+		props: {
+			
+			// 文本样式
+			type: {
+				type: String,
+				default: 'auto'
+			},
+			
+			// 计时时间戳
+			time: {
+				type: [String, Number],
+				default: ''
+			}
+		},
+		data () {
+			return {
+				list: {
+					'刚刚': 180,
+					'5分钟前': 300,
+					'10分钟前': 600,
+					'20分钟前': 1200,
+					'半小时前': 1800,
+					'1小时前': 3600,
+					'2小时前': 7200,
+					'3小时前': 10800,
+					'4小时前': 14400,
+					'5小时前': 18000,
+					'6小时前': 21600,
+					'8小时前': 28800,
+					'10小时前': 36000,
+					'12小时前': 43200,
+					'1天前': 86400,
+					'2天前': 172800,
+					'3天前': 259200,
+					'4天前': 345600,
+					'5天前': 432000,
+					'6天前': 518400,
+					'1周前': 604800
+				},
+				lapse: '',
+				JM_STYLE_TEXT: this.getStylesText(LAPSE[this.type] || {})
+			}
+		},
+		created() {
+			const interval = getTime10() - getTime10(this.time);
+			for (let key in this.list) {
+				console.log(key, ':', this.list[key])
+				if (interval < this.list[key]) {
+					this.lapse = key;
+					return;
+				}
+			}
+			this.lapse = '很久前';
+		}
+	}
+</script>

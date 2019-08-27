@@ -1,0 +1,80 @@
+<template lang="pug">
+	view.flex.bg-f3
+		view.flex.bg-primary.between
+			view.row.pt-30.pb-20.center.f-1(@click="toastTest")
+				text.c-white.mr-10.s-28 主题
+				image.mt-6.w-20.h-20(src="/static/icon/arrow-down-5.png")
+			view.row.pt-30.pb-20.center.f-1(@click="toastTest")
+				text.c-white.mr-10.s-28 位置
+				image.mt-6.w-20.h-20(src="/static/icon/arrow-down-5.png")
+			view.row.pt-30.pb-20.center.f-1(@click="toastTest")
+				text.c-white.mr-10.s-28 日期
+				image.mt-6.w-20.h-20(src="/static/icon/arrow-down-5.png")
+			view.row.pt-30.pb-20.center.f-1(@click="toastTest")
+				text.c-white.mr-10.s-28 价位
+				image.mt-6.w-20.h-20(src="/static/icon/arrow-down-5.png")
+		view.flex.f-1.bg-f3
+			view.flex.tail
+			view.column(style="align-items: center;")
+				commonItem2.tail(
+					v-for="item in list",
+					:img="item.listimg",
+					:name="item.name",
+					:text1="item.address",
+					textRight1="18公里",
+					:text2="item.time_start | text2(item.time_end)",
+					:textRight2="item.is_free ? '' : '免费'",
+					:tag="[{text: item.cate_name, color: 'orange'}]",
+					:tagClick="(item)=>console.log(item)",
+					@click="navigate('/views/action/detail?id=' + item.id)"
+				)
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/action/index';
+	import { dateFormat } from '@/functions/date';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+			/**
+			 * 获取类型
+			 */ 
+			SERVICE.load_cate(this, {}, ()=>{
+				/**
+				 * 获取活动首页数据
+				 * 
+				 * @param cate_id	类型id	非必传 用于筛选
+				 * @param day	活动日期（时长）  比如一天后（1）  三天后 （3）  七天后（7）	非必传 用于筛选
+				 * @param is_free	值为0或1	是否免费	非必传 用于筛选
+				 */ 
+				SERVICE.load(this);
+			});
+		},
+		filters: {
+			text2: function(start, end) {
+				start = dateFormat('Y.m.d H:i', start * 1000);
+				end = dateFormat('Y.m.d H:i', end * 1000);
+				return start + ' 至 ' + end;
+			}
+		},
+		methods: {
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.h-76 {height: 76upx;}
+	.h-566 {height: 566upx;}
+</style>

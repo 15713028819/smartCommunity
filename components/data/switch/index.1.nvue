@@ -1,0 +1,159 @@
+<!-- <template lang="pug">
+	div(:style="{width:width, height:base_style.height, borderRadius:base_style.border_radius, backgroundColor:base_style.set_bkcolor}", ref="base", @click="click")
+		div(style="position: absolute; top:0; left: 0")
+			slot
+		div(:style="{width:ball_style.width, height:ball_style.height, borderRadius:ball_style.border_radius, left:ball_style.left, top:ball_style.top, backgroundColor:ball_style.set_bkcolor}", ref="ball")
+</template>
+
+<script>
+	import BindingX from "weex-bindingx";
+	import Style from "@/themes/component/switch";
+	export default {
+		props: {
+			width:{
+				type:Number,
+				default:Style.default.width,
+			},
+			bkcolor:{
+				type:String,
+				default:Style.default.bkcolor,
+			},
+			
+			
+			//改变事件
+			change_time:{
+				type:String,
+				default:200,
+			},
+			//是否开启
+			is_open:{
+				type:Boolean,
+				default:false,
+			},
+			click:{
+				type:Function,
+				default:()=>{
+
+				}
+			}
+
+		},
+		data() {
+			return {
+				is_animi:false,
+
+				//父元素样式
+				base_style:Style.default.base_style,
+
+				//内部容器样式
+				ball_style:Style.default.ball_style,
+				unitsize:0,
+			}
+		},
+		mounted() {
+			this.initStyle();
+			this.initState();
+		},
+		methods:{
+
+			initState(){
+				if(this.is_open){
+					this.open();
+				}else{
+					this.close();
+				}
+			},
+			
+			//初始化style
+			initStyle(){	
+				//base
+				var style = this.$refs['base'].style;
+				this.base_style.height =  style.width/2;
+				this.base_style.border_radius = this.base_style.height;
+
+				//ball
+				this.unitsize = style.width/30;
+				this.ball_style.width = this.base_style.height - this.unitsize*2;
+				this.ball_style.height = this.ball_style.width;
+				this.ball_style.border_radius = this.ball_style.width;
+				this.ball_style.left = this.unitsize;
+				this.ball_style.top = this.unitsize;
+
+			},
+
+            getEl(el) {
+                if (typeof el === 'string' || typeof el === 'number') return el;
+                if (WXEnvironment) {
+                    return el.ref;
+                } else {
+                    return el instanceof HTMLElement ? el : el.$el;
+                }
+			},
+			
+			//打开
+			open(){
+				var offset_x = this.base_style.height - this.unitsize;
+				this.baseAnimi(
+					"linear(t,"+this.ball_style.left+","+offset_x+","+this.change_time+")",
+					"evaluateColor('"+ this.bkcolor[0] +"','"+ this.bkcolor[1] +"',min(t,"+this.change_time+")/"+this.change_time+")"
+				)
+			},
+
+			//关闭
+			close(){
+				var offset_x = this.base_style.height - this.unitsize;
+				this.baseAnimi(
+					"linear(t,"+offset_x+","+-offset_x+","+this.change_time+")",
+					"evaluateColor('"+ this.bkcolor[1] +"','"+ this.bkcolor[0] +"',min(t,"+this.change_time+")/"+this.change_time+")"
+				)
+			},
+
+			//动画基础方法
+			baseAnimi(expression_1, expression_2){
+				if(this.is_animi == false){
+					this.is_animi = true;
+					var expression_1 = expression_1;
+					var base = this.getEl(this.$refs.base);
+					var ball = this.getEl(this.$refs.ball);
+					var obj =  BindingX.bind({
+						eventType:'timing',
+						exitExpression:"t>"+this.change_time,
+						props: [
+							{
+								element:ball, 
+								property:"transform.translateX",
+								expression:{
+									origin:expression_1
+								}
+							},
+							{
+								element:base, 
+								property:"background-color",
+								expression:{
+									origin:expression_2
+								}
+							},
+
+						]		
+					},(e)=>{
+						if(e.state === 'end' || e.state === 'exit') {
+                            this.is_animi = false;
+						}
+					});	
+				}
+			},
+
+	
+		},
+		watch: {
+			is_open: function(val, oval){
+				this.initState();
+			}
+		}
+	}
+</script>
+
+<style>
+
+</style>
+ -->

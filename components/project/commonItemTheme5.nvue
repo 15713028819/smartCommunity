@@ -1,0 +1,61 @@
+<template lang="pug">
+	view.flex.bg-white.ra-20.pa-30.ba.bc-f6
+		view.between.mb-10(@click="$emit('click')")
+			text.title {{title}}
+			text.text {{textRight}}
+		view.between.ae
+			view.column.as.f-1(@click="$emit('click')")
+				text.text {{text1}}
+				text.text {{text2}}
+			text.btnText.ra-max(v-if="btnText", @click="$emit('btnFun')") {{btnText}}
+</template>
+
+<script>
+	export default {
+		props: {
+			title: {
+				type: String,
+				default: 'title',
+				require: true
+			},
+			text1: {
+				type: String,
+				default: 'text1'
+			},
+			text2: {
+				type: String,
+				default: 'text2'
+			},
+			textRight: {
+				type: String,
+				default: 'textRight'
+			},
+			btnText: {
+				type: [String, Boolean],
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.title {
+		font-size: 30rpx;
+		color: #333;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.text {
+		font-size: 24rpx;
+		color: #666;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.btnText {
+		font-size: 22rpx;
+		color: #CF1322;
+		padding: 14rpx 16rpx;
+		border-style: solid;
+		border-width: 1rpx;
+		border-color: #CF1322;
+	}
+</style>

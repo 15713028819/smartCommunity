@@ -1,0 +1,447 @@
+<template lang="pug">
+	view.flex.bg-white
+	
+		// 头部
+		view.flex.rel.tail(style="padding-top: 230rpx;")
+		
+			// 背景图
+			image.abs.top-left-0.w-750.h-350(src="/static/image/swiper3.png")
+			
+			// 商家卡片
+			view.flex.rel.mx-20.pt-50
+				view.flex.bg-white.wing-sm.ra-20.pt-10.pb-20.ba.bc-f3
+					text.title {{list.name}}
+					
+					view.row.py-6
+						text.tradeType.mr-20 {{list.link_name}}
+						text.text 3.6公里
+					view.row.ac.py-6.py-6
+						view.flex.starBox.rel
+							view.flex.star.abs.top-left-0.row
+								image.starImg(src="/static/icon/star_grey.png" v-for="index of 5")
+							view.flex.starOn.abs.top-left-0.row.overhide(:style="{width: starOnWidth + 'rpx'}")
+								image.starImg(src="/static/icon/star.png" v-for="index of 5")
+						text.starNum {{(list.grade / 10).toFixed(1)}}
+						text.starDesc {{'月售' + list.count_sale}}
+					view.row
+						text.notice.f-1.pr-40 {{'公告' + list.content}}
+						image.arrow-down.mx-20(src="/static/icon/arrow-down-8.png")
+						
+				// 商家头像
+				view.flex.abs.top-0.w-100.h-30.h-150(style="right: 30rpx;")
+					image.ra-20.w-100.h-100(:src="list.icon")
+					text.center.follow.mt-10(:class="[list.is_follow && 'follow_on']", @click="onFollow") {{list.is_follow ? '已关注' : '+ 关注'}}
+		
+		// 商家列表 -- tab
+		view.flex.mx-20.between
+			view.column(v-for="(item, index) in tab", @click="changeTab(index)", style="align-items: center;")
+				view.row
+					text.tabText(:class="[index == tabIndex && 'activeText']") {{item.title}}
+					text.tabRightNum(v-if="item.rightNum") {{item.rightNum}}
+				view.flex.tabItem(:class="[index == tabIndex && 'activeItem']")
+				
+		// 满减券
+		view.flex.mx-20.pt-30(v-if="tabIndex == 0")
+			coupon3.mt-20.bg-f6(
+			v-for="(item, index) in list.coupon_list",
+			leftText="满减券",
+			:title="item.name",
+			:text1="'原价' + item.price",
+			:text2="item.time_start | time_start_end(item.time_end)", 
+			:money="item.discount", 
+			@btnFun="toastTest", 
+			@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')", 
+			@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')")
+		
+		// 套餐券
+		view.flex.mx-20.pt-30(v-if="tabIndex == 1")
+			coupon3.mt-20.bg-f6(
+			v-for="(item, index) in list.package_list",
+			leftText="套餐券", 
+			:title="item.name", 
+			:text1="'原价' + item.old_price", 
+			:text2="item.time_start | time_start_end(item.time_end)", 
+			:money="item.now_price",
+			@btnFun="toastTest", 
+			@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')", 
+			@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')")
+		
+		// 尊享券
+		view.flex.mx-20.pt-30(v-if="tabIndex == 2")
+			coupon4.mt-20.bg-f6(
+			v-for="(item, index) in list.vip_list",
+			:title="'满' + item.enough + '减' + item.discount", 
+			:desc="'最多可使用'+ item.count +'次'", 
+			:integral="'+' + item.countnum", 
+			tradeLogo="../../static/image/logo.jpg", 
+			:tradeName="item.name", 
+			:text="'每1天可使用' + item.limitnum + '次'", 
+			:progress="400", 
+			:max="600", 
+			:btnText="item.price +'元抢购'", 
+			@btnFun="toastTest", 
+			@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')", 
+			@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')")
+		
+		// 评价
+		view.flex.mx-20.pt-30(v-if="tabIndex == 3")
+		
+			// 评价标签
+			view.flex.row-wrap.evaluateTagBox
+				text.evaluateTag(@click="changeComment('all')", :class="[ commentKey == 'all' && 'bg-primary c-white' ]") 全部
+				text.evaluateTag(v-for="(item, key) in comment_list", @click="changeComment(key)", :class="[ key == commentKey && 'bg-primary c-white' ]") {{item.name}}
+		
+			// 评论列表
+			view(v-for="(item, key) in comment_list")
+				talkItem1.px-20(v-if="key == commentKey || commentKey === 'all'", v-for="comment in item.list", :avatar="comment.head", :name="comment.nick", :text="comment.text", :picture="['../../static/image/avatar1.png', '../../static/image/avatar1.png', '../../static/image/avatar1.png']", :time="comment.created * 1000 | dateFormat('Y.m.d')", :starNum="comment.set_grade / 10")
+					view.between.mt-30.ac
+						text.bottomTag {{item.name}}
+						//- text.bottomText 浏览413
+		// 商家
+		view.flex(v-if="tabIndex == 4")
+			view.flex.greyStrip
+			
+			// 第一栏 商家简介
+			view.flex.pl-30.bg-white
+				view.between.ac.py-20
+					view.row.ac
+						image.mr-20(style="width: 30rpx; height: 37rpx", src="/static/icon/location-3.png")
+						text.cardTitle {{list.address}}
+					view.center.imgBL.cardRight(@click="phoneCall(String(list.link_mobile))")
+						image(style="width: 36rpx; height: 36rpx", src="/static/icon/phone-2.png")
+				scroll-view.row.js.ac.commonBT(:scroll-x="true", style="height: 170rpx;", :show-scrollbar="true")
+					image(v-for="(item, index) in list.imgs.split(',')", style="width: 187rpx; height: 123rpx;", :class="[index && 'ml-md']", :src="item")
+				view.row.ac.py-20.commonBT
+					image.mr-20(style="width: 32rpx; height: 32rpx", src="/static/icon/dengdai-1.png")
+					text.cardTitle {{list.time_busess}}
+			view.flex.greyStrip
+			
+			// 商家资质
+			view.flex.pl-30.bg-white
+				view.between.ac.py-20
+					view.row.ac
+						image.mr-20(style="width: 31rpx; height: 37rpx", src="/static/icon/safe-1.png")
+						text.cardTitle 商家资质
+				view.row.commonBT.pr-30.py-20
+					image.f-1(style="height: 380rpx", :src="list.licenseimgs")
+			view.flex.greyStrip
+			
+			// 商家信息
+			view.flex.pl-30.bg-white
+				view.between.ac.py-20
+					view.row.ac
+						image.mr-20(style="width: 34rpx; height: 34rpx", src="/static/icon/info-2.png")
+						text.cardTitle 商家信息
+				view.flex.commonBT.center.py-20
+					text.tradeInfo {{list.content}}
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/trade/tradeDetail';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				starMax: 5,
+				follow: false,
+				commentKey: 'all',
+				// tab
+				tabIndex: 0,
+				tab: [
+					{
+						title: "满减券"
+					},
+					{
+						title: "套餐券"
+					},
+					{
+						title: "尊享券"
+					},
+					{
+						title: "评价",
+						rightNum: 169
+					},
+					{
+						title: "商家"
+					},
+				],
+				// evaluate
+				evaluate: ['晒图评价 651', '最新评价', '价格实惠', '回头客667', '服务热情321'],
+				
+				// 商家实体店图片
+				images: ['../../static/image/swiper7.png', '../../static/image/swiper6.png', '../../static/image/swiper4.png', '../../static/image/swiper5.png'],
+				
+				// 商家信息
+				tradeInfo: '    如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。',
+				
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 获取商户详情
+			 * 
+			 * @param id	商户id
+			 */
+			SERVICE.load(this, {id: param.id});
+		},
+		computed: {
+			starOnWidth: function() {
+				let diff = this.list.grade / this.starMax;
+				return diff * 122;
+			},
+			filters: function(start, end) {
+				start = start | dateFormat('Y.m.d');
+				end = end | dateFormat('Y.m.d');
+				return start + '-' + end;
+			},
+		},
+		methods: {
+			changeComment(key) {
+				this.commentKey = key;
+
+			},
+			changeTab(index) {
+				this.tabIndex = index;
+				if(index == 3) this.load_comment(this.list.id);
+			},
+			alertTest() {
+				uni.showToast({
+					title: 'this is toast',
+				})
+			},
+			onFollow() {
+				let msg = "关注成功"
+				/**
+				 * 关注商家
+				 * 
+				 * @param	trade_id		商户id
+				 */
+				SERVICE.follow(this, {trade_id: this.list.id},(e)=>{
+					// 如果接口返回错误
+					if(e.msg) msg = msg;
+
+					// 如果已经关注
+					else if(this.list.is_follow) {
+						this.list.is_follow = false;
+						msg = "取消成功"
+					}else this.list.is_follow = true;
+					
+					// toast 提示
+					uni.showToast({
+						title: msg,
+						icon: 'none',
+					})
+				});
+				
+			},
+			
+			/**
+			 * 获取商户评论
+			 * 
+			 * @param	trade_id		商户id
+			 */
+			load_comment() {
+				SERVICE.load_comment(this, {trade_id: 1});
+			},
+			/**
+			 * 获取优惠券
+			 * 
+			 * @param id	优惠券id
+			 * @param type	类型coupon  package vip
+			 */
+			get_card() {
+				SERVICE.get_card(this, {id: 5, type: 'coupon'});
+			},
+			/**
+			 * 支付成功
+			 * 
+			 * @param code		订单号码
+			 */
+			pay_ok() {
+				SERVICE.pay_ok(this, {code: 'HGUKHGKLH4765765'});
+			},
+			
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			
+			// 打电话
+			phoneCall(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber
+				})
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	
+	// 头部
+	.title {
+		font-size: 34rpx;
+		color: #434343;
+		font-weight: bold;
+		line-height: 45rpx;
+		padding-right: 165rpx;
+	}
+	.tradeType {
+		font-size: 22rpx;
+		color: #D17027;
+	}
+	
+	// start
+	.starNum {
+		color: #CF1322;
+		font-size: 22rpx;
+		margin-right: 40rpx;
+		margin-left: 8rpx;
+	}
+	.starDesc {
+		font-size: 22rpx;
+		color: #aaa;
+	}
+	.starBox {
+		width: 122rpx;
+		height: 18rpx;
+	}
+	.star {
+		width: 122rpx;
+		height: 18rpx;
+	}
+	.starOn {
+		height: 18rpx;
+	}
+	.starImg {
+		width: 18rpx;
+		height: 18rpx;
+		margin-right: 8rpx;
+	}
+	.text {
+		font-size: 22rpx;
+		color: #515151;
+	}
+	
+	// 箭头
+	.arrow-down {
+		width: 22rpx;
+		height: 10rpx;
+	}
+	
+	// 公告
+	.notice {
+		font-size: 24rpx;
+		color: #aaa;
+		line-height: 28rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.notice_on {
+		lines: 0;
+	}
+	
+	// 关注按钮
+	.follow {
+		width: 98rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		font-size: 22rpx;
+		text-align: center;
+		color: #FF2929;
+		background-color: #FFF5E9;
+	}
+	.follow_on {
+		background-color: #CF1322;
+		color: #fff;
+	}
+	
+	// tab title
+	.tabText {
+		font-size: 30rpx;
+		color: #333;
+		line-height: 50rpx;
+	}
+	.tabRightNum {
+		font-size: 22rpx;
+		line-height: 28rpx;
+		color: #bbb;
+		padding-top: 8rpx;
+		padding-left: 3rpx;
+	}
+	.tabItem {
+		width: 55rpx;
+		height: 4rpx;
+		background-color: transparent;
+	}
+	.activeText {
+		font-weight: bold;
+	}
+	.activeItem {
+		background-color: #F5A74E;
+	}
+	
+	// 评论底部
+	.bottomTag {
+		font-size: 24rpx;
+		color: #999;
+		border-style: solid;
+		border-width: 1rpx;
+		border-color: #bbb;
+		padding: 0 10rpx;
+		height: 32rpx;
+		line-height: 32rpx;
+		border-radius: 30rpx;
+	}
+	.bottomText {
+		font-size: 24rpx;
+		color: #999;
+	}
+	
+	// 商家
+	.cardTitle {
+		font-size: 24rpx;
+		color: #515151;
+	}
+	.commonBT {
+		border-top-style: solid;
+		border-top-width: 1rpx;
+		border-top-color: #E3E3E3;
+	}
+	.cardRight {
+		width: 136rpx;
+		height:  37rpx;
+	}
+	.imgBL {
+		border-left-style: solid;
+		border-left-width: 1rpx;
+		border-left-color: #E3E3E3;
+	}
+	.tradeInfo {
+		font-size: 24rpx;
+		color: #666;
+		line-height: 34rpx;
+		width: 660rpx;
+	}
+	
+	// 评价标签tag 红色
+	.evaluateTagBox {
+		margin-left: -18rpx;
+	}
+	.evaluateTag {
+		font-size: 24rpx;
+		color: #CF1322;
+		border-style: solid;
+		border-width: 1rpx;
+		border-color: #CF1322;
+		padding: 0 17rpx;
+		height: 38rpx;
+		line-height: 38rpx;
+		margin-left: 18rpx;
+		margin-top: 18rpx;
+		border-radius: 30rpx;
+	}
+</style>

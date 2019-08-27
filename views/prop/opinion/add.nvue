@@ -1,0 +1,123 @@
+<template lang="pug">
+	view.flex.bg-f3.f-1
+		view.flex.wing.bg-white.py-30
+				
+			view.row.py-20
+				image.w-34.h-34(:src="is_noname ? '/static/icon/check.png' : '/static/icon/check-on.png'", @click="onChangeNoname")
+				text.ml-10.s-32.c-g-6 匿名
+			inputArea1(placeholder="请简单介绍您报修的信息", size="32", @input="onInput")
+			input1(title="联系电话", placeholder="请输入联系电话", size="32", titleSize="32", @input="onMobile")
+			
+			// 上传图片
+			view.row.ae.py-20
+				text.title 上传图片
+				text.desc.ml-10 最多上传3张
+			view.flex.upload.ba.bc-ee.ra-10
+			
+		// 按钮组
+		view.flex.btn-box.ac.pt-80
+			text.btn-lg-primary.ra-max(@click="onSubmit") 提交反馈
+			text.mt-30.s-26.c-99 预计3小时内反馈
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/prop/opinion/add';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				is_noname: 0, // 0：不匿名， 1： 匿名
+				text_submit: '',
+				mobile: '',
+				imgs: ''
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+			onChangeNoname() {
+				if(this.is_noname) this.is_noname = 0;
+				else this.is_noname = 1;
+			},
+			onMobile(e) {
+				this.mobile = e.detail.value;
+			},
+			onInput: function(e,r) {
+				this.text_submit = e.detail.value;
+			},
+			/**
+			 * 提交反馈
+			 * 
+			 * @param text_submit 提交文本 必传
+			 * @param mobile 手机号 不必传
+			 * @param is_noname 匿名 必传	0是不匿名, 1是匿名
+			 * @param imgs 图片 不必传  字符串英文逗号分隔
+			 */
+			onSubmit(id, product_id) {
+				SERVICE.submit(this,
+					{
+						text_submit: this.text_submit,
+						mobile: this.mobile,
+						is_noname: this.is_noname,
+						imgs: this.imgs,
+					},
+					()=>{
+						uni.showToast({title: '信件已发出'});
+						setTimeout(() => {
+							this.goback();
+						}, 1500);
+					}
+				);
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.typeButton {
+		width: 158rpx;
+		height: 72rpx;
+		line-height: 72rpx;
+		text-align: center;
+		color: #666;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #AAAAAA;
+		background-color: #fff;
+		border-radius: 5rpx;
+	}
+	.active {
+		color: #0050B3;
+		border-color: #0050B3;
+		background-color: #EBF1F9;
+	}
+	.upload {
+		width: 136rpx;
+		height: 136rpx;
+	}
+	
+	.title {
+		font-size: 32rpx;
+		color: #666;
+		
+	}
+	.desc {
+		font-size: 24rpx;
+		color: #999;
+	}
+	
+	// 按钮
+	.btn-full {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+</style>

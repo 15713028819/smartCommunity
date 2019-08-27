@@ -1,0 +1,38 @@
+<template lang="pug">
+	jm-scene-normal(:scene="SCENE")
+		view.flex.h-100.bone.my-df
+		view.flex.h-1030.bone.my-df
+		view.flex.h-100.bone.my-df
+		view.flex.fixed.bottom-0.left-0.w-100p.h-100.bone.color-inverse 底部固定
+</template>
+
+<script>
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.h-426 {height: 426upx}
+	.h-70 {height: 70upx}
+	.h-100 {height: 100upx}
+	.h-166 {height: 166upx}
+	.h-298 {height: 298upx}
+	.h-380 {height: 380upx}
+	.h-390 {height: 390upx}
+	.h-1030 {height: 1030upx}
+	.h-130 {height: 130upx}
+	.h-200 {height: 200upx}
+</style>

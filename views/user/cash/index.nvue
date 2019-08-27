@@ -1,0 +1,77 @@
+<template lang="pug">
+	view.flex.bg-white
+		//- 余额
+		view.center(style="height: 440rpx;")
+			avatar2(:number="list.count | tofixed", text="总余额(元)")
+		
+		//- 统计
+		view.between.px-50.tail-lg
+			view.column.f-1.ac
+				text.number {{list.paycheck | tofixed}}
+				text.c-99.s-28 本月充值(元)
+			view.flex.line
+			view.column.f-1.ac
+				text.number {{list.consume | tofixed}}
+				text.c-99.s-28 本月消费(元)
+
+		//- 灰色分隔条
+		view.flex.greyStrip
+
+		//- 底部按钮
+		view.flex.pt-80.ac
+			text.btnPage.bg-primary.c-white(@click="navigate('/views/user/cash/deposit')") 充值
+			text.pt-80.s-28.c-99.mb-50(@click="navigate('/views/user/cash/log')") 查看账单
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/user/cash/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+		},
+		onShow() {
+			/**
+			 * 获取余额
+			 */
+			SERVICE.load(this);
+		},
+		filters: {
+			tofixed: (value) => {
+				return value.toFixed(2)
+			}
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.number {
+		font-size: 45rpx;
+		color: #2E2E2E;
+		margin-bottom: 26rpx;
+	}
+	.line {
+		width: 1rpx;
+		height: 84rpx;
+		background-color: #C2C2C2;
+	}
+	.btnPage {
+		height: 84rpx;
+		width: 556rpx;
+		line-height: 84rpx;
+		align-items: center;
+		border-radius: 100rpx;
+		
+		text-align: center;
+		font-size: 28rpx;
+	}
+</style>

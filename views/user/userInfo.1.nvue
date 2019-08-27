@@ -1,0 +1,45 @@
+<template lang="pug">
+	view.flex.bg-f3
+		filed4.px-30.tail-line-light(title="头像", img="/static/image/avatar3.png")
+		filed4.px-30.tail-line-light(title="用户名", text="hsq_1111")
+		filed4.px-30.tail-line-light(title="昵称", text="HONEY")
+		filed4.px-30.tail-line-light(title="性别", text="女")
+		filed4.px-30.tail-line-light(title="生日", text="1997-12-01")
+
+		view.flex.greyStrip
+
+		filed4.px-30.tail-line-light(title="手机号码", :text="15713028819 | phoneSafe")
+		filed4.px-30.tail-line-light(title="修改密码")
+		filed4.px-30.tail-line-light(title="注销账号", text="注销后无法恢复，请谨慎操作")
+
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+		},
+		filters: {
+			phoneSafe(value) {
+				return value;
+				// .toString().substr(0,3) + "****" + value.substr(9);
+			}
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+
+</style>

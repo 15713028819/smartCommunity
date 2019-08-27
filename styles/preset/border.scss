@@ -1,0 +1,20 @@
+// ----------------------------------------------------------
+// 文件说明
+// 
+// 1、如果需要自行配置边框颜色，请打开/styles/variable.scss进行设置
+// 2、您可以自行增删改这里的设置，以便更好的布局
+// ----------------------------------------------------------
+
+// 边框
+.ba { border-style: solid; border-width: 1wx; border-color: #000; }
+.bx { border-left-style: solid; border-left-width: 1wx; border-right-style: solid; border-right-width: 1wx; border-color: #000; }
+.by { border-top-style: solid; border-top-width: 1wx; border-bottom-style: solid; border-bottom-width: 1wx; border-color: #000; }
+.bt { border-top-style: solid; border-width: 1wx; border-color: #000; }
+.bb { border-bottom-style: solid; border-width: 1wx; border-color: #000; }
+.bl { border-left-style: solid; border-width: 1wx; border-color: #000; }
+.br { border-right-style: solid; border-width: 1wx; border-color: #000; }
+
+// 边框样式
+.solid { border-style: solid; }
+.dashed { border-style: dashed; }
+.dotted { border-style: dotted; }

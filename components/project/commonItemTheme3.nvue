@@ -1,0 +1,97 @@
+<template lang="pug">
+	view.flex.bg-white.py-20.row(@click="$emit('click')")
+		view.flex.img.ra-10.overhide
+			image.img(:src="img")
+		view.flex.ml-20.jb.f-1
+			text.title {{title}}
+			view.row
+				image(style="margin-right: 5rpx; width: 20rpx; height: 24rpx;", src="../../static/icon/location-4.png")
+				text.text {{text1}}
+			view.row
+				image(style="margin-right: 5rpx; width: 20rpx; height: 20rpx;", src="../../static/icon/dengdai-4.png")
+				text.text {{text2}}
+			view.between.ac.mt-6
+				text.tagPage {{tag}}
+				text.textRight {{textRight}}
+</template>
+
+<script>
+	export default {
+		props: {
+			img: {
+				type: String,
+				require: true
+			},
+			title: {
+				type: String,
+				default: 'title',
+				require: true
+			},
+			icon1: {
+				type: String,
+			},
+			icon2: {
+				type: String,
+			},
+			text1: {
+				type: String,
+				default: 'text1'
+			},
+			text2: {
+				type: String,
+				default: 'text2'
+			},
+			tag: {
+				type: String,
+				default: 'tag'
+			},
+			textRight: {
+				type: String,
+				default: 'textRight'
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.img {
+		width: 236rpx;
+		height: 136rpx;
+	}
+	.title {
+		font-size: 28rpx;
+		color: #333;
+		margin-bottom: 10rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.icon {
+		font-size: 20rpx;
+		color: #999;
+		width: 50rpx;
+		text-overflow: clip;
+		lines: 1;
+	}
+	.text {
+		font-size: 22rpx;
+		color: #999;
+		height: 30rpx;
+		line-height: 30rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.tagPage {
+		font-size: 20rpx;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #CF1322;
+		border-radius: 5rpx;
+		color: #CF1322;
+		padding: 2rpx 10rpx;
+		margin-right: 10rpx;
+	}
+	.textRight {
+		font-size: 26rpx;
+		color: #CF1322;
+	}
+</style>

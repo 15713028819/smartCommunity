@@ -1,0 +1,111 @@
+<template lang="pug">
+	view.column.rel.boxPT(@click="$emit('click')")
+		view.row.overhide(v-if="img || background", :style="{width: imgSize + 'rpx', height: imgSize + 'rpx'}")
+			image(:style="{width: imgW + 'rpx', height: imgH + 'rpx', 'margin-bottom': space + 'rpx', 'background-color': background, 'border-radius': imgRa + 'rpx'}", :src="img")
+		text.text-center(:style="{'font-size': size + 'rpx', color: color}") {{text}}
+		text.text-center.badgePage(v-if="num", :class="[num <= 9 ? 'badgePageW' : 'badgePagePx']", :style="{'border-style': 'solid', 'border-width': '1rpx', 'border-color': badgeColor, top: top, right: right, color: badgeColor}") {{num > max ? max + '+' : num}}
+</template>
+
+<script>
+	export default {
+		props: {
+			imgSize: {
+				type: String,
+				default: '46'
+			},
+			imgW: {
+				type: String,
+				default: '42'
+			},
+			imgH: {
+				type: String,
+				default: '36'
+			},
+			img: {
+				type: String,
+			},
+			space: {
+				type: String,
+				default: '12'
+			},
+			size: {
+				type: String,
+				default: '24'
+			},
+			color: {
+				type: String,
+				default: '#666'
+			},
+			text: {
+				type: String,
+				require: true
+			},
+			imgRa: {
+				type: String,
+				default: 0
+			},
+			// 图片背景色
+			background: {
+				type: String,
+				default: 'transparent'
+			},
+			// badge 设置
+			badgeColor: {
+				type: String,
+				default: '#CF1322'
+			},
+			num: {
+				type: Number,
+				default: 0
+			},
+			max: {
+				type: Number,
+				default: 99
+			},
+			top: {
+				type: String,
+				default: '0'
+			},
+			right: {
+				type: String,
+				default: '0'
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.badgePage {
+		position: absolute;
+		height: 22rpx;
+		line-height: 22rpx;
+		border-radius: 22rpx;
+		text-align: center;
+		background-color: #fff;
+		font-size: 18rpx;
+	}
+	.rel { position: relative; }
+	.badgePageW {
+		width: 22rpx;
+	}
+	.badgePagePx {
+		padding-left: 7rpx;
+		padding-right: 7rpx;
+	}
+	.boxPT {
+		padding-top: 10rpx;
+	}
+	.text-center {
+		text-align: center;
+	}
+	.column {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.row {
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+</style>

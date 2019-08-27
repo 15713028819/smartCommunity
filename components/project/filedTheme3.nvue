@@ -1,0 +1,86 @@
+<template lang="pug">
+	view.flex.box.row
+		text.name.f-5 {{name}}
+		text.text.f-2 {{stock > 99 ? '余票充足' : '剩余' + stock + '张'}}
+		text.price.f-2 ￥{{priceNum}}
+
+		view.between.f-2
+			view.flex.img(@click="$emit('addFun')")
+				image.img(src="../../static/image/shop-add.png")
+			text.count.f-2 {{count}}
+			view.flex.img(@click="$emit('subFun')")
+				image.img(src="../../static/image/shop-sub.png")
+</template>
+
+<script>
+	export default {
+		props: {
+			name: {
+				type: String,
+				default: 'name'
+			},
+			stock: {
+				type: [Number, String],
+				default: 'stock'
+			},
+			price: {
+				type: [Number, String],
+				default: 'price'
+			},
+			count: {
+				type: [Number, String],
+				default: 1
+			},
+			addFun: {
+				type: Function,
+				default: ()=>{}
+			},
+			subFun: {
+				type: Function,
+				default: ()=>{}
+			}
+		},
+		computed: {
+			priceNum: function() {
+				return Number(this.price).toFixed(2);
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box{
+		height: 62rpx;
+		background-color: #F1F1F1;
+		padding-left: 10rpx;
+		padding-right: 10rpx;
+	}
+	.name {
+		font-size: 26rpx;
+		color: #333;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.text {
+		font-size: 26rpx;
+		color: #666;
+	}
+	.img {
+		width: 32rpx;
+		height: 32rpx;
+	}
+	.price {
+		font-size: 26rpx;
+		color: #CF1322;
+	}
+	.count {
+		font-size: 28rpx;
+		color: #333;
+		text-align: center;
+		padding-left: 5rpx;
+		padding-right: 5rpx;
+	}
+</style>

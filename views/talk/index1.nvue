@@ -1,0 +1,144 @@
+<template lang="pug">
+	view.flex.bg-white
+		// 头部
+		talkHeader1.tail(nick="张三", signature="这是我的签名", @click="navigate('/views/talk/add')")
+		
+		// 类别
+		scroll-view.between.pt-30.pb-10.px-10.border(scroll-x, :show-scrollbar="false", :scroll-left="tabIndex > 2 ? 750 : 0")
+			view.column.mx-26.ac(v-for="(item, index) in tabs", @click="changeMenu(index)")
+				image.w-50.h-50(:src="index == tabIndex ? item.imgActive : item.imgNormal", style="will-change: transform")
+				text.tc.menu(:class="[index == tabIndex && 'active']") {{item.text}}
+		
+		// 动态列表
+		talkItem1(
+			avatar="/static/image/avatar2.png",
+			name="王五",
+			text="如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。",
+			:picture="['/static/image/avatar1.png', '/static/image/avatar1.png', '/static/image/avatar1.png']",
+			style="padding"
+		)
+			talkFooter1(
+				time="7-2 13:30",
+				:likeNum="3",
+				:likeName="['张三', '李四', '王五', '赵六']",
+				:comment="[{name: '张三', text:'尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。'}, {name: '李四', text:'尽管在人们脑海中'}]",
+				:onLike="()=>toastTest",
+				:onComment="()=>toastTest"
+			)
+		talkItem1(
+			avatar="/static/image/avatar2.png",
+			name="王五",
+			text="如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。",
+			:picture="['/static/image/avatar1.png', '/static/image/avatar1.png', '/static/image/avatar1.png']", style="padding"
+		)
+		talkItem1(
+			avatar="/static/image/avatar2.png",
+			name="王五",
+			text="如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。")
+
+		talkItem1(
+				avatar="/static/image/avatar2.png",
+				name="王五",
+				text="如果有人问，非典是什么味道的？可能很多人会回答，非典是醋味的。尽管在人们脑海中，2003年非典疫情爆发的大部分记忆已经逐渐消退。但是，那股酸味至今仍萦绕在大家的脑海中。",
+				:picture="['/static/image/avatar1.png', '/static/image/avatar1.png', '/static/image/avatar1.png']", style="padding"
+			)
+				talkFooter1(
+					time="7-2 13:30",
+					:likeNum="3",
+					:likeName="['张三', '李四', '王五', '赵六']",
+					:comment="[{name: '张三', text:'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, {name: '李四', text:'尽管在人们脑海中'}]",
+					:onLike="()=>toastTest",
+					:onComment="()=>toastTest"
+				)
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tabIndex: 0,
+				tabs: [
+					{
+						text:'生活杂谈',
+						imgNormal: '/static/icon/talk_shenghuo.png',
+						imgActive: '/static/icon/talk_shenghuo_on.png',
+					},
+					{
+						text:'突发爆料',
+						imgNormal: '/static/icon/talk_burst.png',
+						imgActive: '/static/icon/talk_burst_on.png',
+					},
+					{
+						text:'二手闲置',
+						imgNormal: '/static/icon/talk_ershou.png',
+						imgActive: '/static/icon/talk_ershou_on.png',
+					},
+					{
+						text:'拼车拼团',
+						imgNormal: '/static/icon/talk_pintuan.png',
+						imgActive: '/static/icon/talk_pintuan_on.png',
+					},
+					{
+						text:'车位租售',
+						imgNormal: '/static/icon/talk_chewei.png',
+						imgActive: '/static/icon/talk_chewei_on.png',
+					},
+					{
+						text:'咨询求助',
+						imgNormal: '/static/icon/talk_zixun.png',
+						imgActive: '/static/icon/talk_zixun_on.png',
+					}
+				]
+			}
+		},
+		onLoad() {
+			
+		},
+		onShow() {
+			console.log('getApp().globalData.TALKINDEX', getApp().globalData.TALKINDEX)
+			this.tabIndex = getApp().globalData.TALKINDEX;
+		},
+		onHide() {
+			getApp().globalData.TALKINDEX = 0;
+		},
+		methods: {
+			changeMenu(index) {
+				this.tabIndex = index;
+			},
+			toToast(msg) {
+				uni.showToast({
+					title: msg,
+				})
+			},
+			
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.menu {
+		font-size: 28rpx;
+		color: #D4D4D4;
+		line-height: 44rpx;
+	}
+	.active {
+		color: #464646;
+	}
+	.border {
+		border-top-style: solid;
+		border-top-width: 1px;
+		border-top-color: #f3f3f3;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #f3f3f3;
+	}
+</style>

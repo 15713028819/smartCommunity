@@ -1,0 +1,19 @@
+// ----------------------------------------------------------
+// 文件说明
+// 
+// 1、项目开发前，首先配置@font-face中的src属性。这里使用的是uni-app官方推荐的写法
+// 2、i标签被修改为icon默认输出标签
+// 3、nvue页面中的图标无法通过此方式引入。如果您有nvue页面，请按照weex官方文档引入iconfont
+// ----------------------------------------------------------
+
+// 定义字体url
+@font-face {
+	font-family: 'iconfont';
+	src: url('https://at.alicdn.com/t/font_1271977_m2vhyl6oere.ttf') format('truetype');
+}
+
+// 定义i标签
+i { 
+	font-style: normal; 
+	font-family: iconfont; 
+}

@@ -1,0 +1,63 @@
+<template lang="pug">
+	view.flex.bg-f3
+		
+		//- 商品列表 -- 筛选器 暂时为空
+		view.center.py-40.bg-primary
+			text.s-20.c-g-9.c-white 筛选器暂时为空
+		
+		//- 商品列表 -- 商品
+		div.w-750.between-wrap.wing
+			prod2.mt-20(v-for="item in list.list", @click="navigate('/views/shop/prodDetail?id=' + item.id)", :name="item.name", :money="item.price", :origin="item.old_price", :src="dir.shop_prod(item.img_small)", @iconFun="addcart(item.id)")
+
+		
+		view.column.py-50.center
+			text(style="font-size: 30rpx; color: #C1C1C1") 已经没有更新的商品……
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/shop/prodList';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad(param) {
+			// 组织参数
+			let data = {};
+			if(param.cbid) data.cbid = param.cbid;
+			if(param.csid) data.csid = param.csid;
+			if(param.keywords) data.keywords = param.keywords;
+			/**
+			 * 获取商品详情
+			 * 
+			 * @param cbid 			非必填  大类id
+			 * @param csid 			非必填  小类id
+			 * @param keywords 		非必填  大类搜索关键词
+			 */
+			SERVICE.load(this, data);
+		},
+		methods: {
+			/**
+			 * 加入购物车
+			 * 
+			 * @param product_id 	商品id
+			 * @param stid			商品id	规格id（非规格设置id） 非必传
+			 */
+			addcart(product_id) {
+				SERVICE.addcart(this, {product_id});
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.sliderBox, .sliderImg, .slider {
+		height: 348rpx;
+		width: 750rpx;
+	}
+</style>

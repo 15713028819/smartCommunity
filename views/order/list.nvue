@@ -1,0 +1,173 @@
+<template lang="pug">
+	view.flex.bg-f3
+
+		//- tab
+		view.row.tabBar.bg-white.tail.w-750.header
+			view.column.jc.ac.f-1(v-for="(item, index) in tabs", @click="()=>changeTab(index)")
+				text.tabTitle(:class="[tabIndex == index && 'titleActive']") {{item}} 
+				view.flex.tabLine.f-1(:class="[tabIndex == index && 'lineActive']")
+
+		
+		//- 订单列表
+		view.flex.wing.mt-100.pt-20
+			
+			//- 订单
+			view.flex.bg-white.ra-20.tail(v-for="item in list")
+			
+				//- header
+				view.between.ac.card-head.wing.tail-line(@click="navigate('/views/order/detail?id=' + item.id)")
+					view.row
+						image(style="width: 26rpx; height: 24rpx;", src="/static/icon/shangjia-1.png")
+						text.store.ml-10 社区商城
+					text.type {{tabs[item.status + 1]}}
+				
+				//- 商品
+				view.flex.pa-20
+					prod3(
+						:img="dir.shop_prod(item.img)", 
+						:title="item.name", 
+						:tag="['满减']", 
+						num="1", 
+						price="25", 
+						@click="navigate('/views/order/detail?id=' + item.id)"
+					)
+					
+				//- 底部 统计和 按钮
+				view.column.jc.ae.wing
+					view.row(@click="navigate('/views/order/detail?id=' + item.id)")
+						text.text 共1件商品
+						text.text.ml-30 合计:￥{{item.amount}}
+					view.row.mt-20.mb-30
+						text.s-22.px-28.py-14.lh-22.ba.c-33.bc-99.bg-white.ra-max(v-if="item.status == 1 || item.status == 0", @click="onCancel(item)") 取消订单
+						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 2", @click="toastTest") 确认收货
+						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 0", @click="onPay") 去支付
+						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 3", @click="onComment") 去评价
+					
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/order/list';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tabIndex: 0,
+				tabs: ['全部', '待付款', '待发货', '待收货', '已完成', '已取消']
+			}
+		},
+		onLoad(param) {
+			if(param.status) {
+				this.tabIndex = param.status;
+			}
+		},
+		onShow() {
+			let data = {};
+			if(this.tabIndex) {
+				data.status = this.tabIndex - 1;
+			}
+			/**
+			 * 获取订单列表数据
+			 * 
+			 * @param {number} status	不传 返回所有数据   0:未付款, 1:未发货, 2:已发货, 3:已完成, 4:已取消, 5:已退货
+			 */
+			SERVICE.load(this, data);
+		},
+		methods: {
+			changeTab(index) {
+				this.tabIndex = index;
+				/**
+				 * 获取订单列表数据
+				 * 
+				 * @param {number} status	不传 返回所有数据   0:未付款, 1:未发货, 2:已发货, 3:已完成, 4:已取消, 5:已退货
+				 */
+				SERVICE.load(this, {status: index - 1});
+			},
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			/**
+			 * 取消订单
+			 * 
+			 * @param {number} id	订单id
+			 */
+			onCancel(item) {
+				SERVICE.cancel(this, {id: item.id}, ()=>{
+					uni.showToast({
+						title: '取消成功'
+					})
+					setTimeout(() => {
+						item.status = 4;
+					}, 1500);
+				});
+			},
+			/**
+			 * 订单评论
+			 * 
+			 * @param {number} id		订单id
+			 * @param {number} comment	评论内容
+			 */
+			onComment(id, product_id) {
+				SERVICE.comment(this, {id: 1, comment: "评论内容"});
+			},
+			/**
+			 * 获取下单信息
+			 * 
+			 * @param {number} id	订单id
+			 */
+			onPay(id, product_id) {
+				SERVICE.get_pay(this, {id: 1});
+			},
+			/**
+			 * 支付成功
+			 * 
+			 * @param code		订单号码
+			 */
+			pay_ok(id, product_id) {
+				SERVICE.pay_ok(this, {code: 'MDPE1565331736'});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	// tab
+	.tabTitle {
+		font-size: 30rpx;
+		color: #333;
+		height: 80rpx;
+		line-height: 80rpx;
+		margin-top: 3rpx;
+	}
+	.tabLine {
+		height: 3rpx;
+		background-color: transparent;
+		width: 80rpx;
+		border-radius: 5rpx;
+	}
+	.titleActive {
+		color: #CF1322;
+	}
+	.lineActive {
+		background-color: #CF1322;
+	}
+	
+	// 卡片
+	.store {
+		font-size: 24rpx;
+		color: #666;
+	}
+	.type {
+		font-size: 24rpx;
+		color: #CF1322;
+
+	}
+	.text {
+		font-size: 24rpx;
+		color: #333;
+	}
+</style>
+

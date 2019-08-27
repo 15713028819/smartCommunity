@@ -1,0 +1,77 @@
+<template lang="pug">
+	view.flex.box.ra-20.bg-white(style="overflow: hidden;", @click="$emit('click')")
+		view.flex.prodImage.center
+			image.prodImage(:src="src")
+		text.name.c-33.px-20.pt-20 {{name}}
+		view.between.px-20.pb-20.ac
+			view.row
+				text.bold.moneySmall.pt-10.c-primary ￥
+				text.bold.money.c-primary {{price[0]}}.
+				text.bold.moneySmall.pt-10.c-primary {{price[1]}}
+				text.bold.origin.ml-10.pt-10(style="color: #999;") ￥ {{originPrice}}
+			text.c-9e.ba.bc-ce.ra-max.px-10.py-5.s-20 {{tagText}}
+			//jtag(:text="tagText" size="sm" ghost color="grey-4")
+</template>
+
+<script>
+	
+	export default {
+		
+		props: {
+			name: {
+				type: String,
+				default: '商品名称'
+			},
+			src: {
+				type: String,
+				require: true
+			},
+			money: {
+				type: [Number, String],
+				default: 0
+			},
+			origin: {
+				type: [Number, String],
+				default: 0.00
+			},
+			tagText: {
+				type: String,
+				default: '看相似'
+			}
+		},
+		computed: {
+			price: function() {
+				return Number(this.money).toFixed(2).split('.');
+			},
+			originPrice: function() {
+				return Number(this.origin).toFixed(2);
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		// height: 312rpx;
+		width: 333rpx;
+	}
+	.prodImage {
+		width: 333rpx;
+		height: 284rpx;
+	}
+	.moneySmall {
+		font-size: 26rpx;
+	}
+	.money {
+		font-size: 36rpx;
+	}
+	.name {
+		font-size: 28rpx;
+		margin-bottom: 10rpx;
+		lines: 2;
+		text-overflow: ellipsis;
+	}
+	.origin {
+		font-size: 24rpx;
+	}
+</style>

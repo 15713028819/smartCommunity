@@ -1,0 +1,52 @@
+<template lang="pug">
+	view.flex.bg-f3
+		view.flex.tail
+		commonItem9.mx-30.tail(
+			v-for="(item, index) in list",
+			:text="item.created*100 | dateFormat('m月d日')", 
+			:img="item.img", 
+			:title="item.title",
+			@click="navigate('/views/msg/detail?id='+item.id)"
+		)
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/msg/msgList';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		mixins: [mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 获取消息列表
+			 * 
+			 * @param {number} trade_id		商家的id
+			 */
+			SERVICE.load(this, {trade_id: param.id});
+		},
+		methods: {
+			/**
+			 * 加入已读记录
+			 * 
+			 * @param {number} msg_id 消息id
+			 */
+			onRead(id) {
+				SERVICE.read (this, {msg_id:id});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.h-100 {height: 100upx;}
+	.h-250 {height: 250upx;}
+	.h-100 {height: 100upx;}
+</style>

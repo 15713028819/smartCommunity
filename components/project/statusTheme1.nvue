@@ -1,0 +1,64 @@
+<template lang="pug">
+	view.center.box.bg-white
+		//- text.icon.btnIcon(:class="[colorClass && 'c-' + color, sizeClass && 'size-' + size, iconClass && 'icon-' + icon ]", :style="[!colorClass && {color: color}, !sizeClass && {'font-size': size}]") {{!ic.onClass && icon}
+		//- text.icon.btnIcon(:class="[colorClass && 'c-' + color, sizeClass && 'size-' + size, iconClass && 'icon-' + icon ]", :style="[!colorClass && {color: color}, !sizeClass && {'font-size': size}]")
+		image(style="width: 34rpx; height: 34rpx;", :src="stateImg")
+		text.ml-10(:class="[colorClass && 'c-' + color, sizeClass && 'size-' + size]", :style="[!colorClass && {color: color}, !sizeClass && {'font-size': size + 'rpx'}]") {{text}}
+
+</template>
+
+<script>
+	
+
+	export default {
+		
+
+		props: {
+			text: {
+				type: String,
+				require: true
+			},
+			stateImg: {
+				type: String,
+				require: true
+			},
+			color: {
+				type: String,
+				default: 'success'
+			},
+			size: {
+				type: String,
+				default: '34'
+			},
+		},
+		computed: {
+			colorClass: function() {
+				if(this.color.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			},
+			sizeClass: function() {
+				if(isNaN(Number(this.size))) {
+					return true;
+				}
+				return false;
+			},
+			iconClass: function() {
+				if(this.icon && this.icon.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		height: 140rpx;
+	}
+	.btnIcon {
+		font-size: 18rpx;
+	}
+</style>

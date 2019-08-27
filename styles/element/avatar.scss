@@ -1,0 +1,52 @@
+
+// ----------------------------------------------------------
+// 占位符
+// ----------------------------------------------------------
+
+// avatar通用样式占位符
+%avatar-place-avatar-base {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	border-radius: 750rpx;
+	background-color: #ccc;
+	text-align: center;
+	color: #fff;
+}
+
+// ----------------------------------------------------------
+// avatar
+// ----------------------------------------------------------
+
+// 小型avatar
+.avatar-sm {
+	@extend %avatar-place-avatar-base;
+	width: 48rpx;
+	height: 48rpx;
+	font-size: 28rpx;
+}
+
+// 中型（默认）avatar
+.avatar {
+	@extend %avatar-place-avatar-base;
+	width: 64rpx;
+	height: 64rpx;
+	font-size: 48rpx;
+}
+
+// 大型avatar
+.avatar-lg {
+	@extend %avatar-place-avatar-base;
+	width: 96rpx;
+	height: 96rpx;
+	font-size: 64rpx;
+}
+
+// 特大型avatar
+.avatar-xl {
+	@extend %avatar-place-avatar-base;
+	width: 128rpx;
+	height: 128rpx;
+	font-size: 96rpx;
+}

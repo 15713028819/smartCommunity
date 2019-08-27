@@ -1,0 +1,99 @@
+<template lang="pug">
+
+	//- 对齐页面
+	view.flex
+
+		//- 左对齐（带padding）
+		view.row.bg-e-9-6.c-white.py-20 左对齐
+
+		//- 左对齐
+		view.row.bg-e-0-3.c-white
+			text 左
+			text 中
+			text 右
+
+		//- 对齐
+		view.around.bg-primary
+			text 左
+			text 中
+			text 右
+
+		//- 边对齐
+		view.between.bg-assist
+			text 左
+			text 中
+			text 右
+			text.text 123
+
+		//- 纵向对齐
+		view.column.bg-success
+			text.bg-g-d3 top
+			text.bg-g-d3 中
+			text.bg-g-d3 bottom
+
+		//- x、y紧凑排列元素
+		view.around
+			view.ix.bg-e-6-3
+				i.bg-e-6-1.s-20 &#xe690;
+				i.bg-e-6-5.s-50 &#xe7a4;
+			view.iy.bg-g-66
+				text.bg-g-66 T
+				text.bg-g-99 B
+
+		//- 换行r
+		view.row.wrap.bg-e-0-0.pa-30
+			view.iy.bg-g-66.ma-20(v-for="i of 20")
+				text.bg-g-66 T
+				text.bg-g-99 B
+
+		//- f切分
+		view.row
+			text.bg-g-99.f-1 1份
+			text.bg-g-cc.f-2 2份
+			text.bg-g-ee.f-3 3份
+
+		//- rpx与f切分
+		view.row
+			text.bg-e-0-3.w-200 200rpx
+			text.bg-e-3-3.w-300 300rpx
+			text.bg-e-6-3.f-1(@click="navigate('./test')") 补齐
+
+		//- 图片
+		image.w-100.h-100(src="dir./static/image/logo.jpg")
+
+		text {{timestamp | dateLapse}}
+
+
+		text 123
+		
+</template>
+
+<style lang="scss">
+
+</style>
+
+<script>
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+                timestamp: 1565344805
+			}
+		},
+		life: {
+			load() {
+				
+			},
+			show() {
+				// this.__log({name: 'yuantao', age: 38})
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+

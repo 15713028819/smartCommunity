@@ -1,0 +1,156 @@
+<template lang="pug">
+	view.bg-f3
+		view.flex.bg-f3
+			//- 状态栏
+			status1.tail(:text="list.state | title", :color="list.state | stateColor", :stateImg="list.state | stateImg")
+
+			//- 报修信息
+			view.flex.bg-white.tail
+				view.flex.py-30.wing.row.tail-line
+					text.title 报修信息
+				view.flex.wing.pb-20
+					filed1.py-30(left="联系电话", :right="list.mobile_submit", rightColor="#999", size="30")
+					filed1.py-30(left="报修类型", :right="list.type | type", rightColor="#999", size="30", :border="list.text_submit && list.imgs_submit && true")
+
+					filed1.py-30(left="报修描述", rightColor="#999", size="30", v-if="list.text_submit")
+					text.pa-10.pt-20.c-99.s-30.lh-40(v-if="list.text_submit") {{list.text_submit}}
+
+					filed1.py-30(left="报修图片", rightColor="#999", size="30", v-if="list.imgs_submit")
+					view.flex.py-20.row(v-if="list.imgs_submit")
+						view.flex.ra-10.overhide.imgBox(v-for="(item, index) in list.imgs_submit.split(',')")
+							image.img.ra-10.overhide(v-if="index < 5", :src="item")
+
+			//- 维修信息
+			view.flex.bg-white.tail(v-if="list.state")
+				view.flex.py-30.wing.row.tail-line
+					text.title 维修信息
+				view.flex.wing.pb-20
+					filed1.py-30(left="维修人", right="李某某", rightColor="#999", size="30")
+					filed1.py-30(left="维修人电话", right="15130305503", rightColor="#999", size="30", :border="list.text_repair && list.imgs_repair && true")
+
+					filed1.py-30(left="维修描述", rightColor="#999", size="30", v-if="list.text_repair")
+					text.pa-10.pt-20.c-99.s-30.lh-40(v-if="list.text_repair") {{list.text_repair}}
+
+					filed1.py-30(left="维修图片", rightColor="#999", size="30", v-if="list.imgs_repair")
+					view.flex.py-20.row(v-if="list.imgs_repair")
+						view.flex.ra-10.overhide.imgBox(v-for="(item, index) in list.imgs_repair.split(',')")
+							image.img.ra-10.overhide(v-if="index < 5", :src="item")
+
+			//- 评级
+			view.flex.bg-white.tail(v-if="list.grade")
+				view.flex.py-30.wing.between.tail-line
+					text.title 评级
+					text.c-99.s-30.lh-40 非常
+
+		//- 占位
+		view.h-100
+
+		//- 评级按钮
+		text.footer.btn-full-page.bg-primary.c-white(v-if="!list.grade", @click="toastTest") 评级
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/prop/repair/detail';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				img: ['/static/image/image-3.png', '/static/image/image-4.png', '/static/image/image-5.png']
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 获取报修详情
+			 * 
+			 * @param id 报修id
+			 */
+			SERVICE.load(this, {id: param.id});
+		},
+		filters: {
+			title: (value)=>{
+				switch(value) {
+					case 0: 
+						return "待维修";
+					case 1: 
+						return "维修中";
+					case 2: 
+						return "维修完成";
+				}
+			},
+			stateImg: (value)=>{
+				switch(value) {
+					case 0: 
+						return "/static/icon/repair-wait.png";
+					case 1: 
+						return "/static/icon/repair-ing.png";
+					case 2: 
+						return "/static/icon/repair-finish.png";
+				}
+			},
+			type: (value) => {
+				switch(value) {
+					case 0:
+						return "房屋报修";
+					case 1:
+						return "水电报修";
+					case 2:
+						return "车位报修";
+				}
+			},
+			stateColor: (value) => {
+				switch(value) {
+					case 0:
+						return "#CF1322";
+					case 1:
+						return "#D48806";
+					case 2:
+						return "#666666";
+				}
+			}
+		},
+		methods: {
+			/**
+			 * 获取报修详情
+			 * 
+			 * @param {number} id 		报修id
+			 * @param {number} grade 	级数  0没有，1非常满意，2比较满意，3一般，4不满意
+			 */
+			onGrade() {
+				SERVICE.set_grade(this, {id: 11,grad: 1});
+			},
+			
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.title {
+		font-size: 32rpx;
+		color: #333;
+	}
+	.imgBox {
+		width: 115rpx;
+		height: 115rpx;
+		margin-right: 14rpx;
+	}
+	.img {
+		width: 115rpx;
+		height: 115rpx;
+	}
+	// 按钮
+	.btn-full-page {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+</style>

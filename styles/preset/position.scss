@@ -1,0 +1,55 @@
+// ----------------------------------------------------------
+// 文件说明
+// 
+// 1、此文件主要处理定位、层级等class
+// 2、您可以自行增删改这里的设置，以便更好的布局
+// ----------------------------------------------------------
+
+// ----------------------------------------------------------
+// 定位
+// ----------------------------------------------------------
+
+// 相对定位
+.rel { position: relative; }
+
+// 吸顶定位
+.sticky { position: sticky; }
+
+// 绝对定位
+.abs { position: absolute; }
+
+// 固定定位
+.fixed { position: fixed; }
+
+// ----------------------------------------------------------
+// 绝对零位
+// ----------------------------------------------------------
+
+.top-0 { top: 0 }
+.left-0 { left: 0 }
+.right-0 { right: 0 }
+.bottom-0 { bottom: 0 }
+.top-left-0 { top: 0; left: 0 }
+.top-right-0 { top: 0; right: 0 }
+.bottom-left-0 { bottom: 0; left: 0 }
+.bottom-right-0 { bottom: 0; right: 0 }
+
+// ----------------------------------------------------------
+// 非nvue中，定位样式与层级可以同时指定（nvue没有层级）
+// ----------------------------------------------------------
+
+/* #ifndef APP-PLUS-NVUE */
+
+.abs-1 { position: absolute; z-index: 10; }
+.abs-2 { position: absolute; z-index: 20; }
+.abs-3 { position: absolute; z-index: 30; }
+.abs-4 { position: absolute; z-index: 40; }
+.abs-5 { position: absolute; z-index: 50; }
+
+.fixed-1 { position: fixed; z-index: 10; }
+.fixed-2 { position: fixed; z-index: 20; }
+.fixed-3 { position: fixed; z-index: 30; }
+.fixed-4 { position: fixed; z-index: 40; }
+.fixed-5 { position: fixed; z-index: 50; }
+
+/* #endif */

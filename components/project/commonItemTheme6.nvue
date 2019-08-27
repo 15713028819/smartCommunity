@@ -1,0 +1,81 @@
+<template lang="pug">
+	view.between.bg-white.py-30.box
+		view.flex.iconBox
+			image.w-55.h-55(:src="img")
+		view.column.f-1.as.mx-30
+			text.title {{title}}
+			text.desc {{desc}}
+		view.row
+			text.sub(v-if="sub", :style="!textColorClass && {color: textColor}", :class="[textColorClass && textColor]") -
+			text.add(v-if="add", :style="!textColorClass && {color: textColor}", :class="[textColorClass && textColor]") +
+			text.text(:style="!textColorClass && {color: textColor}") {{text}}
+</template>
+
+<script>
+	export default {
+		props: {
+			img: {
+				type: String,
+				require: true
+			},
+			title: {
+				type: String,
+				require: true
+			},
+			desc: {
+				type: String,
+				require: true
+			},
+			text: {
+				type: String,
+				require: true
+			},
+			add: {
+				type: Boolean,
+				default: false
+			},
+			sub: {
+				type: Boolean,
+				default: false
+			},
+			textColor: {
+				type: String,
+				default: "#666"
+			}
+		},
+		computed: {
+			textColorClass: function() {
+				if(this.textColor.indexOf('#') === -1) return true;
+				return false;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		border-bottom-style: solid;
+		border-bottom-width: 1rpx;
+		border-bottom-color: #ccc;
+	}
+	.title {
+		font-size: 32rpx;
+		color: #333;
+		margin-bottom: 12rpx;
+	}
+	.desc {
+		font-size: 28rpx;
+		color: #999;
+	}
+	.text {
+		font-size: 40rpx;
+	}
+	.add {
+		font-size: 32rpx;
+		margin-right: 5rpx;
+	}
+	.sub {
+		font-size: 40rpx;
+		margin-right: 5rpx;
+	}
+</style>

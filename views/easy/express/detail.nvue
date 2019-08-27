@@ -1,0 +1,119 @@
+<template lang="pug">
+	view.flex
+		view.flex.bg-f3
+			// 状态栏
+			status1.tail(:text="state ? '已取件' : '待取件'", :color="state ? '#666666' : '#CF1322'", :stateImg="state ? '/static/icon/check-on-1.png' : '/static/icon/dengdai-2.png'")
+
+			// 时间信息
+			view.flex.ac.py-30.px-50
+				view.flex
+					view.between.pb-20
+						text.s-30.c-66 {{list.created * 1000 | dateFormat('Y.m.d H:i')}}
+						text.s-30.mx-10.c-66(v-if="list.time_get") -
+						text.s-30.c-66(v-if="list.time_get") {{list.time_get * 1000 | dateFormat('Y.m.d H:i')}}
+					view(:class="[list.time_get ? 'between' : 'center']")
+						text.s-24.c-99 寄件时间
+						text.s-24.c-99(v-if="list.time_get")
+						text.s-24.c-99(v-if="list.time_get") 取件时间
+
+
+			view.flex.wing
+				// 收货信息
+				view.flex.bg-white.tail.ra-10
+					view.row.py-30.wing.tail-line
+						text.title 收货信息
+					view.flex.wing.pb-20
+						filed1.py-30(
+							left="收货人",
+							:right="list.take_name",
+							rightColor="#999",
+							size="30"
+						)
+						filed1.py-30(
+							left="收货人电话",
+							:right="list.take_mobile",
+							rightColor="#999",
+							size="30"
+						)
+						filed1.py-30(
+							left="收货人地址",
+							:right="list.take_address",
+							rightColor="#999",
+							size="30",
+							:border="false"
+						)
+
+				// 发货信息
+				view.flex.bg-white.tail.ra-10
+					view.row.py-30.wing.tail-line
+						text.title 发货信息
+					view.flex.wing.pb-20
+						filed1.py-30(
+							left="发货人",
+							:right="list.send_name",
+							rightColor="#999",
+							size="30"
+						)
+						filed1.py-30(
+							left="发货人电话",
+							:right="list.send_mobile",
+							rightColor="#999",
+							size="30"
+						)
+						filed1.py-30(
+							left="发货人地址",
+							:right="list.send_address",
+							rightColor="#999",
+							size="30"
+						)
+						filed1.py-30(
+							left="物品介绍",
+							rightColor="#999",
+							size="30"
+						)
+						text.pa-10.pt-20.c-99(style="font-size: 30rpx;line-height: 40rpx;") {{list.send_des}}
+						filed1.py-30(v-if="list.imgs", left="物品图片", rightColor="#999", size="30")
+						view.row.py-20(v-if="list.imgs && img.length")
+							view.flex.ra-10.overhide.imgBox(v-for="(item, index) in img")
+								image.img.ra-10.overhide(v-if="index < 5", :src="item")
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/easy/express/detail';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad(param) {/**
+			 * 获取获取快递详情
+			 * 
+			 * @param {number} id 快递id
+			 */
+			SERVICE.load(this, {id: param.id});
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.title {
+		font-size: 32rpx;
+		color: #333;
+	}
+	.imgBox {
+		width: 115rpx;
+		height: 115rpx;
+		margin-right: 14rpx;
+	}
+	.img {
+		width: 115rpx;
+		height: 115rpx;
+	}
+</style>

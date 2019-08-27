@@ -1,0 +1,193 @@
+<template lang="pug">
+	view.flex.ra-20.overhide
+
+		view.between.box.ac
+			view.flex.left.column.px-10.jc.ac(@click="$emit('click')")
+				view.row
+					text.moneyLeft ￥
+					text.money {{money}}
+				text.leftText {{leftText}}
+			view.flex.f-1.column.as
+				text.title(@click="$emit('click')") {{title}}
+				view.row(@click="$emit('click')")
+					text.text {{text1}}
+					text.text.ml-20 {{text2}}
+				view.row(@click="$emit('moreFun')")
+					text.more.mr-8 查看详情
+					image.w-10.h-18(src="/static/icon/arrow-right-6.png")
+			view.flex.btnBox.center(v-if="btn")
+				text.couponBtn.center(@click="btnFun") {{btnText}}
+				
+		view.row.bottomBox.px-30.py-20(v-if="progress", :style="{'border-top-color': borderColor}", @click="$emit('click')")
+			text.bottomText.f-1 {{bottomText}}
+			view.flex.progress.rel.overhide.center(:style="{width: progressWidth + 'rpx'}")
+				view.flex.progressOn.abs.top-left-0(:style="{width: progressOnWidth + 'rpx'}")
+				text.progressText.rel {{progressText}}
+</template>
+
+<script>
+	
+
+	export default {
+		
+		props: {
+			money: {
+				type: [Number, String],
+				default: '0.0'
+			},
+			leftText: {
+				type: String,
+				default: 'leftText'
+			},
+			title: {
+				type: String,
+				default: 'title',
+				require: true
+			},
+			text1: {
+				type: String,
+				default: 'text1'
+			},
+			text2: {
+				type: String,
+				default: 'text2'
+			},
+			btnText: {
+				type: String,
+				default: '立即抢购'
+			},
+			borderColor: {
+				type: String,
+				default: '#E3E3E3'
+			},
+			btn: {
+				type: Boolean,
+				default: true
+			},
+			
+			// 底部进度条
+			progress: {
+				type: [Number, Boolean],
+			},
+			max: {
+				type: Number,
+				default: 0
+			},
+			// progressText: {
+			// 	type: String,
+			// 	default: function() {
+			// 		return this.progress + ' / ' + this.max;
+			// 	}
+			// },
+			bottomText: {
+				type: String,
+				default: '剩余：'
+			},
+			progressWidth: {
+				type: String,
+				default: 580
+			},
+			
+			// 方法
+			btnFun: {
+				type: Function,
+				default: ()=>{}
+			},
+			moreFun: {
+				type: Function,
+				default: ()=>{}
+			}
+			
+		},
+		computed: {
+			progressOnWidth: function() {
+				let diff = this.progress / this.max;;
+				return diff * this.progressWidth;
+			},
+			progressText() {
+				return this.progress + ' / ' + this.max;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		height: 190rpx;
+	}
+	// 左侧内容
+	.left {
+		height: 190rpx;
+		width: 180rpx;
+	}
+	.moneyLeft {
+		font-size: 20rpx;
+		color: #CF1322;
+		padding-top: 15rpx;
+	}
+	.money {
+		font-size: 50rpx;
+		color: #CF1322;
+		margin-bottom: 15rpx;
+	}
+	.leftText {
+		font-size: 22rpx;
+		color: #CF1322;
+	}
+	
+	// 中间内容
+	.title {
+		font-size: 30rpx;
+		color: #333;
+		margin-bottom: 10rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+	.text {
+		font-size: 24rpx;
+		color: #666;
+		lines: 1;
+		margin-bottom: 10rpx;
+		text-overflow: ellipsis;
+	}
+	.more {
+		font-size: 24rpx;
+		color: #999;
+	}
+	// 按钮
+	.btnBox {
+		width: 190rpx;
+		height: 190rpx;
+	}
+	.couponBtn {
+		font-size: 20rpx;
+		color: #fff;
+		background-color: #CF1322;
+		padding: 10rpx 16rpx;
+		border-radius: 38rpx;
+	}
+	
+	// 底部进度条
+	.bottomBox {
+		border-top-style: solid;
+		border-top-width: 1px;
+	}
+	.bottomText {
+		font-size: 20rpx;
+		color: #666;
+	}
+	.progress {
+		height: 27rpx;
+		background-color: #dedede;
+		border-radius: 10rpx;
+	}
+	.progressText {
+		font-size: 20rpx;
+		color: #888;
+	}
+	.progressOn {
+		background-color: #cdcdcd;
+		height: 27rpx;
+		border-radius: 10rpx;
+	}
+</style>

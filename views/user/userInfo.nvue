@@ -1,0 +1,61 @@
+<template lang="pug">
+	view.flex.bg-f3
+		filed4.px-30.tail-line-light(title="头像", :img="list.head")
+		filed4.px-30.tail-line-light(title="昵称", :text="list.nick")
+		filed4.px-30.tail-line-light(title="性别", :text="list.sex")
+		filed4.px-30.tail-line-light(title="生日", :text="list.birthday*1000 | dateFormat('Y-m-d')")
+
+		view.flex.greyStrip
+
+		filed4.px-30.tail-line-light(title="手机号码", :text="list.username | phoneSafe")
+		filed4.px-30.tail-line-light(title="修改密码")
+		filed4.px-30.tail-line-light(title="注销账号", text="注销后无法恢复，请谨慎操作")
+
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/user/userInfo';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+			// 获取用户信息
+			SERVICE.load(this);
+		},
+		filters: {
+			phoneSafe(value) {
+				return value;
+				// .toString().substr(0,3) + "****" + value.substr(9);
+			}
+		},
+		methods: {
+			/**
+			 * 修改用户数据,或者注销账号都使用
+			 * 
+			 * @param is_disabled		可选 是否注销
+			 * @param area_id			可选 商圈id
+			 * @param nick				可选 昵称
+			 * @param head				可选 头像
+			 * @param sex				可选 性别	'男'、‘女’、‘保密’，这个后端没有定，前端定
+			 * @param birthday			可选 生日	传时间戳
+			 * @param mobile			可选 手机号
+			 * @param email				可选 电子邮箱
+			 */
+			update() {
+				SERVICE.update(this, {nick:'明显nick改变', sex: '男'});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+</style>

@@ -1,0 +1,137 @@
+<template lang="pug">
+	view.flex
+		view.flex.bg-f3.f-1
+			view.flex
+				image.w-750.h-475(:src="list.headimg")
+
+			//- 基本信息
+			view.flex.bg-white.py-20.wing.tail
+				text.c-33.size-36.py-20 {{list.name}}
+				view.flex.bottom.row-wrap.as.pb-20(v-if="list.cate_name")
+					text.tagPage {{list.cate_name}}
+
+				//- 信息filed
+				filed2(
+					img="/static/icon/user-1.png", 
+					:text="list.author_name", 
+					@click="navigate('/views/action/organiger?id=' + list.author_id + '&type=' + list.type)", 
+					imgW="23", 
+					imgH="22"
+				)
+				filed2(
+					img="/static/icon/money-1.png", 
+					:text="list.is_free ? '购票' : '免费'", 
+					imgRight=""
+				)
+				filed2(
+					img="/static/icon/dengdai-4.png", 
+					:text="list.time_start | time_start_end(list.time_end)", 
+					imgRight=""
+				)
+				filed2(
+					img="/static/icon/location-4.png", 
+					:text="list.address", 
+					imgW="23", 
+					imgH="29", 
+					imgRight=""
+				)
+
+			//- 详情
+			view.flex.bg-white.py-20.wing.tail
+				view.row.py-20
+					view.flex.redLine
+					text.ml-10.c-33.s-32 详情
+				view.column.py-20(v-html="list.content")
+					//- image.w-680.h-325(src="/static/image/active1.png")
+					//- text.mt-20.mb-30.c-56.s-28.lh-40 {{list.content}}
+
+		div.h-100
+
+		//- 底部固定按钮
+		view.row.bg-white.footer.h-100
+			view.column.w-160.jc.ac.h-100
+				image.mb-10.w-36.h-36(src="/static/icon/follow1.png", @click="toastTest")
+				text.c-33.tc.s-24 关注
+			view.flex.line
+			view.column.w-160.jc.ac.h-100
+				image.mb-10.w-36.h-36(src="/static/icon/msg3.png", @click="toastTest")
+				text.c-33.tc.s-24 留言
+			text.f-1.bg-primary.c-white.tc.s-36.h-100(style="line-height: 100rpx;", @click="navigate('/views/action/join?id=' + list.id)") 我要参加
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/action/detail';
+	import { dateFormat } from '@/functions/date';
+	import { mixinLife, mixinScene } from '@/mixins';
+
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tag: [{text:'旅游', color: 'orange'}, 'FOOD', {text:'山水', color: '#e37'}],
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 获取详情页数据
+			 * 
+			 * @param id 活动id
+			 */
+			SERVICE.load(this, {id: param.id});
+		},
+		filters: {
+			time_start_end: function(start, end) {
+				start = dateFormat('Y.m.d H:i', start * 1000);
+				end = dateFormat('Y.m.d H:i', end * 1000);
+				return start + ' 至 ' + end;
+			}
+		},
+		methods: {
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.size-36 {
+		font-size: 36rpx;
+	}
+	.size-20 {
+		font-size: 20rpx;
+	}
+	.h-100 {
+		height: 100rpx;
+	}
+	.line {
+		border-right-style: solid;
+		border-right-width: 1rpx;;
+		border-right-color: #f3f3f3;
+		height: 50rpx;
+	}
+	.redLine {
+		border-right-style: solid;
+		border-right-width: 5rpx;;
+		border-right-color: #CF1322;
+		height: 24rpx;
+	}
+	.w-160 {
+		width: 160rpx;
+	}
+	.tagPage {
+		font-size: 22rpx;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #85A5FF;
+		border-radius: 50rpx;
+		color: #85A5FF;
+		padding: 2rpx 10rpx;
+		margin-right: 10rpx;
+	}
+</style>

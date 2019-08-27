@@ -1,0 +1,58 @@
+<template lang="pug">
+	view.between.py-30.box.bg-white
+		text.title {{title}}
+		view.row
+			text.text(v-if="text") {{text}}
+			image.img.ra-max.overhide(v-if="img", :src="img")
+			image.w-14.h-30(src="/static/icon/arrow-right-6.png", v-if="arrow")
+</template>
+
+<script>
+	export default {
+		props: {
+			title: {
+				type: String,
+				require: true
+			},
+			text: {
+				type: String,
+			},
+			img: {
+				type: String,
+			},
+			arrow: {
+				type: Boolean,
+				default: true
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box{
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #f3f3f3;
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+	}
+	.icon {
+		font-size: 30rpx;
+		color: #999;
+	}
+	.title {
+		font-size: 32rpx;
+		color: #333;
+		margin-right: 15rpx;
+	}
+	.text {
+		font-size: 30rpx;
+		color: #999;
+		margin-right: 15rpx;
+	}
+	.img {
+		width: 110rpx;
+		height: 110rpx;
+		margin-right: 18rpx;
+	}
+</style>

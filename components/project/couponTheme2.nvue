@@ -1,0 +1,138 @@
+<template lang="pug">
+	view.flex.box.ra-10.ac.overhide(:class="[bgClass && 'bg-' + bg]", :style="[!bgClass && {'background-color': bg}]", @click="$emit('click')")
+
+		view.column.ra-10.content.f-1(:class="[topClass && 'bg-' + topbg]", :style="[!topClass && {'background-color': topbg}]")
+			view.row.jc.ac.w-content
+				text.moneyLeft.c-white.bold.pb-20 ￥
+				text.money.c-white.bold {{money}}
+			text.name.c-white.lines-1.ellipsis.tc.w-content.lines-1.ellipsis {{name}}
+			text.trade.c-white.tc.w-content.lines-1.ellipsis {{trade}}
+			view.flex.desc.ra-10.jc.ac.c-grey-9.w-content
+				text.c-white.descText.op-08.tc.lines-1.ellipsis(v-if="descText1") {{descText1}}
+				text.c-white.descText.op-08.tc.lines-1.ellipsis(v-if="descText2") {{descText2}}
+				
+		view.row.btn-coupon2.jc.ac.w-content
+			text.btnText.c-white {{bottomText}}
+			image.ml-8(style="width: 9rpx; height: 14rpx;", src="/static/icon/arrow-right-5.png")
+</template>
+
+<script>
+	
+	export default {
+		
+		props: {
+			bg: {
+				type: String,
+				default: '#BE0F0F'
+			},
+			topbg: {
+				type: String,
+				default: '#E83636'
+			},
+			circleColor: {
+				type: String,
+				default: 'grey-0'
+			},
+			money: {
+				type: [String, Number],
+				default: 0
+			},
+			name: {
+				type: String
+			},
+			trade: {
+				type: String
+			},
+			descText1: {
+				type: String
+			},
+			descText2: {
+				type: String
+			},
+			descText3: {
+				type: String
+			},
+			bottomText: {
+				type: String,
+				default: '立即抢购'
+			}
+		},
+		computed: {
+			bgClass: function() {
+				if(this.bg.indexOf('#') === -1) {
+					return true;
+				}
+				return false
+			},
+			topClass: function(){
+				if(this.topbg.indexOf('#') === -1) {
+					return true;
+				}
+				return false
+			}
+		},
+	}
+</script>
+
+<style lang="scss">
+	.btn {
+		height: 84rpx;
+		width: 556rpx;
+		line-height: 84rpx;
+		align-items: center;
+		border-radius: 100rpx;
+		background-color: #CF1322;
+
+		text-align: center;
+		font-size: 28rpx;
+		color: #fff;
+	}
+
+	.box {
+		// height: 312rpx;
+		width: 218rpx;
+	}
+	.content {
+		width: 218rpx;
+		padding: 8rpx 20rpx 0 20rpx;
+	}
+	.w-content {
+		width: 186rpx;
+	}
+	.moneyLeft {
+		font-size: 34rpx;
+	}
+	.money {
+		font-size: 70rpx;
+	}
+	.name {
+		font-size: 26rpx;
+		margin-bottom: 10rpx;
+		width: 100%;
+	}
+	.trade {
+		font-size: 24rpx;
+		border-top-width: 1px;
+		border-top-style: solid;
+		border-top-color: #E9E9E9;
+		border-bottom-width: 1px;
+		border-bottom-style: solid;
+		border-bottom-color: #E9E9E9;
+		padding: 8rpx 0;
+	}
+	.btnText, .btnIcon {
+		font-size: 24rpx;
+		background-color: transparent;
+	}
+	.descText {
+		font-size: 22rpx;
+		padding: 3rpx 0 0 0;
+	}
+	.desc {
+		padding: 8rpx 0;
+	}
+	.btn-coupon2 {
+		height: 50rpx;
+	}
+	
+</style>

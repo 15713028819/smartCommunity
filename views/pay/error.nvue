@@ -1,0 +1,47 @@
+<template lang="pug">
+	view.flex.bg-f3.f-1
+		view.flex.f-1.pt-80.jc.ac
+			image.mb-50.w-295.h-295(src="/static/icon/pay-error.png")
+			text.s-36.c-66 支付失败
+		
+		view.flex.ac.pb-80
+			text.mb-40.btn-result.c-white.bg-primary(@click="navigate('/views/order/detail')") 查看订单
+			text.mb-50.btn-result.c-white.bg-primary(@click="goback") 返回首页
+		
+		
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins: [mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		created() {
+		
+		},
+		mounted() {
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.btn-result {
+		width: 632rpx;
+		height: 86rpx;
+		line-height: 86rpx;
+		text-align: center;
+		font-size: 34rpx;
+		border-radius: 28rpx;
+	}
+	.w-295 {width: 295rpx;}
+	.h-295 {height: 295rpx;}
+</style>

@@ -1,0 +1,101 @@
+<template lang="pug">
+	view.f-1.bg-f3
+		view.flex.wing.pt-30
+			view.flex.bg-white.ra-30.tail
+				view.center.py-30.tail-line(v-if="list.info.point")
+					image.w-30.h-30(src="/static/icon/jifen-3.png")
+					text.ml-20.s-24.c-66 现在缴费，可免费赠送{{list.info.point}}积分
+				view.flex.py-30
+					view.center.py-20
+						text.c-primary.s-30.pt-10 ￥
+						text.c-primary(style="font-size: 60rpx;") {{list.info.amount_real}}
+					view.center
+						text.s-26.c-66 {{list.info.name}}
+				view.flex.wing.pb-8
+					view.between.py-20.wing.tail-line
+						text.s-30.c-99 缴费单位
+						text.s-30.c-66 {{list.info.pm_name}}
+					view.between.py-20.wing(:class="[list.info.time_pay && 'tail-line']")
+						text.s-30.c-99 创建时间
+						text.s-30.c-66 {{list.info.created * 1000 | dateFormat}}
+					view.between.py-20.tail-line.wing(v-if="list.info.time_pay")
+						text.s-30.c-99 支付方式
+						text.s-30.c-66 {{list.info.pay_type | payType}}
+					view.between.py-20.wing(v-if="list.info.time_pay")
+						text.s-30.c-99 缴费时间
+						text.s-30.c-66 {{list.info.time_pay * 1000 | dateFormat}}
+			view.flex.btn-box.ac.pt-80
+				view.between.btn-fee-box(v-if="list.info.state == 2")
+					text.btn-fee.bg-primary.c-white.ra-max(@click="navigate('/views/prop/opinion/add')") 问题反馈
+					text.btn-fee.bg-primary.c-white.ra-max(@click="phoneCall('0312-6785555')") 联系物业
+				text.btn-lg-primary.ra-max(v-if="list.info.state != 2", @click="toastTest") 立即缴费
+				view.between.btn-fee-box.mt-50.tail(v-if="list.info.state != 2")
+					text.btn-fee.c-primary.ba.bc-primary.ra-max(@click="navigate('/views/prop/opinion/add')") 问题反馈
+					text.btn-fee.c-primary.ba.bc-primary.ra-max(@click="phoneCall('0312-6785555')") 联系物业
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/prop/fee/detail';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 获取缴费详情
+			 * 
+			 * @param id 	缴费条目的id
+			 */
+			SERVICE.load(this, {id: param.id});
+		},
+		filters: {
+			payType: function(value) {
+				// if(value == 0) return "微信支付";
+				switch (value) {
+					case 0:
+						return "微信支付"
+				}
+			}
+		},
+		methods: {
+			/**
+			 * 支付成功
+			 * 
+			 * @param code		订单号码
+			 */
+			payOk() {
+				SERVICE.pay_ok(this, {code: 'df454sd4463633'});
+			},
+			
+			// 打电话
+			phoneCall(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber
+				})
+			},
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.btn-fee {
+		width: 240rpx;
+		height: 70rpx;
+		line-height: 70rpx;
+		text-align: center;
+		font-size: 28rpx;
+	}
+	.btn-fee-box {
+		width: 750rpx;
+		padding: 0 97rpx;
+	}
+</style>

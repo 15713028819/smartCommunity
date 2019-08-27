@@ -1,0 +1,107 @@
+<template lang="pug">
+	view.flex.bg-white.wing
+		textarea.textarea.pa-20.tail(placeholder="要对社区的朋友说些什么……", v-model='text', :autofocus="true")
+		view.flex.between-wrap
+			view.flex.w-150.h-150.ba.bc-ee.ra-10.mb-20.center
+				image.w-60.h-60(src="/static/icon/jia-3.png")
+
+		//- 选择项
+		view.flex.py-20.wing.mt-20
+			view.row.among-line.h-100.lh-100.px-10(@click="toastTest")
+				text.s-32.c-66 类别
+				
+				picker.f-1.between(@change="changeCate", :value="cateIndex", :range="list", range-key='name')
+					view.ix.ml-30.f-1
+						text.s-32.c-99.ml-10 {{cateIndex ? list[cateIndex].name : '点击选择类别'}}
+					image.w-10.h-20(src="/static/icon/arrow-right-3.png")
+
+		//- 按钮组
+		view.flex.py-80.ac
+			text.btn-lg-primary.ra-max(@click="onSubmit") 发布
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/talk/add';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				...SERVICE.data,
+				cateIndex: 0,
+				cate_id: null,
+				text: '',
+				imgs: ''
+			}
+		},
+		onLoad() {
+			// 获取动态类别
+			SERVICE.load_cate(this);
+		},
+		methods: {
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			
+			/**
+			 * 添加动态信息
+			 * 
+			 * @param cate_id	类型id
+			 * @param text		发布的文字
+			 * @param imgs		图片,逗号分隔的字符串
+			 */
+			onSubmit() {
+				if(!this.text && !this.imgs) return uni.showToast({title: '请填写内容', icon: 'none'});
+				if(!this.cate_id) return uni.showToast({title: '请选择分类', icon: 'none'});
+
+				SERVICE.submit(this, {cate_id: this.cate_id, text: this.text, imgs: this.imgs}, ()=>{
+					uni.showToast({
+						title: '发布成功'
+					})
+					setTimeout(() => {
+						this.goback();
+					}, 1500);
+				});
+			},
+			changeCate(e) {
+				console.log('eee', e)
+				this.cateIndex = e.detail.value;
+				this.cate_id = this.list[this.cateIndex].id;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.textarea {
+		color: #333;
+		font-size: 30rpx;
+	}
+
+	// 图片上传
+	.upBox {
+		margin-left: -15rpx;
+	}
+	.upItem {
+		width: 220rpx;
+		height: 220rpx;
+		margin-left: 15rpx;
+	}
+	.upImg {
+		width: 220rpx;
+		height: 220rpx;
+	}
+
+	// 选择部分
+	.among-line {
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #eee;
+		border-top-style: solid;
+		border-top-width: 1px;
+		border-top-color: #eee;
+	}
+
+</style>

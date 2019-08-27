@@ -1,0 +1,79 @@
+<template lang="pug">
+	view.f-1
+
+		
+		//- titlebar
+		navigateBar(bg="#CF1322")
+			image(style="width: 22rpx; height: 38rpx;", src="/static/icon/arrow-left.png", @click="goback()")
+			view.h-60.mx-30.bg-white.ra-max.row.ac.f-1
+				image.ml-28.mr-20(style="width: 29rpx; height: 29rpx;", src="/static/icon/search-1.png")
+				input.h-50.s-28.f-1(placeholder="芒果", placeholder-style="color: #666;", style="font-size: 26rpx;", focus)
+			text.bg-white.c-primary.ra-max.s-28.px-20.py-10(@click="toastTest") 搜索
+
+			
+		scroll-view.f-1.w-750(scroll-y)
+			text.s-32.bold.c-36.wing-xxl.pt-50 搜索历史
+			view.wing-xxl.py-30.row-wrap
+				text.mx-10.ba.bc-ce.c-36.s-30.px-24.py-12.ra-max(@click="toastTest") 芒果
+				text.mx-10.ba.bc-ce.c-36.s-30.px-24.py-12.ra-max(@click="toastTest") 荔枝
+				text.mx-10.ba.bc-ce.c-36.s-30.px-24.py-12.ra-max(@click="toastTest") 猕猴桃
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				
+			}
+		},
+		onLoad() {
+			uni.getSystemInfo({
+				success: (res)=> {
+					console.log(res.statusBarHeight)
+					console.log(res.screenWidth)
+					this.statusBarHeight = res.screenWidth / 750 * res.statusBarHeight;
+					
+					console.log('statusBarHeight', this.statusBarHeight)
+				}
+			})
+		},
+		methods: {
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style>
+	
+	.sliderBox, .sliderImg, .slider {
+		width: 690rpx;
+		height: 240rpx;
+	}
+	.tabText {
+		font-size: 30rpx;
+		color: #B5B5B5;
+		line-height: 50rpx;
+	}
+	.tabItem {
+		width: 55rpx;
+		height: 8rpx;
+		background-color: transparent;
+	}
+	.activeText {
+		color: #CF1322;
+	}
+	.activeItem {
+		background-color: #CF1322;
+	}
+	.h-60 {
+		height: 60rpx;
+	}
+</style>

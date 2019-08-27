@@ -1,0 +1,94 @@
+<template lang="pug">
+	view.bg-f3.f-1
+		view.flex.bg-f3
+			//- 状态栏
+			status1.tail(text="已回复", color="#389E0D", stateImg="/static/icon/opinion-yihuifu.png")
+
+			//- 意见信息
+			view.flex.bg-white.tail
+				view.flex.py-30.wing.row.tail-line
+					text.title 我
+					text.ml-10.s-34.c-99 发送
+				view.flex.wing.pb-20
+					text.pa-10.pt-20.c-66.s-30.lh-40 {{list.text_submit}}
+					view.row.py-20(v-if="list.imgs.length")
+						view.flex.ra-10.overhide.imgBox(v-for="(item, index) in img")
+							image.img.ra-10.overhide(v-if="index < 5", :src="item")
+					view.row.je
+						text.s-28.c-99 {{list.created * 1000 | dateFormat('Y-m-d H-i')}}
+
+			//- 社区反馈
+			view.flex.bg-white.tail(v-if="list.state")
+				view.row.py-30.wing.tail-line
+					text.title 社区反馈
+				view.flex.wing.pb-20
+					text.pa-10.pt-20.c-66.s-30.lh-40 {{list.text_return}}
+					view.row.je
+						text.s-28.c-99 {{list.time_return * 1000 | dateFormat('Y-m-d H-i')}}
+
+		//- 底部按钮
+		view.row.bottom.footer.h-100
+			text.tc.f-1.bg-white.c-33.s-28.h-100(style="line-height: 100rpx;", @click="phoneCall('0312-6785555')") 拨打社区电话
+			text.tc.f-1.bg-primary.c-white.s-28.h-100(style="line-height: 100rpx;", @click="navigate('/views/prop/opinion/add')") 继续反馈
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/prop/opinion/detail';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				img: ['../../../static/image/image-3.png', '../../../static/image/image-4.png', '../../../static/image/image-5.png']
+			}
+		},
+		onLoad(param) {
+			/**
+			 * 获取意见箱详情
+			 * 
+			 * @param id 意见id
+			 */
+			SERVICE.load(this, {id: param.id});
+		},
+		methods: {
+			// 打电话
+			phoneCall(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.title {
+		font-size: 32rpx;
+		color: #333;
+	}
+	.imgBox {
+		width: 115rpx;
+		height: 115rpx;
+		margin-right: 14rpx;
+	}
+	.img {
+		width: 115rpx;
+		height: 115rpx;
+	}
+
+	.bottom {
+		width: 750rpx;
+		border-top-style: solid;
+		border-top-width: 1px;
+		border-top-color: #f3f3f3;
+		
+		
+	}
+	.buttom-btn {
+
+	}
+</style>

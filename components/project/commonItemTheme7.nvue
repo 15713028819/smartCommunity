@@ -1,0 +1,53 @@
+<template lang="pug">
+	view.flex.pa-20(:class="[border && 'box']")
+		view.between
+			text.title {{title}}
+			text.text1 {{text1}}
+		view.between
+			text.text2 {{text2}}
+			text.text2 {{text3}}
+</template>
+
+<script>
+	export default {
+		props: {
+			title: {
+				type: String
+			},
+			text1: {
+				type: String,
+			},
+			text2: {
+				type: String,
+			},
+			text3: {
+				type: String,
+			},
+			border: {
+				type: Boolean,
+				default: true
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #F5F5F5;
+	}
+	.title {
+		font-size: 28rpx;
+		color: #666;
+	}
+	.text1 {
+		font-size: 24rpx;
+		color: #666;
+	}
+	.text2 {
+		font-size: 24rpx;
+		color: #999;
+		margin-top: 8rpx;
+	}
+</style>

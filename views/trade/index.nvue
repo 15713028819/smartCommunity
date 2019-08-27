@@ -1,0 +1,176 @@
+<template lang="pug">
+	view.flex.bg-f3
+	
+		//- titlebar
+		navigateBar(bg="#CF1322")
+			image(style="width: 22rpx; height: 38rpx;", src="/static/icon/arrow-left.png", @click="goback()")
+			text.c-white.s-34.ml-30 周边商家
+			view.h-60.ml-30.bg-white.ra-max.row.ac.f-1(@click="navigate('/views/common/search')")
+				image.ml-28.mr-20(style="width: 29rpx; height: 29rpx;", src="/static/icon/search-1.png")
+				text.h-60.lh-60.s-28.f-1.c-66 {{searchWord}}
+				//- input.h-60.s-28.f-1(placeholder="芒果", placeholder-style="color: #666;", style="font-size: 28rpx;")
+		
+		
+		//- 头部
+		view.flex.bg-white
+			//- 热搜词
+			view.flex.px-80.pt-30.row.center(v-if="list.hot_sreach")
+				text.c-primary.s-30.mr-10 热搜：
+				text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(v-for="(item, index) in list.hot_sreach", v-if="index < 5", @click="navigate('/views/shop/prodList?keyword=' + item.name)") {{item.name}}
+			//- 轮播图
+			view.center.pt-30(v-if="list.swiper")
+				swiper.slider.wing.tail.ra-10.overhide(:indicator-dots="list.swiper.length - 1", autoplay, indicator-color="#fff", indicator-active-color="#CF1322", circular)
+					swiper-item.flex.sliderBox(v-for="item in list.swiper", @click="navigate(item.url)")
+						image.sliderImg(:src="item.img")
+						
+		//- 菜单
+		view.flex.wing.pt-16.between-wrap.bg-white.tail
+			itemY.mb-30.mx-24(v-for="(item, index) in list.cate", :img="item.img", :text="item.name", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/trade?id='+item.id)")
+			itemY.mb-24.mx-30(img="/static/icon/serve_gengduo.png", text="更多", imgW="80", imgH="80", imgSize="90", @click="navigate('/views/trade/trade')")
+
+		//- 主内容区
+		view.flex.wing
+			//- 优惠券
+			view.between.py-20
+				text.c-33.s-32.title-home 推荐商家优惠券
+				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/trade')") 更多优惠券
+			view.between.tail
+				coupon1.r-8(
+					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[0].id + '&type=coupon')",
+					bg="#9B1FDD",
+					:itemText="list.coupon_list[0].time_start | couponTime(list.coupon_list[0].time_end)",
+					:money="list.coupon_list[0].price",
+					:name="list.coupon_list[0].name",
+					:desc="list.coupon_list[0].content"
+				)
+				coupon1(
+					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[1].id + '&type=coupon')",
+					bg="#B42676",
+					:itemText="list.coupon_list[1].time_start | couponTime(list.coupon_list[1].time_end)",
+					:money="list.coupon_list[1].price",
+					:name="list.coupon_list[1].name",
+					:desc="list.coupon_list[1].content"
+				)
+			view.between.tail
+				coupon1.mr-8(
+					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[2].id + '&type=coupon')",
+					bg="#5FA56D",
+					:itemText="list.coupon_list[2].time_start | couponTime(list.coupon_list[2].time_end)",
+					:money="list.coupon_list[2].price",
+					:name="list.coupon_list[2].name",
+					:desc="list.coupon_list[2].content"
+				)
+				coupon1(
+					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[3].id + '&type=coupon')",
+					bg="#B42626",
+					:itemText="list.coupon_list[3].time_start | couponTime(list.coupon_list[3].time_end)",
+					:money="list.coupon_list[3].price",
+					:name="list.coupon_list[3].name",
+					:desc="list.coupon_list[3].content"
+				)
+			view.between.tail
+
+			//- 会员卡
+			view.between.py-20
+				text.c-33.s-32.title-home 推荐商家会员卡
+				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/trade')") 更多优惠券
+			view.between.tail
+				coupon2(@click="navigate('/views/user/coupon/detail?id=' + list.vip_list[0].id + '&type=vip')", :name="list.vip_list[0].name", :money="list.vip_list[0].price",:trade="list.vip_list[0].trade_name",:descText1="list.vip_list[0].limitday  + '天'",:descText2="'每天限用' + list.vip_list[0].limitnum + '次'")
+				coupon2(@click="navigate('/views/user/coupon/detail?id=' + list.vip_list[1].id + '&type=vip')", :name="list.vip_list[1].name", :money="list.vip_list[1].price",:trade="list.vip_list[1].trade_name",:descText1="list.vip_list[1].limitday  + '天'",:descText2="'每天限用' + list.vip_list[1].limitnum + '次'")
+				coupon2(@click="navigate('/views/user/coupon/detail?id=' + list.vip_list[2].id + '&type=vip')", :name="list.vip_list[2].name", :money="list.vip_list[2].price",:trade="list.vip_list[2].trade_name",:descText1="list.vip_list[2].limitday  + '天'",:descText2="'每天限用' + list.vip_list[2].limitnum + '次'")
+
+			//- 商家列表 -- tab
+			view.row.py-20
+				view.column.mr-30(v-for="(item, index) in list.trade_list", @click="changeTab(index)", style="align-items: center;")
+					text.tabText(:class="[index == tabIndex && 'activeText']") {{item.name}}
+					view.flex.tabItem(:class="[index == tabIndex && 'activeItem']")
+
+			//- 商家列表 -- 商家
+			trade1.mt-20(
+				v-for="(trade, index) in list.trade_list[tabIndex].list"
+				:img="trade.icon", 
+				:title="trade.name", 
+				:tradeType="trade.link_name", 
+				:starDesc="'月售'+trade.count_sale", 
+				:starNum="trade.grade / 10", 
+				:text2="trade.time_busess", 
+				text1="3.6公里",
+				:insignia="['/static/icon/zhang.png', '/static/icon/zhang.png', '/static/icon/zhang.png']",
+				:tag="[...trade.coupon_list , ...trade.package_list ]",
+				@click="navigate('/views/trade/tradeDetail?id=' + trade.id)"
+			)
+
+			view.column.py-50
+				text.s-30.c-99.tc 已经没有更新的商家……
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/trade/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	import { dateFormat } from '@/functions/date';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				...SERVICE.data,
+				tabIndex: 1,
+			}
+		},
+		onLoad() {
+			// 获取商户首页的数据
+			SERVICE.load(this);
+		},
+		computed: {
+			searchWord: function() {
+				if(this.list.hot_sreach && this.list.hot_sreach.length) {
+					let random = Math.round(Math.random() * this.list.hot_sreach.length);
+					return this.list.hot_sreach[random].name;
+				}
+				else return '请输入关键词搜索';
+			}
+		},
+		filters: {			
+			couponTime(start, end) {
+				start = dateFormat('m月d日', start);
+				end = dateFormat('m月d日', end);
+				return '活动时间：' + start + '到' + end;
+			}
+		},
+		methods: {
+			changeTab(index) {
+				this.tabIndex = index;
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.sliderBox, .sliderImg, .slider {
+		width: 690rpx;
+		height: 240rpx;
+	}
+	.tabText {
+		font-size: 30rpx;
+		color: #B5B5B5;
+		line-height: 50rpx;
+	}
+	.tabItem {
+		width: 55rpx;
+		height: 8rpx;
+		background-color: transparent;
+	}
+	.activeText {
+		color: #E66E07;
+	}
+	.activeItem {
+		background-color: #E66E07;
+	}
+	
+	.h-60 {
+		height: 60rpx;
+	}
+</style>

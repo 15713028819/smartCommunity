@@ -1,0 +1,46 @@
+<template lang="pug">
+	view(:style="{width: '750rpx', 'background-color': bg}")
+		// #ifdef APP-PLUS-NVUE
+		view(:style="{height: statusBarHeight}")
+		// #endif
+		view.between.box(:style="{height: '44px'}")
+			slot
+</template>
+
+<script>
+	export default {
+		props: {
+			type: {
+				type: String,
+				default: 'default'
+			},
+			bg: {
+				type: String,
+				default: '#fff'
+			}
+		}, 
+		data() {
+			return {
+				statusBarHeight: '24px'
+			}
+		},
+		created() {
+			uni.getSystemInfo({
+				success: (res)=> {
+					this.statusBarHeight = res.statusBarHeight + 'px';
+				}
+			})
+		}
+	}
+</script>
+
+<style>
+	.box {
+		padding: 0 30rpx;
+	}
+	.between {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+</style>

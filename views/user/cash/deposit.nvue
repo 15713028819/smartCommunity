@@ -1,0 +1,136 @@
+<template lang="pug">
+	view.flex.wing
+			
+		// 选择充值金额
+		view.row.py-30
+			text.title 充值金额
+
+		view.flex.between-wrap.btnBox
+			text.btnOnly(v-for="(item, index) in cash", :class="[!custom && cashIndex == index && 'active']", @click="()=>changeIndex(index)") {{item + '元'}}
+		
+		// 自定义充值金额
+		view.between.py-30
+			text.title 自定义金额	
+			image(style="width: 44rpx; height: 44rpx;", :src="custom ? '/static/icon/check-on.png' : '/static/icon/check.png'", @click="onCheck")
+		
+		view.row.inputBox.my-20(v-if="custom")
+			input.input.f-1(placeholder="请输入充值金额", type="number", return-key-type="done", @input="changeInput")
+			text.inputText.px-20(v-if="input") 元
+		
+		// 按钮组
+		view.flex.pt-80.center
+			text.btnPage.bg-primary.c-white(@click="recharge") 立即充值
+		
+	
+</template>
+
+<script>
+	import SERVICE from '@/services/project/user/cash/deposit';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				input: '',
+				cashIndex: 0,
+				custom: false,
+				cash: [10, 30, 50, 100, 300, 500]
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+			changeIndex(index) {
+				if(!this.custom) this.cashIndex = index;
+			},
+			onCheck() {
+				this.custom = !this.custom;
+			},
+			changeInput(e) {
+				console.log('e',e)
+				this.input = e.detail.value;
+			},
+			/**
+			 * 获取余额
+			 * 
+			 * @param count 充值金额， 必须是数字，必传
+			 */
+			recharge() {
+				let count = this.cash[this.cashIndex];
+				if(this.custom) count = Number(this.input);
+				SERVICE.recharge(this, {count},
+				()=>{
+					uni.showToast({title: '充值' + count + '元成功'});
+					setTimeout(() => {
+						this.goback(0)
+					}, 1500);
+				});
+			},
+			/**
+			 * 充值成功
+			 * 
+			 * @param code 充值订单号
+			 */
+			pay_ok(id, product_id) {
+				SERVICE.pay_ok(this, {code: 'XMSM1565422000'});
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.title {
+		font-size: 34rpx;
+		color: #333;
+	}
+	.btnBox {
+		margin-left: -20rpx;
+	}
+	.btnOnly {
+		width: 210rpx;
+		height: 102rpx;
+		line-height: 102rpx;
+		font-size: 32rpx;
+		color: #CF1322;
+		border-style: solid;
+		border-width: 2rpx;
+		border-color: #CF1322;
+		border-radius: 20rpx;
+		text-align: center;
+		margin-bottom: 20rpx;
+	}
+	.active {
+		background-color: #CF1322;
+		color: #fff;
+	}
+	.inputBox {
+		border-bottom-style: solid;
+		border-bottom-width: 1rpx;
+		border-bottom-color: #bbb;
+		height: 62rpx;
+	}
+	.input {
+		font-size: 32rpx;
+		color: #333;
+		height: 62rpx;
+		line-height: 62rpx;
+	}
+	.inputText {
+		font-size: 32rpx;
+		color: #666;
+		line-height: 62rpx;
+	}
+	
+	.btnPage {
+		height: 84rpx;
+		width: 556rpx;
+		line-height: 84rpx;
+		align-items: center;
+		border-radius: 100rpx;
+		
+		text-align: center;
+		font-size: 28rpx;
+	}
+</style>

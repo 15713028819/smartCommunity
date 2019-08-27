@@ -1,0 +1,61 @@
+<template lang="pug">
+	view.flex.bg-f3
+		view.flex.bg-white.py-30.wing.tail
+			text.pb-30.s-20.c-66 关注的商家
+			view.flex.wing.between
+				itemY(
+					v-for="(item, index) in list.trade_list",
+					:img="item.icon", 
+					:text="item.name", 
+					imgW="67", 
+					imgH="67", 
+					imgSize="80", 
+					@click="navigate('/views/msg/msgList?id='+item.id)"
+				)
+				//- itemY(img="/static/image/logo-3.jpg", text="中石化", imgW="67", imgH="67", imgSize="80", @click="navigate('/views/msg/msgList')")
+					itemY(img="/static/image/logo-4.jpg", text="电谷", imgW="67", imgH="67", imgSize="80", @click="navigate('/views/msg/msgList')")
+					itemY(img="/static/image/logo-5.jpg", text="世纪影城", imgW="67", imgH="67", imgSize="80", @click="navigate('/views/msg/msgList')")
+					itemY(img="/static/image/logo-6.jpg", text="惠友", imgW="67", imgH="67", imgSize="80", @click="navigate('/views/msg/msgList')")
+		commonItem1(
+			v-for="(item, key) in list.list",
+			ra="14", 
+			:title="item.title", 
+			:desc="item.content", 
+			:time="item.created | dateLapse", 
+			imgW="70", 
+			imgH="70", 
+			:img="item.icon", 
+			@click="navigate('/views/msg/msgList?id=' + item.id)"
+		)
+		//-commonItem1(ra="14", title="世纪影城", desc="好看的电影你看过几个？", time="1天前", imgW="70", imgH="70", img="/static/image/logo-5.jpg", @click="navigate('/views/msg/msgList')")
+		//- commonItem1(ra="14", title="电谷", desc="优惠享不停，直到9月30日！", time="1天前", imgW="70", imgH="70", img="/static/image/logo-4.jpg", @click="navigate('/views/msg/msgList')")
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/msg/tradeNoSubscribe';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+			/**
+			 * 获取未关注商家信息和消息列表
+			 */
+			SERVICE.load(this);
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.h-160 {height: 160upx;}
+	.h-130 {height: 130upx;}
+	.h-100 {height: 100upx;}
+</style>

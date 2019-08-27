@@ -1,0 +1,212 @@
+// ----------------------------------------------------------
+// generate.scss
+// 
+// 1、专用于根据variable.scss文件中给出的变量，自动生成class
+// 2、详细规则请查阅说明文档
+// ----------------------------------------------------------
+
+// ----------------------------------------------------------
+// 生成有彩色系
+// ----------------------------------------------------------
+
+@each $k, $v in $colors {
+	.bg-#{$k} { background-color: $v !important}
+	.bc-#{$k} { border-color: $v !important}
+	.c-#{$k} { color: $v !important}
+}
+
+// ----------------------------------------------------------
+// 生成辅助色系
+// ----------------------------------------------------------
+
+@each $k, $v in $embellishs {
+	$i: 0;
+	@each $color in $v {
+		.bg-#{$k}-#{$i} { background-color: $color !important}
+		.bc-#{$k}-#{$i} { border-color: $color !important}
+		.c-#{$k}-#{$i} { color: $color !important}
+		$i: $i + 1;
+	}
+}
+
+// ----------------------------------------------------------
+// 生成中性色系
+// ----------------------------------------------------------
+
+@each $m in map-get($grays, "master") {
+
+	// 计算并生成主色
+	$mc: unquote('#' + $m + $m + $m + $m + $m + $m);
+	.bg-#{$m}#{$m} { background-color: $mc !important}
+	.bc-#{$m}#{$m} { border-color: $mc !important}
+	.c-#{$m}#{$m} { color: $mc !important}
+
+	// 计算并生成次色（如果$l与$m重复，则不生成）
+	@each $l in map-get($grays, "lesser") {
+		@if $l != $m {
+			$lc: unquote('#' + $m + $l + $m + $l + $m + $l);
+			.bg-#{$m}#{$l} { background-color: $lc !important}
+			.bc-#{$m}#{$l} { border-color: $lc !important}
+			.c-#{$m}#{$l} { color: $lc !important}
+		}
+	}
+}
+
+// ----------------------------------------------------------
+// 生成渐变色系
+// ----------------------------------------------------------
+
+@each $k, $v in $gradients {
+
+	// 取设置变量值
+	$one: nth($v, 1);
+	$two: nth($v, 2);
+
+	// 生成class
+	// .bggt-#{$k} { background: linear-gradient(to bottom, $one, $two); }
+	// .bggr-#{$k} { background: linear-gradient(to left, $one, $two); }
+	// .bggb-#{$k} { background: linear-gradient(to top, $one, $two); }
+	// .bggl-#{$k} { background: linear-gradient(to right, $one, $two); }
+}
+
+// ----------------------------------------------------------
+// 生成字号
+// ----------------------------------------------------------
+
+@each $k, $v in $font-sizes {
+
+	// 取条目设定的变量值
+	$value: nth($v, 1);
+	$step: nth($v, 2);
+	$max: nth($v, 3);
+
+	// 遍历生成class
+	@while $value <= $max {
+		.s-#{$value} { font-size: $value + rpx !important}
+		$value: $value + $step;
+	}
+}
+
+// ----------------------------------------------------------
+// 生成行高
+// ----------------------------------------------------------
+
+@each $k, $v in $line-heights {
+
+	// 取条目设定的变量值
+	$value: nth($v, 1);
+	$step: nth($v, 2);
+	$max: nth($v, 3);
+
+	// 遍历生成class
+	@while $value <= $max {
+		.lh-#{$value} { line-height: $value + rpx !important}
+		$value: $value + $step;
+	}
+}
+
+// ----------------------------------------------------------
+// 生成外边距
+// ----------------------------------------------------------
+
+@each $k, $v in $margins {
+
+	// 取条目设定的变量值
+	$value: nth($v, 1);
+	$step: nth($v, 2);
+	$max: nth($v, 3);
+
+	// 遍历生成class
+	@while $value <= $max {
+		.ma-#{$value} { margin: $value + rpx !important;}
+		.mx-#{$value} { margin-left: $value + rpx; margin-right: $value + rpx !important;}
+		.my-#{$value} { margin-top: $value + rpx; margin-bottom: $value + rpx !important;}
+		.mt-#{$value} { margin-top: $value + rpx !important;}
+		.mr-#{$value} { margin-right: $value + rpx !important;}
+		.mb-#{$value} { margin-bottom: $value + rpx !important;}
+		.ml-#{$value} { margin-left: $value + rpx !important;}
+		$value: $value + $step;
+	}
+}
+
+// ----------------------------------------------------------
+// 生成内边距
+// ----------------------------------------------------------
+
+@each $k, $v in $paddings {
+
+	// 取条目设定的变量值
+	$value: nth($v, 1);
+	$step: nth($v, 2);
+	$max: nth($v, 3);
+
+	// 遍历生成class
+	@while $value <= $max {
+		.pa-#{$value} { padding: $value + rpx !important;}
+		.px-#{$value} { padding-left: $value + rpx; padding-right: $value + rpx !important;}
+		.py-#{$value} { padding-top: $value + rpx; padding-bottom: $value + rpx !important;}
+		.pt-#{$value} { padding-top: $value + rpx !important;}
+		.pr-#{$value} { padding-right: $value + rpx !important;}
+		.pb-#{$value} { padding-bottom: $value + rpx !important;}
+		.pl-#{$value} { padding-left: $value + rpx !important;}
+		$value: $value + $step;
+	}
+}
+
+// ----------------------------------------------------------
+// 生成圆角
+// ----------------------------------------------------------
+
+@each $k, $v in $radius {
+	
+	// 取条目设定的变量值
+	$value: nth($v, 1);
+	$step: nth($v, 2);
+	$max: nth($v, 3);
+
+	// 遍历生成class
+	@while $value <= $max {
+		.ra-#{$value} { border-radius: $value + rpx !important;}
+		.rt-#{$value} { border-top-left-radius: $value + rpx !important; border-top-right-radius: $value + rpx !important;}
+		.rr-#{$value} { border-top-right-radius: $value + rpx !important; border-bottom-right-radius: $value + rpx !important;}
+		.rb-#{$value} { border-bottom-left-radius: $value + rpx !important; border-bottom-right-radius: $value + rpx !important;}
+		.rl-#{$value} { border-top-left-radius: $value + rpx !important; border-bottom-left-radius: $value + rpx !important;}
+		$value: $value + $step;
+	}
+}
+
+// ----------------------------------------------------------
+// 生成宽度
+// ----------------------------------------------------------
+
+@each $k, $v in $widths {
+	
+	// 取条目设定的变量值
+	$value: nth($v, 1);
+	$step: nth($v, 2);
+	$max: nth($v, 3);
+
+	// 遍历生成class
+	@while $value <= $max {
+		.w-#{$value} { width: $value + rpx !important; }
+		$value: $value + $step;
+	}
+}
+
+// ----------------------------------------------------------
+// 生成高度
+// ----------------------------------------------------------
+
+@each $k, $v in $heights {
+	
+	// 取条目设定的变量值
+	$value: nth($v, 1);
+	$step: nth($v, 2);
+	$max: nth($v, 3);
+
+	// 遍历生成class
+	@while $value <= $max {
+		.h-#{$value} { height: $value + rpx !important; }
+		$value: $value + $step;
+	}
+}

@@ -1,0 +1,67 @@
+<template lang="pug">
+	view.flex.box.between.ac(@click="$emit('click')")
+		view.f-1
+			view.row.mb-6
+				image.w-20.h-26.mr-16(:src="icon")
+				text.name {{name}}
+				text.mobile {{mobile}}
+
+			view.row
+				text.address.f-1 {{address}}
+		view.px-30.center(v-if="arrow")
+			image(style="width: 15rpx; height: 25rpx;", src="/static/icon/arrow-right-6.png")
+</template>
+
+<script>
+	export default {
+		props: {
+			name: {
+				type: String
+			},
+			mobile: {
+				type: String
+			},
+			icon: {
+				type: String,
+				default: '/static/icon/location-4.png'
+			},
+			address: {
+				type: String,
+			},
+			arrow: {
+				type: Boolean,
+				default: false
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		padding: 30rpx;
+		background-color: #fff;
+	}
+	.name {
+		font-size: 30rpx;
+		color: #333;
+	}
+	.mobile {
+		font-size: 24rpx;
+		color: #333;
+		margin-left: 15rpx;
+	}
+	.address {
+		font-size: 24rpx;
+		color: #888;
+		margin-left: 36rpx;
+		margin-top: 7rpx;
+		line-height: 34rpx;
+	}
+	.icon {
+		width: 23rpx;
+		height: 23rpx;
+		margin-right: 17rpx;
+		color: #333;
+		text-overflow: ellipsis;
+	}
+</style>

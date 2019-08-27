@@ -1,0 +1,112 @@
+<template lang="pug">
+	view.flex.rel.box.ra-10.ac.overhide(:style="{'background-color': bg}", @click="$emit('click')")
+		view.flex.content
+			view.row
+				text.moneyLeft.c-white.bold.pt-20 ￥
+				text.money.c-white.bold {{money}}
+				view.column.as.ml-20
+					text.name.c-white.lines-1.ellipsis.w-150 {{name}}
+					text.desc.w-150.c-white.lines-1.ellipsis {{desc}}
+			view.flex.item.ra-5.jc.ac(class="bg-orange", :style="{'background-color': itemColor}")
+				text.c-white.desc.w-260.lines-1.ellipsis.tc {{itemText}}
+		// 绝对定位 圆
+		view.flex.abs.circle.left.ra-max(:style="{'background-color': circleColor}")
+		view.flex.abs.circle.right.ra-max(:style="{'background-color': circleColor}")
+</template>
+
+<script>
+	export default {
+		props: {
+			bg: {
+				type: String,
+				default: '#CF1322'
+			},
+			itemColor: {
+				type: String,
+				default: '#F9BF39'
+			},
+			circleColor: {
+				type: String,
+				default: '#f3f3f3'
+			},
+			money: {
+				type: [String, Number],
+				default: 0
+			},
+			name: {
+				type: String,
+				default: '优惠券名称'
+			},
+			desc: {
+				type: String,
+				default: '优惠券说明'
+			},
+			itemText: {
+				type: String
+			},
+
+			
+		},
+		computed: {
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		height: 151rpx;
+		width: 330rpx;
+		padding: 13rpx 18rpx 9rpx 16rpx;
+	}
+	.circle {
+		width: 32rpx;
+		height: 30rpx;
+		position: absolute;
+		top: 62rpx;
+	}
+	.left {
+		left: -14rpx;
+	}
+	.right {
+		right: -14rpx;
+	}
+	.content {
+		border-top-width: 1px;
+		border-top-style: dashed;
+		border-top-color: #EBEBEB;
+		border-bottom-width: 1px;
+		border-bottom-style: dashed;
+		border-bottom-color: #EBEBEB;
+		padding: 0 5rpx;
+		height: 132rpx;
+	}
+	.moneyLeft {
+		font-size: 34rpx;
+	}
+	.money {
+		font-size: 70rpx;
+	}
+	.name {
+		font-size: 28rpx;
+		margin-bottom: 10rpx;
+	}
+	.item {
+		font-size: 16rpx;
+		height: 32rpx;
+		width: 275rpx;
+		margin-top: 7rpx;
+	}
+	.desc {
+		font-size: 20rpx;
+	}
+	.w-260 {
+		width: 260rpx;
+	}
+	.w-150 {
+		width: 150rpx;
+	}
+	.bg-orange {
+		background-color: #f37b1d;
+	}
+</style>

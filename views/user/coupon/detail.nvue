@@ -1,0 +1,228 @@
+<template lang="pug">
+	view.flex
+		view.flex.bg-f3
+			map(style="width: 750rpx; height: 400rpx;")
+			view.center.navgate(@click="navTrade")
+				text.navText.mr-10 导航至此商家
+				image(style="width: 9rpx; height: 16rpx;", src="/static/icon/arrow-right-3.png")
+			
+			view.flex.wing.tail
+			
+				//- 信息
+				view.flex.bg-white.py-30.tail.ra-30
+					
+					//- 优惠券、套餐资格券信息
+					view.row.wing.tail-line.pb-20(v-if="type == 'coupon' || type == 'package'")
+						//- 优惠券左部分
+						view.flex.left.ac.mb-8(v-if="type == 'coupon'")
+							view.ix
+								text.moneyLeft ￥
+								text.money {{list.info.discount}}
+							text.leftText 满{{list.info.enough}}减{{list.info.discount}}
+						//- 套餐左部分
+						view.flex.left.ac.mb-8(v-if="type == 'package'")
+							view.ix
+								text.moneyLeft ￥
+								text.money {{list.info.price}}
+							text.leftText2.through 原价{{list.info.old_price}}
+						view.flex.f-1
+							text.name.py-6 {{list.info.name}}
+							text.rightText.py-6 有效期:{{list.info.time_start | dateFormat('Y.m.d')}} - {{list.info.time_end | dateFormat('Y.m.d')}}
+					
+					//- 尊享券信息
+					view.flex.wing.tail-line.pb-20(v-if="type == 'vip'")
+						view.row
+							text.name {{list.info.name}}
+						view.between.ae
+							view.row.py-6
+								text.text3 {{list.info.countuse}}/{{list.info.countuse}}次
+								//- text.text4.ml-10 {{list.info.countuse}}/{{list.info.countnum}}元
+							view.flex.ae
+								text.text5.py-6 {{list.info.can_use ? '今天可用' : ''}}
+								text.text4.py-6 每{{list.info.useday > 1 ? list.info.useday : ''}}天可用
+					view.flex.wing.tail-line.py-20(v-if="type == 'vip'")
+						view.between
+							text.text4.s-24 领取时间：{{list.info.time_start * 1000 |dateFormat('Y.m.d')}}
+							text.text4.s-24 有效期至：{{list.info.time_end * 1000 |dateFormat('Y.m.d')}}
+							
+					
+
+					//- 商家信息
+					view.row.wing.pt-20(@click="navigate('/views/trade/tradeDetail?id=' + list.trade.id)")
+						view.row.left
+							image.ra-max(style="width: 100rpx; height: 100rpx;", :src="list.trade.icon")
+						view.flex.f-1
+							view.row
+								view.center(style="width: 36rpx; height: 24rpx;")
+									image(style="width: 19rpx; height: 18rpx;", src="/static/icon/shangjia-1.png")
+								text.text1.py-6 {{list.trade.name}}
+							view.row
+								view.center(style="width: 36rpx; height: 24rpx;")
+									image(style="width: 15rpx; height: 21rpx;", src="/static/icon/location-4.png")
+								text.text2.py-6 地址：{{list.trade.address}}
+							view.row
+								view.center(style="width: 36rpx; height: 24rpx;")
+									image(style="width: 17rpx; height: 17rpx;", src="/static/icon/phone-3.png")
+								text.text2.py-6 联系电话：{{list.trade.link_mobile}}
+						image(style="width: 15rpx; height: 27rpx;", src="/static/icon/arrow-right-6.png")
+						
+				//- 尊享券使用列表
+				view.flex.bg-white.tail.ra-30(v-if="type == 'vip' && list.info.log && list.info.log.length")
+
+					//- title
+					view.between.wing.tail-line.pt-30.pb-20
+						text.name 使用记录
+						view.ix(@click="navigate('/views/user/coupon/log')")
+							text.mr-10(style="font-size: 24rpx; color: #999;") 查看全部
+							image(style="width: 10rpx; height: 19rpx;", src="/static/icon/arrow-right-6.png")
+
+					//- 记录列表
+					view.flex.wing.pb-20
+						commonItem7(
+							v-for="(item,index) in list.info.log",
+							:title="item.name", 
+							:text2="item.created * 1000 | dateFormat('m月d日 H:i')", 
+						)
+
+						
+				//- 优惠详情
+				view.flex.bg-white.ra-30
+					view.row.wing.tail-line.pt-30.pb-20
+						text.title 优惠券详情
+					view.flex.py-20.wing.column.ac
+						image(v-if="list.info.imgs", style="width: 570rpx; height: 240rpx;", :src="list.info.imgs")
+						text.mt-20.mb-30.text.lh-40 {{list.info.content ? list.info.content : '暂无说明' }}
+
+		//- 占位
+		div.h-100
+
+		//- 底部按钮
+		text.footer.btn-full-page.bg-primary.c-white(@click="toastTest") {{pagetype == 'user' ? '立即使用' : '立即领取'}}
+		//- text.btn-full-page.footer.bg-primary.c-white 立即使用
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/user/coupon/detail';
+	
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				...SERVICE.data,
+				// 卡券类型 coupon 满减券  package 套餐券  vip 尊享券
+				type: null
+			}
+		},
+		onLoad(param) {
+			if(param.pagetype) this.pagetype = param.pagetype;
+			/**
+			 * 获取用户券详情
+			 * 
+			 * @param id 	用户卡券id
+			 * @param type 卡券类型 coupon 满减券  package 套餐券  vip 尊享券
+			 */
+			this.type = param.type;
+			SERVICE.load(this, {id: param.id, type: param.type});
+		},
+		methods: {
+			navTrade: () => {
+				// 设置目标位置坐标点和其实位置坐标点
+			   var dst = new plus.maps.Point(115.485936, 38.915387); // 天安门 
+			   var src = new plus.maps.Point(115.467482, 38.915387); // 大钟寺
+			   // 调用系统地图显示 
+			   plus.maps.openSysMap( dst, "商家", src );
+			},
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	// 优惠券、套餐资格券信息 上 左
+	.navgate {
+		height: 98rpx;
+	}
+	.navText {
+		font-size: 26rpx;
+		color: #666666;
+	}
+	.left {
+		width: 147rpx;
+	}
+	.moneyLeft {
+		font-size: 20rpx;
+		color: #CF1322;
+		padding-top: 15rpx;
+	}
+	.money {
+		font-size: 50rpx;
+		color: #CF1322;
+	}
+	.leftText {
+		font-size: 20rpx;
+		color: #CF1322;
+	}
+	.name {
+		font-size: 36rpx;
+		color: #333333;
+	}
+	.rightText {
+		font-size: 24rpx;
+		color: #666666; 
+	}
+	.leftText2 {
+		font-size: 24rpx;
+		color: #999;
+	}
+	
+	// 优惠券、套餐资格券信息 上 右
+	.text1 {
+		font-size: 28rpx;
+		color: #333;
+	}
+	.text2 {
+		font-size: 24rpx;
+		color: #666;
+	}
+	
+	// 尊享券信息
+	.text3 {
+		font-size: 26rpx;
+		color: #CF1322;
+	}
+	.text4 {
+		font-size: 28rpx;
+		color: #999;
+	}
+	.text5 {
+		font-size: 24rpx;
+		color: #CF1322;
+	}
+	
+	// 商家信息 下 中
+	.text {
+		font-size: 28rpx;
+		color: #666666;
+	}
+	
+	// 优惠券详情
+	.title {
+		font-size: 32rpx;
+		color: #333;
+	}
+
+	// 按钮
+	.btn-full-page {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+</style>

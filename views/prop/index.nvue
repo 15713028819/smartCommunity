@@ -1,0 +1,30 @@
+<template lang="pug">
+	view.flex
+		view.between.pa-80
+			itemY(img="/static/icon/prop_fee.png", text="缴费", imgW="77", imgH="77", imgSize="90", size="30", @click="navigate('/views/prop/fee/index')")
+			itemY(img="/static/icon/prop_opinion.png", text="意见箱", imgW="70", imgH="76", imgSize="90", size="30", @click="navigate('/views/prop/opinion/index')")
+			itemY(img="/static/icon/prop_repair.png", text="报修", imgW="75", imgH="77", imgSize="90", size="30", @click="navigate('/views/prop/repair/index')")
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.h-76 {height: 76upx;}
+</style>

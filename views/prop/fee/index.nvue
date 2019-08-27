@@ -1,0 +1,58 @@
+<template lang="pug">
+	view.f-1.bg-f3
+		view.flex.wing-lg.pt-30
+			// 缴费列表
+			view.flex.bg-white.ra-30.tail(@click="navigate('/views/prop/fee/detail?id=' + item.id)", v-for="item in list")
+				view.flex.py-30.center.tail-line(v-if="item.point")
+					image.w-30.h-30(src="/static/icon/jifen-3.png")
+					text.ml-20.s-24.c-66 现在缴费，可免费赠送{{item.point}}积分
+				view.flex.py-30
+					view.center.py-20
+						text.c-primary.s-30.pt-10 ￥
+						text.c-primary(style="font-size: 60rpx;") {{item.amount_real}}
+					view.center
+						text.s-26.c-66 {{item.name}}
+				view.between.py-20.wing-lg
+					text.s-30.c-99 缴费单位
+					text.s-30.c-66 {{item.pm_name}}
+				view.between.pt-20.pb-30.tail-line.wing-lg
+					text.s-30.c-99 创建时间
+					text.s-30.c-66 {{item.created *1000 | dateFormat('Y-m-d')}}
+				view.flex.wing-lg.row.je.py-30(v-if="item.state === 2")
+					text.s-28.c-66 查看详情
+				view.flex.wing-lg.row.je(v-else)
+					text.f-1.py-30.tc.s-28.c-66.border-right 已缴费
+					text.f-1.py-30.tc.s-28.c-66 查看详情
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/prop/fee/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				state: false,
+				list: [{}]
+			}
+		},
+		onLoad() {
+		},
+		onShow() {
+			// 获取缴费首页
+			SERVICE.load(this);
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+	.border-right {
+		border-right-style: solid;
+		border-right-width: 1px;
+		border-right-color: #f3f3f3;
+	}
+</style>

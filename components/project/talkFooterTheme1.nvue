@@ -1,0 +1,106 @@
+<template lang="pug">
+	view.flex.box.pt-5
+		view.between.py-20.ae
+			text.time {{time}}
+			view.row
+				view.flex.like.rel(@click="$emit('onLike')")
+					image.w-40.h-34(:src="zan ? zanOn : zanOff")
+					text.likeNum.abs.top-left-0.w-40.h-34.lh-36 {{likeNum}}
+				image.w-40.h-34.ml-20(:src="pinglun", @click="$emit('onComment')")
+		view.row.as
+			image.w-24.h-20.mr-16.imgZan(:src="zanPerson")
+			view.row-wrap.f-1
+				text.name(v-for="(item, index) in likeName", :style="{color: nameColor}") {{index == likeName.length - 1 ? item.nick : item.nick + ','}}
+
+		// 评论区
+		view.flex.pt-5
+			view.row.mb-5(v-for="item in comment", style="align-items: flex-start;")
+				text.name.ml-0(:style="{color: nameColor}") {{item.nick}}
+				text.comment ：
+				text.comment.f-1 {{item.text}}
+</template>
+
+<script>
+	export default {
+		props: {
+			time: {
+				type: String,
+				default: 'time'
+			},
+			likeNum: {
+				type: Number,
+			},
+			likeName: {
+				type: String,
+			},
+			comment: {
+				type: Array,
+				default: []
+			},
+			nameColor: {
+				type: String,
+				default: '#6A7FC3'
+			},
+			onLike: {
+				type: Function,
+				default: ()=>{}
+			},
+			onComment: {
+				type: Function,
+				default: ()=>{}
+			},
+
+			// 图片
+			zan: {
+				type: Boolean,
+				default: false
+			},
+			zanOff: {
+				type: String,
+				default: '../../static/icon/zan-off.png'
+			},
+			zanOn: {
+				type: String,
+				default: '../../static/icon/zan-on.png'
+			},
+			zanPerson: {
+				type: String,
+				default: '/static/icon/zan.png'
+			},
+			pinglun: {
+				type: String,
+				default: '../../static/icon/pinglun.png'
+			}
+		},
+		
+	}
+</script>
+
+<style lang="scss">
+	.time {
+		font-size: 20rpx;
+		color: #BFBDBD;
+	}
+	.likeNum {
+		font-size: 15rpx;
+		color: #EBEBEA;
+		text-align: center;
+	}
+	.name {
+		font-size: 26rpx;
+		margin-left: 10rpx;
+		line-height: 38rpx;
+	}
+	.comment {
+		font-size: 26rpx;
+		color: #707070;
+		line-height: 38rpx;
+	}
+	.imgZan {
+		margin-top: 9rpx;
+		margin-bottom: 9rpx;
+	}
+	// .row {
+	// 	align-items: flex-start;
+	// }
+</style>

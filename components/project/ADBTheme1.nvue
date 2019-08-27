@@ -1,0 +1,35 @@
+<template lang="pug">
+	view.between.height
+		view.flex.left.ra-10.bg-grey-4.overhide.height
+			image.left.height.bg-e3(:src="src[0]")
+		view.column.jb.height
+			view.flex.right-item.ra-10.bg-grey-3.overhide
+				image.right-item.bg-e3(:src="src[1]")
+			view.flex.right-item.ra-10.bg-grey-3.overhide
+				image.right-item.bg-e3(:src="src[2]")
+</template>
+
+<script>
+	export default {
+		props: {
+			src: {
+				type: Array,
+				require: true
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.height {
+		height: 298rpx;
+	}
+	.left {
+		width: 345rpx;
+		margin-right: 15rpx;
+	}
+	.right-item {
+		width: 330rpx;
+		height: 138rpx;
+	}
+</style>

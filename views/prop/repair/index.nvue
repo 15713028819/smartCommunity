@@ -1,0 +1,80 @@
+<template lang="pug">
+	view.bg-f3
+		view.flex.bg-f3.wing
+			view.flex.tail
+			commonItem10.tail(v-for="item in list", :stateImg="item.state | stateImg", :title="item.state | title", :rightTitle="item.created * 1000 | dateFormat('Y-m-d H-i')", :tag="item.type | tag", :text="item.text_submit", :img="imgs_submit && imgs_submit.split(',')", @click="navigate('/views/prop/repair/detail?id=' + item.id)")
+		
+		//- 占位
+		view.h-100
+
+		//- 底部按钮
+		text.footer.btn-full.bg-primary.c-white(@click="navigate('/views/prop/repair/add')") 我要报修
+		
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/prop/repair/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+			}
+		},
+		onLoad() {
+			
+		},
+		onShow() {
+			// 获取报修首页
+			SERVICE.load(this);
+		},
+		filters: {
+			title: (value)=>{
+				switch(value) {
+					case 0: 
+						return "待维修";
+					case 1: 
+						return "维修中";
+					case 2: 
+						return "维修完成";
+				}
+			},
+			stateImg: (value)=>{
+				switch(value) {
+					case 0: 
+						return "/static/icon/repair-ing.png";
+					case 1: 
+						return "/static/icon/repair-wait.png";
+					case 2: 
+						return "/static/icon/repair-finish.png";
+				}
+			},
+			tag: (value) => {
+				switch(value) {
+					case 0:
+						return "房屋报修";
+					case 1:
+						return "水电报修";
+					case 2:
+						return "车位报修";
+				}
+			}
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+	// 按钮
+	.btn-full {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+</style>

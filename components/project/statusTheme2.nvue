@@ -1,0 +1,117 @@
+<template lang="pug">
+	view.column.box.bg-white.jc.ac
+		view.row
+			image.mr-10.w-36.h-36(:src="icon")
+			text.title {{title}}
+		view.row.space(v-if="text1 || text2 || text3 || text4 ")
+			text.textGrey(v-if="text1") {{text1}}
+			text.textRed(v-if="text2") {{text2}}
+			text.textGrey(v-if="text1") {{text1}}
+			text.textRed(v-if="text4") {{text4}}
+		view.row
+			text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mx-10(v-if="btn1", :class="[btn1.colorClass && 'c-' + colorClass + ' bc-' + colorClass]", :style="[btn1.colorStyle && {color: colorStyle, 'border-color': colorStyle}]", @click="btnFun(btn1)") {{btn1.text ? btn1.text : btn1}}
+			text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mx-10(v-if="btn2", :class="[btn2.colorClass && 'c-' + colorClass + ' bc-' + colorClass]", :style="[btn2.colorStyle && {color: colorStyle, 'border-color': colorStyle}]", @click="btnFun(btn2)") {{btn2.text ? btn2.text : btn2}}
+			text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mx-10(v-if="btn3", :class="[btn3.colorClass && 'c-' + colorClass + ' bc-' + colorClass]", :style="[btn3.colorStyle && {color: colorStyle, 'border-color': colorStyle}]", @click="btnFun(btn3)") {{btn3.text ? btn3.text : btn3}}
+</template>
+
+<script>
+	export default {
+		props: {
+			icon: {
+				type: String,
+			},
+			title: {
+				type: String,
+				require: true
+			},
+			text1: {
+				type: String,
+			},
+			text2: {
+				type: String,
+			},
+			text3: {
+				type: String,
+			},
+			text4: {
+				type: String,
+			},
+			btn1: {
+				type: [String, Object],
+			},
+			btn2: {
+				type: [String, Object],
+			},
+			btn3: {
+				type: [String, Object],
+			},
+		},
+		methods: {
+			btnFun: function(item) {
+				if(item.click) item.click();
+				else this.$emit('click');
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.btn-sm {
+		line-height: 22rpx;
+		padding:  14rpx  28rpx;
+		align-items: center;
+		border-radius: 100rpx;
+		background-color: #CF1322;
+		
+		text-align: center;
+		font-size: 22rpx;
+		color: #fff;
+	}
+	.btn-ghost {
+		background-color: transparent;
+		color: #CF1322;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #CF1322;
+	}
+	.box {
+		padding: 60rpx 30rpx 50rpx; 
+	}
+	.icon {
+		font-size: 36rpx;
+		color: #CF1322;
+		width: 36rpx;
+		lines: 1;
+		text-overflow: clip;
+	}
+	.title {
+		font-size: 36rpx;
+		color: #CF1322;
+	}
+	.textGrey {
+		font-size: 30rpx;
+		color: #999999;
+		margin-left: 7rpx;
+		margin-right: 7rpx;
+	}
+	.textRed {
+		font-size: 30rpx;
+		color: #CF1322;
+		margin-left: 7rpx;
+		margin-right: 7rpx;
+	}
+	.space {
+		margin: 34rpx 0;
+	}
+	.btn {
+		font-size: 22rpx;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #CF1322;
+		border-radius: 50rpx;
+		color: #CF1322;
+		padding: 10rpx 22rpx;
+		margin-left: 8rpx;
+		margin-right: 8rpx;
+	}
+</style>

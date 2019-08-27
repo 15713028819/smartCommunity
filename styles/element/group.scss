@@ -1,0 +1,61 @@
+// ----------------------------------------------------------
+// 外框基础占位符
+// ----------------------------------------------------------
+
+%group-place-box-base {
+	flex-direction: row; 
+	justify-content: flex-start; 
+	align-items: center;
+	overflow: hidden;
+}
+
+// ----------------------------------------------------------
+// 左右内容尺寸占位符
+// ----------------------------------------------------------
+%group-place-sm-box-base {
+	height: 24rpx;
+}
+
+
+// ----------------------------------------------------------
+// 文字尺寸占位符
+// ----------------------------------------------------------
+
+%group-place-sm-text-base {
+	font-size: 18rpx;
+	line-height: 24rpx;
+	text-align: center;
+}
+
+
+// ----------------------------------------------------------
+// 小型group
+// ----------------------------------------------------------
+
+// 小型普通group
+.group-sm-box {
+	@extend %group-place-box-base;
+	@extend %group-place-sm-box-base;
+}
+
+// 小型
+.group-sm-box-radius {
+	@extend %group-place-box-base;
+	@extend %group-place-sm-box-base;
+	border-radius: 4rpx;
+}
+.group-sm-box-cycle {
+	@extend %group-place-box-base;
+	@extend %group-place-sm-box-base;
+	border-radius: 750rpx;
+}
+.group-sm-side {
+	@extend %group-place-sm-text-base;
+	padding-left: 8rpx;
+	padding-right: 8rpx;
+}
+.group-sm-center {
+	@extend %group-place-sm-text-base;
+	padding-left: 8rpx;
+	padding-right: 10rpx;
+}

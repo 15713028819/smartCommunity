@@ -1,0 +1,84 @@
+<template lang="pug">
+	view.flex.f-1
+		view.f-1.row.at.border-top
+		
+			//- 左侧tab
+			scroll-view.bg-f3.py-20(style="width:168rpx", scroll-y)
+				text.lines-2.px-20.py-30.s-32.tc.normal.c-33(v-for="(item, index) in list", :class="[index == tabIndex && 'active']", @click="changIndex(index)") {{item.name}}
+			//- 右侧内容
+			scroll-view.mr-20.ml-20.f-1(scroll-y)
+				text.s-32.w-550.py-20(style="color:#AFAFAF") {{list[tabIndex].contact}}
+				image.ba.bc-cc.ra-10.w-550(:src="dir.shop_area(list[tabIndex].img)")
+		
+		//- 占位
+		view.h-100
+		
+		//- 底部按钮
+		view
+			text.footer.btn-full.bg-primary.c-white(@click="navigate('/views/shop/index')") 点击进入商圈
+		
+			
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/shop/area';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				...SERVICE.data,
+				tabIndex: 0,
+			}
+		},
+		onLoad() {
+			/**
+			 * 获取商城首页数据
+			 */
+			SERVICE.load(this);
+		},
+		computed: {
+			
+		},
+		methods: {
+			setArea() {
+				
+			},
+			changIndex(index) {
+				this.tabIndex = index;
+			}
+		}
+	}
+</script>
+
+<style>
+	// 按钮
+	.btn-full {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+	 
+	 .normal {
+		border-left-style: solid;
+		border-left-color: transparent;
+		border-left-width: 6rpx; 
+	 }
+	 .active {
+		background-color: #fff;
+		color: #cf1322;
+		border-left-style: solid;
+		border-left-color: #cf1322;
+		border-left-width: 6rpx;
+	 }
+	 .border-top {
+		 border-top-style: solid;
+		 border-top-color: #f3f3f3;
+		 border-top-width: 1rpx;
+	 }
+</style>

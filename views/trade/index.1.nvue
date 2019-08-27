@@ -1,0 +1,170 @@
+<template lang="pug">
+	view.flex.bg-f3
+	
+		//- titlebar
+		navigateBar(bg="#CF1322")
+			image(style="width: 22rpx; height: 38rpx;", src="/static/icon/arrow-left.png", @click="goback")
+			text.c-white.s-34.ml-30 周边商家
+			view.h-60.ml-30.bg-white.ra-max.row.ac.f-1(@click="navigate('/views/common/search')")
+				image.ml-28.mr-20(style="width: 29rpx; height: 29rpx;", src="/static/icon/search-1.png")
+				text.h-60.lh-60.s-28.f-1.c-66 芒果
+				//- input.h-60.s-28.f-1(placeholder="芒果", placeholder-style="color: #666;", style="font-size: 28rpx;")
+		
+		
+		// 头部
+		view.flex.bg-white
+			//热搜词
+			view.flex.px-80.py-30.row.center
+				text.c-primary.s-30.mr-10 热搜：
+				text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(@click="navigate('/views/shop/prodList')") 手机
+				text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(@click="navigate('/views/shop/prodList')") 电脑
+				text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(@click="navigate('/views/shop/prodList')") 篮球
+				text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(@click="navigate('/views/shop/prodList')") 洗衣机
+				text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(@click="navigate('/views/shop/prodList')") 苹果
+			// 轮播图
+			view.center
+				swiper.slider.wing.tail.ra-10.overhide(:indicator-dots="true", autoplay, indicator-color="#fff", indicator-active-color="#CF1322", circular)
+					swiper-item.flex.sliderBox
+						image.sliderImg(src="/static/image/swiper2.png")
+					swiper-item.flex.sliderBox
+						image.sliderImg(src="/static/image/swiper1.png")
+					swiper-item.flex.sliderBox
+						image.sliderImg(src="/static/image/swiper3.png")
+						
+		// 菜单
+		view.flex.wing.pt-16.between-wrap.bg-white.tail
+			itemY.mb-30.mx-24(img="/static/icon/serve_meishi.png", text="餐饮", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_dianying.png", text="电影", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_qinzi.png", text="亲子", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_fuzhuang.png", text="服装", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_jiudian.png", text="酒店", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_chaoshi.png", text="超市", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_chezhoubian.png", text="车周边", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_meironglifa.png", text="美容理发", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_xiuxianyule.png", text="休闲娱乐", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+			itemY.mb-30.mx-24(img="/static/icon/serve_gengduo.png", text="更多", imgW="77", imgH="77", imgSize="87", @click="navigate('/views/trade/catList')")
+
+		// 主内容区
+		view.flex.wing
+
+			// 优惠券
+			view.between.py-20
+				text.c-33.s-32.title-home 推荐商家优惠券
+				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/catList')") 更多优惠券
+			view.between.tail
+				coupon1.r-8(@click="()=>navigate('/views/user/coupon/detail')", bg="#9B1FDD", itemText="活动时间：2019.7.27", money="56", name="大正人洗车洗车洗车", desc="满168可用")
+				coupon1(@click="()=>navigate('/views/user/coupon/detail')", bg="#B42676", itemText="活动时间：2019.7.27", money="56", name="大正人洗车洗车洗车", desc="满168可用")
+			view.between.tail
+				coupon1.mr-8(@click="()=>navigate('/views/user/coupon/detail')", bg="#5FA56D", itemText="活动时间：2019.7.27", money="56", name="大正人洗车洗车洗车", desc="满168可用")
+				coupon1(@click="()=>navigate('/views/user/coupon/detail')", bg="#B42626")
+			view.between.tail
+
+			// 会员卡
+			view.between.py-20
+				text.c-33.s-32.title-home 推荐商家会员卡
+				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/catList')") 更多优惠券
+			view.between.tail
+				coupon2(@click="()=>navigate('/views/user/coupon/detail')", name="文本溢出文本溢出文本溢出文本溢出", money="55")
+				coupon2(@click="()=>navigate('/views/user/coupon/detail')", name="文本不溢出")
+				coupon2(@click="()=>navigate('/views/user/coupon/detail')")
+
+			// 商家列表 -- tab
+			view.row.py-20
+				view.column.mr-30(v-for="(item, index) in tab", @click="changeTab(index)", style="align-items: center;")
+					text.tabText(:class="[item.active && 'activeText']") {{item.title}}
+					view.flex.tabItem(:class="[item.active && 'activeItem']")
+
+			// 商家列表 -- 商家
+			trade1.mt-20(img="/static/image/tradeAvatar.png", title="八块八餐厅", tradeType="西式快餐", starDesc="月售24561", :starNum="3.6", text2="早8:00 至 晚9:00", text1="3.6公里",
+				:insignia="['/static/icon/zhang.png', '/static/icon/zhang.png', '/static/icon/zhang.png']",
+				:tag="[{text:'3人优惠套餐/99.8', color: '#F18528'}, {text:'3人优惠套餐/99.8', color: '#F18528'} ]",
+				@click="navigate('/views/trade/trade')"
+			)
+			trade1.mt-20(img="/static/image/tradeAvatar.png", title="八块八餐厅", tradeType="西式快餐", starDesc="月售24561", :starNum="3.6", text2="早8:00 至 晚9:00", text1="3.6公里",
+				:insignia="['/static/icon/zhang.png', '/static/icon/zhang.png', '/static/icon/zhang.png']",
+				:tag="[{text:'3人优惠套餐/99.8', color: '#F18528'}, {text:'3人优惠套餐/99.8', color: '#F18528'}, {text:'3650/365天尊享', color: '#D17027'}, {text:'20减4', color: '#CF1322'}, {text:'40减9', color: '#CF1322'} ]",
+				@click="navigate('/views/trade/trade')"
+			)
+			trade1.mt-20(img="/static/image/tradeAvatar.png", title="八块八餐厅", tradeType="西式快餐", starDesc="月售24561", :starNum="3.6", text2="早8:00 至 晚9:00", text1="3.6公里",
+				:insignia="['/static/icon/zhang.png', '/static/icon/zhang.png', '/static/icon/zhang.png']",
+				:tag="[{text:'3人优惠套餐/99.8', color: '#F18528'}, {text:'3人优惠套餐/99.8', color: '#F18528'}, {text:'3650/365天尊享', color: '#D17027'}, {text:'20减4', color: '#CF1322'}, {text:'40减9', color: '#CF1322'} ]",
+				@click="navigate('/views/trade/trade')"
+			)
+
+			view.column.py-50
+				text.s-30.c-99.tc 已经没有更新的商家……
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tab: [
+					{
+						active: true,
+						title: "猜你喜欢"
+					},
+					{
+						active: false,
+						title: "免费体检"
+					},
+					{
+						active: false,
+						title: "超市促销"
+					},
+					{
+						active: false,
+						title: "1元洗车"
+					},
+				]
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+			changeTab(index) {
+				for(let item in this.tab) {
+					if(item == index) {
+						this.tab[item].active = true;
+					}
+					else if(this.tab[item].active) this.tab[item].active = false;
+				}
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.sliderBox, .sliderImg, .slider {
+		width: 690rpx;
+		height: 240rpx;
+	}
+	.tabText {
+		font-size: 30rpx;
+		color: #B5B5B5;
+		line-height: 50rpx;
+	}
+	.tabItem {
+		width: 55rpx;
+		height: 8rpx;
+		background-color: transparent;
+	}
+	.activeText {
+		color: #E66E07;
+	}
+	.activeItem {
+		background-color: #E66E07;
+	}
+	
+	.h-60 {
+		height: 60rpx;
+	}
+</style>

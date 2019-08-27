@@ -1,0 +1,182 @@
+<template lang="pug">
+	view.between.bg-white.box.ac.rel.overhide(@click="$emit('click')")
+
+		// 左侧圆
+		view.flex.leftCircle.circleBox.jb
+			view.flex.circle.ra-max(v-for="item of 5", :class="[colorClass && 'bg-' + color]", :style="[!colorClass && {'background-color': color}]")
+
+		// 左侧内容
+		view.column.f-8.as.jc.pr-10.left
+			text.title {{title}}
+			text.text {{text}}
+			text.desc {{desc}}
+
+		// 中间圆
+		view.centerCircle.f-1.ac
+			view.flex.circle.ra-max.mt-13(:class="[colorClass && 'bg-' + color]", :style="[!colorClass && {'background-color': color}]")
+			view.flex.f-1.line(:class="[colorClass && 'bc-' + color]", :style="[!colorClass && {'border-right-color': color}]")
+			view.flex.circle.ra-max.mb-13(:class="[colorClass && 'bg-' + color]", :style="[!colorClass && {'background-color': color}]")
+
+		// 右侧内容
+		view.column.f-3.jc.ac.right
+			text.textRight {{textRight}}
+			view.row.moneyBox
+				text.moneyLeft ￥
+				text.money.bold {{money}}
+			text.tagPage {{tag}}
+
+		// 右侧圆
+		view.flex.rightCircle.circleBox.jb
+			view.flex.circle.ra-max(v-for="item of 5", :class="[colorClass && 'bg-' + color]", :style="[!colorClass && {'background-color': color}]")
+		
+</template>
+
+<script>
+	
+
+	export default {
+		
+		props: {
+			money: {
+				type: [Number, String],
+				default: '0.0'
+			},
+			textRight: {
+				type: String,
+				default: 'textRight'
+			},
+			title: {
+				type: String,
+				default: 'title',
+				require: true
+			},
+			text: {
+				type: String,
+				default: 'text'
+			},
+			desc: {
+				type: String,
+				default: 'desc'
+			},
+			tag: {
+				type: String,
+				default: 'tag'
+			},
+			tagFun: {
+				type: Function,
+				default: ()=>{}
+			},
+			color: {
+				type: String,
+				default: '#f3f3f3'
+			},
+
+			// 方法
+			click: {
+				type: Function,
+				default: ()=>{}
+			}
+		},
+		computed: {
+			colorClass: function() {
+				if(this.color.indexOf('#') === -1) {
+					return true;
+				}
+				return false;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+
+	.box {
+		height: 198rpx;
+	}
+	// 圆的样式
+	.circle {
+		width: 26rpx;
+		height: 26rpx;
+	}
+	.circleBox {
+		width: 26rpx;
+		height: 164rpx;
+	}
+	.leftCircle {
+		margin-left: -13rpx;
+	}
+	.rightCircle {
+		margin-right: -13rpx;
+	}
+	.line {
+		border-right-width: 1px;
+		border-right-style: dashed;
+		width: 1rpx;
+		margin-top: 10rpx;
+		margin-bottom: 10rpx;
+	}
+	.centerCircle {
+		width: 26rpx;
+		height: 198rpx;
+	}
+	.mt-13 {
+		margin-top: -13rpx;
+	}
+	.mb-13 {
+		margin-bottom: -13rpx;
+	}
+	
+	// 中间内容
+	.left {
+		padding: 0 12rpx 0 42rpx;
+	}
+	.title {
+		font-size: 28rpx;
+		color: #333;
+		margin-bottom: 10rpx;
+		lines: 2;
+		text-overflow: ellipsis;
+	}
+	.text {
+		font-size: 24rpx;
+		color: #999;
+		lines: 1;
+		margin-bottom: 10rpx;
+		text-overflow: ellipsis;
+	}
+	.desc {
+		font-size: 24rpx;
+		color: #CF1322;
+	}
+	
+	// 左侧内容
+	.right {
+		padding: 0 12rpx 0 0rpx;
+	}
+	.moneyBox {
+		margin-top: 10rpx;
+		margin-bottom: 10rpx;
+	}
+	.moneyLeft {
+		font-size: 20rpx;
+		color: #CF1322;
+		padding-top: 8rpx;
+	}
+	.money {
+		font-size: 30rpx;
+		color: #CF1322;
+		// margin-bottom: 15rpx;
+	}
+	.textRight {
+		font-size: 22rpx;
+		color: #CF1322;
+	}
+	
+	// 按钮
+	.tagPage {
+		font-size: 20rpx;
+		color: #fff;
+		background-color: #CF1322;
+		padding: 10rpx 16rpx;
+	}
+</style>

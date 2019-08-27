@@ -1,0 +1,40 @@
+<template lang="pug">
+	div(:style="active ? Style['box']['on'] : Style['box']['off']"  @click="onClick")
+		div(:style="active ? Style['inner']['on'] : Style['inner']['off']")
+</template>
+
+<script>
+	import STYLE from '@/styles/component/switch';
+	export default {
+		props: {
+			
+			// 样式type
+			type:{ 
+				type: String,
+				default: STYLE.config.autoStyle,
+			},
+
+			//是否选中状态
+			active: {
+				type: Boolean,
+				default: false,
+			}
+		},
+		data() {
+			return {
+				Style: STYLE[this.type]
+			}
+		},
+		watch: {
+			active() {
+				this.$emit('changed', this.active)
+			}
+		},
+		methods:{
+			onClick() {
+				this.active = !this.active;
+				this.$emit('change')
+			}
+		}
+	}
+</script>

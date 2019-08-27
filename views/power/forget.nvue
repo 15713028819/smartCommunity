@@ -1,0 +1,86 @@
+<template lang="pug">
+	view.flex.bg-white
+
+		// logo 图
+		view.center.pt-40.pb.xxl
+			image(src="/static/image/logo_heshequ.jpg", style="width: 245rpx; height: 245rpx;")
+		
+		// 表单
+		view.flex.px-50
+			view.row.py-40
+				text.c-primary.s-24 修改密码
+			view.row.pt-20.border-bottom
+				input.s-34.input.f-1(placeholder="请输入手机号", type="number", :max-length="11" :upriseOffset="20")
+			view.row.pt-40.border-bottom
+				input.s-34.input.f-1(placeholder="请输入验证码", :type="type", :upriseOffset="20")
+			view.row.je.pt-30
+				text.btn-power.bg-primary.c-white(@click="toastTest") 获取验证码
+			view.row.je.py-30
+				text.s-28.c-99.mr-6 60秒后重新获取
+				
+			view.row.pt-40.border-bottom
+				input.s-34.input.f-1(placeholder="请输入密码", :type="type", :upriseOffset="20")
+				image.w-50.h-36(:src="eye[type]", @click="type == 'text' ? type = 'password' : type = 'text'")
+		
+		// 操作按钮
+		view.flex.px-50(style='padding-top: 80rpx')
+			text.btn-login.bg-primary.c-white 修改密码
+			text.btn-login.bg-primary.c-white.mt-40(@click="navigate('/views/power/login')") 立即登录
+			
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				value: '',
+				type: 'text',
+				eye: {
+					text: '/static/icon/eye-open.png',
+					password: '/static/icon/eye-close.png',
+				}
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+			toastTest() {
+				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.input {
+		color: #333;
+		margin-left: 20rpx;
+		padding: 8rpx 0 10rpx 0;
+	}
+	.border-bottom {
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #ccc;
+	}
+	.btn-login {
+		height: 84rpx;
+		line-height: 84rpx;
+		font-size: 44rpx;
+		text-align: center;
+		border-radius: 28rpx;
+	}
+	.btn-power {
+		width: 244rpx;
+		height: 84rpx;
+		line-height: 84rpx;
+		text-align: center;
+		font-size: 34rpx;
+		border-radius: 28rpx;
+	}
+</style>

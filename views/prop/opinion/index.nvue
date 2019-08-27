@@ -1,0 +1,105 @@
+<template lang="pug">
+	view.bg-f3
+	
+		//- tab
+		view.row.tabBar.bg-white.w-750.header
+			view.column.jc.f-1.ac.f-1(v-for="(item, index) in tabs", @click="()=>changeTab(index)")
+				text.tabTitle(:class="[tabIndex == index && 'titleActive']") {{item}} 
+				view.flex.tabLine.f-1(:class="[tabIndex == index && 'lineActive']")
+		
+		//- 内容主体
+		view.bg-f3.my-100
+			view.wing
+				view.tail
+				commonItem10.bg-orange.tail(
+					stateImg="/static/icon/opinion-yihuifu.png", 
+					:title="item.state | stateFilter", 
+					:rightTitle="item.created * 1000 | dateFormat('Y-m-d H:i')", 
+					:text="item.text_submit", 
+					:img="item.imgs",
+					@click="()=>navigate('/views/prop/opinion/detail?id=' + item.id)"
+					v-for="item in list"
+				)
+
+		//- 底部按钮
+		text.footer.btn-full.bg-primary.c-white(@click="navigate('/views/prop/opinion/add')") 我要反馈
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/prop/opinion/index';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				tabIndex: 0,
+				tabs: ['全部', '待回复', '已回复']
+			}
+		},
+		onLoad() {
+		},
+		onShow() {
+			/**
+			 * 获取意见箱首页信息
+			 * 
+			 * @param state 状态（0已查看，1已反馈）  非必传
+			 */
+			SERVICE.load(this);
+		},
+		filters: {
+			stateFilter: function(value) {
+				switch (value) {
+					case 0:
+						return "已查看";
+					case 1:
+						return "已反馈";
+				}
+			}
+		},
+		methods: {
+			changeTab(index) {
+				this.tabIndex = index;
+				let state = '';
+				if(this.tabIndex) state = this.tabIndex - 1;
+				SERVICE.load(this, {state});
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	// tab
+	.tabBar {
+	}
+	.tabTitle {
+		font-size: 32rpx;
+		color: #333;
+		height: 80rpx;
+		line-height: 80rpx;
+		margin-top: 3rpx;
+	}
+	.tabLine {
+		height: 3rpx;
+		background-color: transparent;
+		width: 125rpx;
+		border-radius: 5rpx;
+	}
+	.titleActive {
+		color: #CF1322;
+	}
+	.lineActive {
+		background-color: #CF1322;
+	}
+	// 按钮
+	.btn-full {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+</style>

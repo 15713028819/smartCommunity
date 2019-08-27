@@ -1,0 +1,101 @@
+<template lang="pug">
+	view.flex.bg-f3.f-1
+		scroll-view.flex.f-1(:scroll-y="true")
+			view.flex.tail-line
+			view.flex.bg-white.ac.jc.py-50.tail
+				text.c-primary.mb-20.s-44 和社区 . 每日一达
+				text.c-grey-3.mb-50.s-26 订单号： DEGD12456521234
+				view.row
+					text.c-primary.pt-30.s-24 ￥
+					text.c-primary(style="font-size: 74rpx;") 100.00
+			
+			// 余额支付
+			view.flex.bg-white.px-80.tail
+				view.between.py-30(@click="chengUse()")
+					view.row
+						image.mr-40.w-40.h-40(src="/static/icon/jifen-3.png")
+						text.title.mr-20 余额支付
+						text.desc.pt-10 (余额:23.12元)
+					image.w-36.h-36(v-if="useCash", src="/static/icon/check-on.png")
+					image.w-36.h-36(v-else, src="/static/icon/check.png")
+					
+				text.useCash(v-if="useCash") 余额已抵扣23.12元
+			
+			// 支付方式
+			view.flex.bg-white.px-80
+				view.between.py-30(v-for="(item, index) in pays", :class="[index != pays.length && 'tail-line']", @click="chengPay(index)")
+					view.row
+						image.mr-40.w-40.h-40(:src="item.img")
+						text.title.mr-20 {{item.name}}
+					image.w-36.h-36(v-if="index == payIndex", src="/static/icon/check-on.png")
+					image.w-36.h-36(v-else, src="/static/icon/check.png")
+		
+		// 按钮
+		text.footer.btn-full-page.bg-primary.c-white(@click="navigate('/views/pay/success')") 支付 ￥100.00
+		
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default {
+		mixins: [mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				useCash: false,
+				payIndex: 0,
+				pays: [
+					{name: '微信支付', img: "../../static/icon/logo_wechat.png"},
+					{name: '支付宝支付', img: "../../static/icon/logo_zhifubao.png"},
+					{name: '建设银行支付', img: "../../static/icon/logo_jianhang.png"},
+					{name: '农业银行支付', img: "../../static/icon/logo_nonghang.png"}
+				]
+			}
+		},
+		created() {
+		
+		},
+		mounted() {
+		},
+		methods: {
+			chengUse() {
+				this.useCash = !this.useCash;
+			},
+			chengPay(index) {
+				this.payIndex = index;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.title {
+		font-size: 36rpx;
+		color: #666;
+	}
+	.desc {
+		font-size: 20rpx;
+		color: #888;
+	}
+	.useCash {
+		border-top-style: solid;
+		border-top-width: 1rpx;;
+		border-top-color: #f3f3f3;
+		padding: 30rpx 0;
+		font-size: 30rpx;
+		color: #888;
+		text-align: center;
+	}
+	// 按钮
+	.btn-full-page {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		
+		text-align: center;
+		font-size: 36rpx;
+	 }
+</style>

@@ -1,0 +1,21 @@
+<template lang="pug">
+	view
+		slot(name='loading', v-if="active == 'loading'")
+		slot(name='failPower', v-else-if="active == 'failPower'")
+		slot(name='failLogic', v-else-if="active == 'failLogic'")
+		slot(name='failError', v-else-if="active == 'failError'")
+		slot(name='failNetwork', v-else-if="active == 'failNetwork'")
+		slot(name='failOffline', v-else-if="active == 'failOffline'")
+		slot(v-else-if="active == 'success'")
+</template>
+
+<script>
+	export default {
+		props: {
+			active: {
+				type: String,
+				required: true
+			}
+		}
+	}
+</script>

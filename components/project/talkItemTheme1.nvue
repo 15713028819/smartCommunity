@@ -1,0 +1,155 @@
+<template lang="pug">
+	view.row.box.as.wing-xxl.py-40(:style="[border && {'border-bottom-style': 'solid', 'border-bottom-width': '1rpx', 'border-bottom-color': '#f0f0f0'}]")
+		
+		//- 左侧头像
+		view.flex.left.as.js
+			image.avatarPage(:src="avatar", mode="aspectFill")
+			
+		//- 右侧内容
+		view.flex.right.f-1
+
+			view.between.head
+				text.name.bold(:style="{color: nameColor}") {{name}}
+				text.time(v-if="time") {{time}}
+
+			view.row.ac.mb-15(v-if="starNum")
+				view.flex.starBox.rel
+					view.row.star.abs.top-left-0
+						image.starImg(src="/static/icon/star_grey.png" v-for="index of 5")
+					view.row.starOn.abs.top-left-0.overhide(:style="{width: starOnWidth + 'rpx'}")
+						image.starImg(src="/static/icon/star.png" v-for="index of 5")
+				text.starNum {{starNum | toFixed1}}
+
+			text.text {{text}}
+
+			view.row.mb-10(v-if="picture.length")
+				view.flex.pictureBox.overhide.ra-10(v-for="item in picture")
+					image.picture(:src="item", mode="cover")
+			slot
+</template>
+
+<script>
+	export default {
+		props: {
+			avatar: {
+				type: String,
+				require: true
+			},
+			name: {
+				type: String,
+				default: 'name',
+				require: true
+			},
+			time: {
+				type: [String, Boolean],
+				default: false
+			},
+			starNum: {
+				type: [Number, Boolean],
+				default: false
+			},
+			starMax: {
+				type: Number,
+				default: 5
+			},
+			text: {
+				type:  String,
+				default: 'text'
+			},
+			picture: {
+				type: Array,
+				default: []
+			},
+			nameColor: {
+				type: String,
+				default: '#6A7FC3',
+			},
+			border: {
+				type: Boolean,
+				default: true
+			}
+		},
+		filters: {
+			toFixed1: function(value) {
+				return value.toFixed(1);
+			}
+		},
+		computed: {
+			starOnWidth: function() {
+				let diff = this.starNum / this.starMax;
+				console.log('diff',diff)
+				console.log('result11',diff * 122)
+				console.log('picture.length',this.picture.length)
+				return (diff * 122).toFixed(1);
+			}
+		},
+		
+	}
+</script>
+
+<style lang="scss">
+	.box {
+		
+	}
+	/* 左侧内容 */
+	.left {
+		width: 110rpx;
+		height: 110rpx;
+	}
+	.avatarPage {
+		width: 90rpx;
+		height: 90rpx;
+		border-radius: 18rpx;
+	}
+	
+	/* 右侧内容 */
+	.right {
+		
+	}
+	.head {
+		padding-bottom: 12rpx;
+	}
+	.name {
+		font-size: 30rpx;
+	}
+	.text {
+		font-size: 30rpx;
+		color: #707070;
+		line-height: 38rpx;
+		padding-bottom: 12rpx;
+	}
+	.time {
+		font-size: 20rpx;
+		color: #707070;
+	}
+	.pictureBox {
+		width: 139rpx;
+		height: 124rpx;
+		margin-right: 24rpx;
+	}
+	
+	
+	/* 右侧内容 */
+	.starNum {
+		color: #CF1322;
+		font-size: 22rpx;
+		margin-right: 40rpx;
+		margin-left: 8rpx;
+	}
+	.starBox {
+		width: 122rpx;
+		height: 18rpx;
+	}
+	.star {
+		width: 122rpx;
+		height: 18rpx;
+	}
+	.starOn {
+		height: 18rpx;
+	}
+	.starImg {
+		width: 18rpx;
+		height: 18rpx;
+		margin-right: 8rpx;
+	}
+</style>

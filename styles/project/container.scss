@@ -1,0 +1,63 @@
+
+.wing { padding-left: 30rpx; padding-right: 30rpx; }
+.wing-sm { padding-left: 24rpx; padding-right: 24rpx; }
+.wing-lg { padding-left: 35rpx; padding-right: 35rpx; }
+.wing-xl { padding-left: 40rpx; padding-right: 40rpx; }
+.wing-xxl { padding-left: 50rpx; padding-right: 50rpx; }
+
+// .whtieSpace { margin-top: 15rpx; margin-bottom: 15rpx; }
+// .whtieSpace-sm { margin-top: 10rpx; margin-bottom: 10rpx; }
+// .whtieSpace-lg { margin-top: 20rpx; margin-bottom: 20rpx; }
+.among { padding-top: 15rpx; padding-bottom: 15rpx; }
+.among-sm { padding-top: 10rpx; padding-bottom: 10rpx; }
+.among-xs { padding-top: 8rpx; padding-bottom: 8rpx; }
+.among-xxs { padding-top: 5rpx; padding-bottom: 5rpx; }
+.among-xxxs { padding-top: 3rpx; padding-bottom: 3rpx; }
+.among-lg { padding-top: 20rpx; padding-bottom: 20rpx; }
+
+.tail { margin-bottom: 30rpx; }
+.tail-sm { margin-bottom: 24rpx; }
+.tail-lg { margin-bottom: 40rpx; }
+.tail8 { margin-bottom: 8rpx; }
+.tail-line { border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #f3f3f3; }
+.tail-line-light { border-bottom-style: solid; border-bottom-width: 1wx; border-bottom-color: #f9f9f9; }
+
+.jostle { padding-top: 149rpx; justify-content: center; }
+
+
+.header { position: fixed; top: 0; left: 0; }
+.footer { position: fixed; bottom: 0; left: 0; }
+
+
+// 灰色分隔条
+.greyStrip {
+	height: 20rpx;
+	background-color: #f5f5f5;
+	width: 750rpx;
+}
+
+// 搜索栏
+.search-box-1 {
+	border-radius: 100rpx;
+	padding: 0 27rpx;
+	background-color: #fff;
+	height: 52rpx;
+	flex-direction: row;
+	align-items: center;
+}
+.search-img-1 {
+	width: 29rpx;
+	height: 29rpx;
+	margin-right: 20rpx;
+}
+.search-text-1 {
+	font-size: 26rpx;
+	color: #7C7C7C;
+	
+}
+
+
+// card head
+.card-head {
+	height: 72rpx;
+}

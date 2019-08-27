@@ -1,0 +1,169 @@
+<template lang="pug">
+	view.between.box.bg-white.pa-30.as(@click="$emit('click')")
+
+		view.as.column
+			view.flex.imgBox.ra-20.overhide
+				image.img(:src="img")
+			view.flex.row-wrap.insigniaBox.px-6(v-if="insignia.length")
+				image.insignia(v-for="item in insignia", :src="item")
+
+		view.flex.f-1.content
+			view.between.ac
+				text.title {{title}}
+				text.tradeType {{tradeType}}
+				
+			view.between.ac
+				view.row.ac
+					view.flex.starBox.rel
+						view.flex.star.abs.top-left-0.row
+							image.starImg(src="/static/icon/star_grey.png" v-for="index of 5")
+						view.flex.starOn.abs.top-left-0.row.overhide(:style="{width: starOnWidth + 'rpx'}")
+							image.starImg(src="/static/icon/star.png" v-for="index of 5")
+					text.starNum {{starNum}}
+					text.starDesc {{starDesc}}
+				text.text {{text1}}
+			text.text.mt-10 {{text2}}
+
+			view.flex.row-wrap.as(v-if="tag.length")
+				text.tag.mt-10(v-for="(item, index) in tag", v-if="index < 9" :style="[item.color && {color: item.color, 'border-color': item.color}]") {{item.name ? item.name : item}}
+
+			
+</template>
+
+<script>
+	export default {
+		props: {
+			img: {
+				type: String
+			},
+			insignia: {
+				type: Array,
+				default: []
+			},
+			title: {
+				type: String,
+				default: '属性名：title'
+			},
+			tradeType: {
+				type: String,
+				default: 'tradeType'
+			},
+			starNum: {
+				type: Number,
+			},
+			starMax: {
+				type: Number,
+				default: 5
+			},
+			starDesc: {
+				type: String
+			},
+			text1: {
+				type:  String,
+				default: 'text1'
+			},
+			text2: {
+				type: String,
+				default: 'text2'
+			},
+			tag: {
+				type: Array,
+				default: ['3人优惠套餐/99.8']
+			},
+			
+			// 方法
+			click: {
+				type: Function,
+				default: ()=>{}
+			}
+		},
+		computed: {
+			starOnWidth: function() {
+				let diff = this.starNum / this.starMax;
+				console.log('diff',diff)
+				console.log('result11',diff * 122)
+				return diff * 122;
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	// .box {
+	// 	width: 750rpx;
+	// }
+	/* 左侧内容 */
+	.imgBox, .img {
+		width: 106rpx;
+		height: 81rpx;
+	}
+	.insigniaBox {
+		width: 126rpx;
+	}
+	.insignia {
+		width: 19rpx;
+		height: 26rpx;
+		margin-right: 10rpx;
+		margin-top: 10rpx;
+	}
+	
+	/* 右侧内容 */
+	.content {
+		margin-left: 28rpx;
+	}
+	.title {
+		font-size: 32rpx;
+		color: #222;
+		margin-bottom: 13rpx;
+	}
+	.tradeType {
+		font-size: 22rpx;
+		color: #D17027;
+	}
+	.starNum {
+		color: #CF1322;
+		font-size: 22rpx;
+		margin-right: 40rpx;
+		margin-left: 8rpx;
+	}
+	.starDesc {
+		font-size: 22rpx;
+		color: #B7B7B7;
+	}
+	.starBox {
+		width: 122rpx;
+		height: 18rpx;
+		// background-image: url('../static/image/star_grey.png');
+		// background-position: 0 0;
+		// background-repeat: repeat-x;
+	}
+	.star {
+		width: 122rpx;
+		height: 18rpx;
+	}
+	.starOn {
+		height: 18rpx;
+	}
+	.text {
+		font-size: 26rpx;
+		color: #515151;
+	}
+	.starImg {
+		width: 18rpx;
+		height: 18rpx;
+		margin-right: 8rpx;
+	}
+	.tag {
+		color: #aaa;
+		font-size: 18rpx;
+		border-style: solid;
+		border-width: 1rpx;
+		border-color: #ccc;
+		padding: 0 10rpx;
+		height: 26rpx;
+		line-height: 26rpx;
+		margin-right: 12rpx;
+		border-radius: 5rpx;
+		background-color: transparent;
+	}
+</style>

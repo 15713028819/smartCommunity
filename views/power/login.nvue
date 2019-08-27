@@ -1,0 +1,78 @@
+<template lang="pug">
+	view.flex.bg-white
+
+		//- logo 图
+		view.center.pb.xxl(style='padding-top: 80rpx;')
+			image(src="/static/image/logo_heshequ.jpg", style="width: 520rpx; height: 520rpx;")
+		
+		//- 表单
+		view.flex.px-50
+			view.row.pt-20.border-bottom
+				input.s-34.input.f-1(placeholder="请输入手机号", type="number", :max-length="11" :upriseOffset="20")
+			view.row.pt-40.border-bottom
+				input.s-34.input.f-1(placeholder="请输入密码", :type="type", :upriseOffset="20")
+				image(style="width: 49rpx; height: 33rpx;", :src="eye[type]", @click="type == 'text' ? type = 'password' : type = 'text'")
+			view.row.je.py-30
+				text(style="font-size: 28rpx; color: #999;", @click="navigate('/views/power/forget')") 忘记密码？
+				
+		view.flex.px-50(style='padding-top: 80rpx')
+			text.btn-login.bg-primary.c-white 登录
+			view.between.btn-power-box.py-50
+				text.btn-power.bg-primary.c-white 游客体验
+				text.btn-power.bg-primary.c-white(@click="navigate('/views/power/reg')") 立即注册
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/power/reg';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+                ...SERVICE.data,
+				value: '',
+				type: 'text',
+				eye: {
+					text: '/static/icon/eye-open.png',
+					password: '/static/icon/eye-close.png',
+				}
+			}
+		},
+		onLoad() {
+		},
+		methods: {
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.input {
+		color: #333;
+		margin-left: 20rpx;
+		padding: 8rpx 0 10rpx 0;
+	}
+	.border-bottom {
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-bottom-color: #ccc;
+	}
+	.btn-login {
+		height: 84rpx;
+		line-height: 84rpx;
+		font-size: 44rpx;
+		text-align: center;
+		border-radius: 28rpx;
+	}
+	.btn-power {
+		width: 244rpx;
+		height: 84rpx;
+		line-height: 84rpx;
+		text-align: center;
+		font-size: 34rpx;
+		border-radius: 28rpx;
+	}
+</style>
