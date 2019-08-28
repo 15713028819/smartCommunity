@@ -1,16 +1,22 @@
 <template lang="pug">
-	view.between.py-20.wing.box(@click="$emit('click')")
-		image.w-30.h-30(:src="img")
-		text.title.f-1.c-66 {{title}}
-		view.row.ac
-			text.mark(v-if="mark") {{mark}}
-			view.flex.dot(v-if="dot")
+	view.between.wing.box.jc.py-10
+		image.w-30.h-30(:src="img", @click="click")
+		swiper.h-50.f-1.row(vertical, autoplay, :interval="5000", :duration="1000", circular, @change="change", :current="current")
+			swiper-item.row.f-1(v-for="(item, index) in list", @click="click")
+				text.title.f-1.c-66 {{item[title]}}
+				text.mark(v-if="item[mark]") {{item[mark] | dateLapse}}
+				view.flex.dot(v-if="!item[dot]")
+		view.row.ac(@click="click")
 			image.imgright.ra-max.overhide(v-if="imgright || arrow", :src="imgright")
 </template>
 
 <script>
+	import dateLapse from '@/filters/date-lapse';
 	export default {
 		props: {
+			list: {
+				type: [Array],
+			},
 			title: {
 				type: String,
 				default: 'title',
@@ -36,6 +42,23 @@
 				type: [Boolean, String],
 				default: '../static/icon/arrow-right-3.png'
 			},
+		},
+		data: () => {
+			return {
+				current: 0,
+			}
+		},
+		filters: {
+			dateLapse
+		},
+		methods: {
+			change(e) {
+				this.current = e.detail.current;
+				this.$emit('change');
+			},
+			click() {
+				this.$emit('click', this.current)
+			}
 		}
 	}
 </script>

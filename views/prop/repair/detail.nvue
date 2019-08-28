@@ -26,7 +26,7 @@
 					text.title 维修信息
 				view.flex.wing.pb-20
 					filed1.py-30(left="维修人", right="李某某", rightColor="#999", size="30")
-					filed1.py-30(left="维修人电话", right="15130305503", rightColor="#999", size="30", :border="list.text_repair && list.imgs_repair && true")
+					filed1.py-30(left="维修人电话", right="15130305503", rightColor="#999", size="30", :border="list.text_repair && list.imgs_repair ? true : false")
 
 					filed1.py-30(left="维修描述", rightColor="#999", size="30", v-if="list.text_repair")
 					text.pa-10.pt-20.c-99.s-30.lh-40(v-if="list.text_repair") {{list.text_repair}}

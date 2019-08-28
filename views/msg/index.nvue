@@ -24,10 +24,10 @@
 			:title="item.title",
 			:desc="item.content",
 			:time="item.created | dateLapse",
-			:img="item.img",
+			img="/static/icon/msg_community.png",
 			background="#F4EA2A",
-			imgW="54",
-			imgH="35",
+			imgW="40",
+			imgH="40",
 			@click="navigate('/views/msg/detail?id=' + item.id)"
 		)
 		//- 消息列表 - 系统
@@ -37,10 +37,10 @@
 			:title="item.title", 
 			:desc="item.content", 
 			:time="item.created | dateLapse", 
-			:img="item.img",
+			img="/static/icon/msg_system.png",
 			background="#1296DB",
-			imgW="24", 
-			imgH="33", 
+			imgW="40", 
+			imgH="40", 
 			@click="navigate('/views/msg/detail?id=' + item.id)"
 		)
 		//- 消息列表 - 商家
@@ -87,16 +87,16 @@
 						height: '41rpx'
 					},
 					{
-						src: '/static/icon/community.png',
+						src: '/static/icon/msg_community_top.png',
 						text: '社区',
 						width: '42rpx',
 						height: '41rpx'
 					},
 					{
-						src: '/static/icon/property.png',
+						src: '/static/icon/msg_system_top.png',
 						text: '系统',
-						width: '41rpx',
-						height: '41rpx'
+						width: '46rpx',
+						height: '46rpx'
 					},
 					{
 						src: '/static/icon/shop-stroew.png',

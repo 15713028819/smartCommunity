@@ -29,8 +29,24 @@
 							text.name.py-6 {{list.info.name}}
 							text.rightText.py-6 有效期:{{list.info.time_start | dateFormat('Y.m.d')}} - {{list.info.time_end | dateFormat('Y.m.d')}}
 					
-					//- 尊享券信息
-					view.flex.wing.tail-line.pb-20(v-if="type == 'vip'")
+					//- 尊享券信息 商家vip券信息
+					view.flex.wing.tail-line.pb-20(v-if="type == 'vip' && pagetype != 'user'")
+						view.row
+							text.name {{list.info.name}}
+						view.between.ae
+							view.row.py-6
+								text.text3 共计{{list.info.limitnum}}次
+								//- text.text4.ml-10 {{list.info.countuse}}/{{list.info.countnum}}元
+							view.flex.ae
+								text.text5.py-6
+								text.text4.py-6 每{{list.info.useday > 1 ? list.info.useday : ''}}天可用
+					view.flex.wing.tail-line.py-20(v-if="type == 'vip' && pagetype != 'user'")
+						view.between
+							text.text4.s-24 有效期
+							text.text4.s-24 {{list.info.time_start | start_end}}
+
+					//- 尊享券信息 用户已领取的vip券信息
+					view.flex.wing.tail-line.pb-20(v-if="type == 'vip' && pagetype == 'user'")
 						view.row
 							text.name {{list.info.name}}
 						view.between.ae
@@ -40,11 +56,11 @@
 							view.flex.ae
 								text.text5.py-6 {{list.info.can_use ? '今天可用' : ''}}
 								text.text4.py-6 每{{list.info.useday > 1 ? list.info.useday : ''}}天可用
-					view.flex.wing.tail-line.py-20(v-if="type == 'vip'")
+					view.flex.wing.tail-line.py-20(v-if="type == 'vip' && pagetype == 'user'")
 						view.between
 							text.text4.s-24 领取时间：{{list.info.time_start * 1000 |dateFormat('Y.m.d')}}
 							text.text4.s-24 有效期至：{{list.info.time_end * 1000 |dateFormat('Y.m.d')}}
-							
+					
 					
 
 					//- 商家信息
@@ -97,15 +113,15 @@
 		div.h-100
 
 		//- 底部按钮
-		text.footer.btn-full-page.bg-primary.c-white(v-if="pagetype == 'user'", @click="toastTest") 立即使用
-		text.footer.btn-full-page.bg-primary.c-white(v-else, @click="navigate('/views/user/coupon/evaluate?id=' + list.trade.id + '&type=' + type)") 立即领取
+		text.footer.btn-full-page.bg-primary.c-white(v-if="pagetype == 'user'", @click="navigate('/views/user/coupon/evaluate?id=' + list.trade.id + '&type=' + type)") 立即使用
+		text.footer.btn-full-page.bg-primary.c-white(v-else, @click="toastTest") 立即领取
 		//- text.btn-full-page.footer.bg-primary.c-white 立即使用
 </template>
 
 <script>
 	import '@/jm.nvue';
 	import SERVICE from '@/services/project/user/coupon/detail';
-	
+	import { dateFormat } from '@/functions/date';
 	import { mixinLife, mixinScene } from '@/mixins';
 	export default { 
 		mixins:[mixinLife, mixinScene],
@@ -126,6 +142,13 @@
 			 */
 			this.type = param.type;
 			SERVICE.load(this, {id: param.id, type: param.type});
+		},
+		filters: {
+			start_end: function(start, end) {
+				start = dateFormat('Y.m.d', start * 1000);
+				end = dateFormat('Y.m.d', end * 1000);
+				return start + ' 至' + end;
+			}
 		},
 		methods: {
 			navTrade: () => {

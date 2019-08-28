@@ -51,8 +51,8 @@
 		},
 		filters: {
 			time_start_end: function(start, end) {
-				start = dateFormat('Y.m.d H:i', start * 1000);
-				end = dateFormat('Y.m.d H:i', end * 1000);
+				start = dateFormat('m月d日 H:i', start * 1000);
+				end = dateFormat('m月d日 H:i', end * 1000);
 				return start + ' 至 ' + end;
 			},
 			state: function(value) {

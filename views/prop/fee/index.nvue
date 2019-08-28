@@ -18,7 +18,7 @@
 				view.between.pt-20.pb-30.tail-line.wing-lg
 					text.s-30.c-99 创建时间
 					text.s-30.c-66 {{item.created *1000 | dateFormat('Y-m-d')}}
-				view.flex.wing-lg.row.je.py-30(v-if="item.state === 2")
+				view.flex.wing-lg.row.je.py-30(v-if="item.state == 1")
 					text.s-28.c-66 查看详情
 				view.flex.wing-lg.row.je(v-else)
 					text.f-1.py-30.tc.s-28.c-66.border-right 已缴费

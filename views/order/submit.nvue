@@ -41,7 +41,7 @@
 			//- 留言
 			view.flex.tail-line.pb-20.mx-30.pt-20
 				view.row.bg-f3.h-50.px-10.py-10.ac
-					image.w-26.h-24.ml-10.mr-18(src="/static/icon/msg3.png")
+					image.w-28.h-28.ml-10.mr-18.pt-4.op-8(src="/static/icon/msg3.png")
 					input.s-28.c-63.h-50.lh-50.f-1(v-model="mark", type="text", placeholder='给卖家留言')
 
 			//- 商品相关统计信息

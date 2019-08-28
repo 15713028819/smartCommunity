@@ -57,7 +57,7 @@
 					v-for="(item, index) in list.user_trade_vip",
 					:title="'满' + item.enough +'减' + item.discount", 
 					:desc="item.name", 
-					:integral="'+' + item.get_point", 
+					integral="", 
 					:tradeLogo="item.icon", 
 					:tradeName="保定十秒到过桥米线", 
 					:text="'每' + item.useday + '天可使用' + item.usenum +'次'", 

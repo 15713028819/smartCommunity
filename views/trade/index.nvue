@@ -40,16 +40,16 @@
 					bg="#9B1FDD",
 					:itemText="list.coupon_list[0].time_start | couponTime(list.coupon_list[0].time_end)",
 					:money="list.coupon_list[0].price",
-					:name="list.coupon_list[0].name",
-					:desc="list.coupon_list[0].content"
+					:name="list.coupon_list[0].trade_name",
+					:desc="list.coupon_list[0].name"
 				)
 				coupon1(
 					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[1].id + '&type=coupon')",
 					bg="#B42676",
 					:itemText="list.coupon_list[1].time_start | couponTime(list.coupon_list[1].time_end)",
 					:money="list.coupon_list[1].price",
-					:name="list.coupon_list[1].name",
-					:desc="list.coupon_list[1].content"
+					:name="list.coupon_list[1].trade_name",
+					:desc="list.coupon_list[1].name"
 				)
 			view.between.tail
 				coupon1.mr-8(
@@ -57,16 +57,16 @@
 					bg="#5FA56D",
 					:itemText="list.coupon_list[2].time_start | couponTime(list.coupon_list[2].time_end)",
 					:money="list.coupon_list[2].price",
-					:name="list.coupon_list[2].name",
-					:desc="list.coupon_list[2].content"
+					:name="list.coupon_list[2].trade_name",
+					:desc="list.coupon_list[2].name"
 				)
 				coupon1(
 					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[3].id + '&type=coupon')",
 					bg="#B42626",
 					:itemText="list.coupon_list[3].time_start | couponTime(list.coupon_list[3].time_end)",
 					:money="list.coupon_list[3].price",
-					:name="list.coupon_list[3].name",
-					:desc="list.coupon_list[3].content"
+					:name="list.coupon_list[3].trade_name",
+					:desc="list.coupon_list[3].name"
 				)
 			view.between.tail
 

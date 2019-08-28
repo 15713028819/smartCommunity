@@ -56,7 +56,7 @@
 	.box {
 		border-bottom-style: solid;
 		border-bottom-width: 1rpx;
-		border-bottom-color: #ccc;
+		border-bottom-color: #e6e6e6;
 	}
 	.title {
 		font-size: 32rpx;

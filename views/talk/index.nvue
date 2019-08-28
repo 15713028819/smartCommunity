@@ -42,9 +42,13 @@
 			}
 		},
 		onLoad(param) {
+			
+		},
+		onShow() {
+			console.log('getApp().globalData.TALKINDEX', getApp().globalData.TALKINDEX)
+			this.tabIndex = getApp().globalData.TALKINDEX;
 			let data = {};
-			if(param.last_id) data.last_id = param.last_id;
-			if(param.cate_id) data.cate_id = param.cate_id;
+			if(this.tabIndex) data.cate_id = this.tabIndex;
 			/**
 			 * 获取邻里圈列表
 			 * 
@@ -52,11 +56,6 @@
 			 * @param cate_id	可选  类别id 用于筛选   
 			 */
 			SERVICE.load(this, data);
-			
-		},
-		onShow() {
-			console.log('getApp().globalData.TALKINDEX', getApp().globalData.TALKINDEX)
-			this.tabIndex = getApp().globalData.TALKINDEX;
 		},
 		onHide() {
 			getApp().globalData.TALKINDEX = list.cate_list[0].id;
@@ -75,6 +74,15 @@
 		methods: {
 			changeMenu(index) {
 				this.tabIndex = index;
+				let data = {};
+				if(index) data.cate_id = index;
+				/**
+				 * 获取邻里圈列表
+				 * 
+				 * @param last_id	可选  最后（最大）一条的id 用于下拉查看  第一次获取没有
+				 * @param cate_id	可选  类别id 用于筛选   
+				 */
+				SERVICE.load(this, data);
 			},
 			toToast(msg) {
 				uni.showToast({
@@ -93,6 +101,21 @@
 			good(item) {
 				SERVICE.good(this, {neighbor_id: item.id},()=>{
 					item.is_good = !item.is_good;
+					if(item.is_good) {
+						item.count_goods += 1;
+						item.goods.push({
+							nick: this.list.userinfo.nick
+						})
+					}
+					else {
+						item.count_goods -= 1;
+						for(let index in item.goods) {
+							if(item.goods[index].nick == this.list.userinfo.nick) 
+							return item.goods.splice(index, 1);
+						}
+						
+					}
+					
 				});
 			},
 			/**

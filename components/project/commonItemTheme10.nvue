@@ -4,7 +4,7 @@
 		view.between.head.py-20.wing.tail-line
 			view.row.jc.ac
 				image.w-34.h-34(:src="stateImg")
-				text.title.s-30.lh-34 {{title}}
+				text.title.s-30.lh-34(:style="{color: color}") {{title}}
 			text.rightTitle.s-26 {{rightTitle}}
 
 		view.wing
@@ -37,7 +37,11 @@
 			img: {
 				type: Array,
 				default: []
-			}
+			},
+			color: {
+				type: String,
+				default: '#333'
+			},
 		}
 	}
 </script>
@@ -53,7 +57,6 @@
 	}
 	.title {
 		font-size: 30rpx;
-		color: #333333;
 		margin-left: 12rpx;
 	}
 	.rightTitle {

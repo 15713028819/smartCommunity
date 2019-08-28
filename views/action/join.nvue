@@ -3,7 +3,7 @@
 		view.flex.tail
 
 		//- 购票信息
-		view.flex.bg-white.wing.py-20.tail(v-if="list.length")
+		view.flex.bg-white.wing.py-20.tail(v-if="list.length>0")
 			view.row.py-20
 				view.flex.redLine
 				text.ml-10.c-grey-1.s-30 购票信息
@@ -56,7 +56,7 @@
 
 		//- 报名按钮
 		view.flex.pt-80.center
-			text.btn-lg.c-white.mb-50.bg-primary.center.ra-max.s-30(@click="submit") 立即报名
+			text.btn-lg.c-white.mb-50.bg-primary.center.ra-max.s-30(@click="submit") 购票参加
 
 
 			

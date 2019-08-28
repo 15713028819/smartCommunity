@@ -41,7 +41,7 @@
 			status2.tail-sm(
 				v-if="order.status == 4"
 				icon="/static/icon/dengdai-2.png", 
-				title="已取消.", 
+				title="已取消", 
 			)
 			//- 已退货
 			status2.tail-sm(

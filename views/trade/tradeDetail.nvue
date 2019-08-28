@@ -193,7 +193,7 @@
 		},
 		computed: {
 			starOnWidth: function() {
-				let diff = this.list.grade / this.starMax;
+				let diff = this.list.grade / 10 / this.starMax;
 				return diff * 122;
 			},
 		},

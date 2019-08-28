@@ -1,15 +1,17 @@
 <template lang="pug">
 	view.flex.bg-f3
 		view.flex.bg-white.py-30.wing.tail
-			text.pb-30.s-20.c-66 关注的商家
-			view.flex.wing.between
-				itemY(
+			text.pb-30.s-26.c-66 关注的商家
+			view.flex.px-20.row
+				itemY.mx-10(
 					v-for="(item, index) in list.trade_list",
 					:img="item.icon", 
-					:text="item.name", 
-					imgW="67", 
-					imgH="67", 
-					imgSize="80", 
+					:text="item.name.length > 4 ? item.name.substring(0, 3) + '...' : item.name", 
+					imgW="70", 
+					imgRa="750",
+					imgH="70", 
+					imgSize="90", 
+					size="26",
 					@click="navigate('/views/msg/msgList?id='+item.id)"
 				)
 				//- itemY(img="/static/image/logo-3.jpg", text="中石化", imgW="67", imgH="67", imgSize="80", @click="navigate('/views/msg/msgList')")

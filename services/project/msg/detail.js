@@ -49,7 +49,7 @@ export default {
 	 * 
 	 * @param {number} msg_id 消息id
 	 */
-	read :(vue, data)=>{
+	read :(vue, data, callback)=>{
 		httpPost({
 			vue,
 			preurl: URL.data,

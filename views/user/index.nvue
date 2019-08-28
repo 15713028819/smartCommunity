@@ -45,8 +45,8 @@
 				view.between.py-30(@click="navigate('/views/action/myActivities')")
 					text.user-title 我的活动
 					view.row
-						text.s-28.c-99 全部
-						image.ml-10(style="width: 12rpx; height: 19rpx;", src="../../static/icon/arrow-right-6.png")
+						//- text.s-28.c-99 全部
+						//- image.ml-10(style="width: 12rpx; height: 19rpx;", src="../../static/icon/arrow-right-6.png")
 				view.flex.px-40
 					commonItem5.mb-20(
 						v-for="(item,index) in list.activity_log",

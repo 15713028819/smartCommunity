@@ -3,7 +3,7 @@
 
 		//- tab
 		view.row.tabBar.bg-white.tail.w-750.header
-			view.column.jc.ac.f-1(v-for="(item, index) in tabs", @click="()=>changeTab(index)")
+			view.column.jc.ac.f-1(v-for="(item, index) in tabs", @click="changeTab(index)")
 				text.tabTitle(:class="[tabIndex == index && 'titleActive']") {{item}} 
 				view.flex.tabLine.f-1(:class="[tabIndex == index && 'lineActive']")
 
@@ -12,7 +12,7 @@
 		view.flex.wing.mt-100.pt-20
 			
 			//- 订单
-			view.flex.bg-white.ra-20.tail(v-for="item in list")
+			view.flex.bg-white.ra-20.tail(v-for="(item,index) in list")
 			
 				//- header
 				view.between.ac.card-head.wing.tail-line(@click="navigate('/views/order/detail?id=' + item.id)")
@@ -38,7 +38,7 @@
 						text.text 共1件商品
 						text.text.ml-30 合计:￥{{item.amount}}
 					view.row.mt-20.mb-30
-						text.s-22.px-28.py-14.lh-22.ba.c-33.bc-99.bg-white.ra-max(v-if="item.status == 1 || item.status == 0", @click="onCancel(item)") 取消订单
+						text.s-22.px-28.py-14.lh-22.ba.c-33.bc-99.bg-white.ra-max(v-if="item.status == 1 || item.status == 0", @click="onCancel(item,index)") 取消订单
 						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 2", @click="toastTest") 确认收货
 						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 0", @click="onPay") 去支付
 						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 3", @click="onComment") 去评价
@@ -93,13 +93,14 @@
 			 * 
 			 * @param {number} id	订单id
 			 */
-			onCancel(item) {
+			onCancel(item,index) {
 				SERVICE.cancel(this, {id: item.id}, ()=>{
 					uni.showToast({
 						title: '取消成功'
 					})
 					setTimeout(() => {
 						item.status = 4;
+						this.list.splice(index, 1);
 					}, 1500);
 				});
 			},

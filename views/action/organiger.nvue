@@ -21,7 +21,7 @@
 				:text2="item.time_start | time_start_end(item.time_end)", 
 				:tag="item.state | state", 
 				:textRight="item.is_free ? '' : '免费'"
-				@click="navigate('/views/action/detail?id=' + item.id)"
+				@click="goto(item)"
 			)
 
 
@@ -38,10 +38,18 @@
 			return {
                 ...SERVICE.data,
 				follow: true,
+				useRedirect: false,
 			}
 		},
 		onLoad(param) {
-			console.log('param', param)
+			// 返回钩子
+			// let page = getCurrentPages();
+			// console.log('organiger page[page.length-3].route', page[page.length-3].route)
+			// console.log('organiger page[page.length-2].route', page[page.length-2].route == this.$page.route)
+			// // console.log('this.$page.route', this.$page.route)
+			// // console.log('param', page[page.length-3].route == this.$page.route)
+			// if(page[page.length-3].route.indexOf(page[page.length-1].route) !== -1) { console.log('organiger 3'); this.useRedirect = true}
+			// else if(page[page.length-2].route == page[page.length-1].route) { console.log('organiger 2'); this.useRedirect = true};
 			/**
 			 * 主办方 活动列表和信息
 			 * 
@@ -70,6 +78,12 @@
 			}
 		},
 		methods: {
+			goto(item) {
+				if(this.useRedirect)
+				this.redirect('/views/action/detail?id=' + item.id);
+				else
+				this.navigate('/views/action/detail?id=' + item.id);
+			}
 		}
 	}
 </script>

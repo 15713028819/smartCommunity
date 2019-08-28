@@ -3,7 +3,7 @@
 	
 		//- tab
 		view.row.tabBar.bg-white.w-750.header
-			view.column.jc.f-1.ac.f-1(v-for="(item, index) in tabs", @click="()=>changeTab(index)")
+			view.column.jc.f-1.ac.f-1(v-for="(item, index) in tabs", @click="changeTab(index)")
 				text.tabTitle(:class="[tabIndex == index && 'titleActive']") {{item}} 
 				view.flex.tabLine.f-1(:class="[tabIndex == index && 'lineActive']")
 		
@@ -27,6 +27,7 @@
 					:rightTitle="item.created * 1000 | dateFormat('Y-m-d H:i')", 
 					:text="item.text_submit", 
 					:img="item.imgs",
+					:color="item.state == 1 ? '#389E0D' : '#F38145'",
 					@click="()=>navigate('/views/prop/opinion/detail?id=' + item.id)"
 				)
 

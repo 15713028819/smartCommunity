@@ -19,7 +19,7 @@
 					view.flex.starOn.abs.top-left-0.row.overhide
 						image.starImg(src="/static/icon/star.png" v-for="index of starNum", @click="changeIndex(index)")
 				view.row.ae.py-20
-					text.s-28.c-primary {{starNum.toFixed(1)}}
+					text.s-28.c-primary {{starNum.toFixed(1)}}分
 			
 				
 			inputArea1(placeholder="店家满足你的期待吗？说说他的优点和美中不足的地方吧", size="30", titleSize="32", @input="onInput")
@@ -59,7 +59,7 @@
 		data () {
 			return {
 				...SERVICE.data,
-				cateIndex: 0,
+				cateIndex: null,
 				text: '',
 				starNum: 5
 			}
@@ -170,7 +170,7 @@
 		color: #aaa;
 	}
 	.starBox {
-		width: 230rpx;
+		width: 260rpx;
 		height: 36rpx;
 	}
 	.star {
@@ -182,7 +182,7 @@
 	.starImg {
 		width: 36rpx;
 		height: 36rpx;
-		margin-right: 10rpx;
+		margin-right: 16rpx;
 	}
 	.text {
 		font-size: 22rpx;

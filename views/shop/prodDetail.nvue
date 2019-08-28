@@ -29,6 +29,9 @@
 				view.row.py-20
 					text.ml-10.c-primary.s-32 图文详情
 				view.flex.py-20.column.w-690(v-html="list.info.content")
+					text.s-30.c-99.py-50 暂无内容
+					//- text.s-30.c-99.py-50(v-if="!list.info.content") 暂无内容
+					//- text.s-30.c-99.py-50(v-else) {{list.info.content}}
 				//- view.flex.py-20.column
 					image.w-680.h-325(src="/static/image/prod1.png")
 					div.between.w-680.py-20

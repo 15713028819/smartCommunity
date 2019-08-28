@@ -43,23 +43,20 @@
 		},
 		onLoad(param) {
 			/**
-			 * 获取消息详情
-			 * 
-			 * @param {number} id 消息id
-			 */
-			SERVICE.load(this, {id: param.id},()=>{
-				this.onRead(param.id);
-			});
-		},
-		methods: {
-			/**
 			 * 加入已读记录
 			 * 
 			 * @param {number} msg_id 消息id
 			 */
-			onRead(id) {
-				SERVICE.read (this, {msg_id:id});
-			}
+			SERVICE.read (this, {msg_id: param.id}, ()=>{
+				/**
+				 * 获取消息详情
+				 * 
+				 * @param {number} id 消息id
+				 */
+				SERVICE.load(this, {id: param.id})
+			});
+		},
+		methods: {
 		}
 	}
 </script>

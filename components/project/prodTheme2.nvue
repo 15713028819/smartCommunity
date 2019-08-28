@@ -5,7 +5,7 @@
 		text.name.c-66.px-20.pt-20 {{name}}
 		text.desc.c-99.px-20.pt-14(v-if="desc") {{desc}}
 
-		view.between.px-20.pb-20
+		view.between.px-20.tc.pt-12.pb-20
 			view.row(@click="$emit('click')")
 				text.money.c-primary {{price}}
 				text.origin.c-99.through.ml-20.pt-10 {{originPrice}}

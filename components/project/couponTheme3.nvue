@@ -123,7 +123,7 @@
 	.moneyLeft {
 		font-size: 20rpx;
 		color: #CF1322;
-		padding-top: 8rpx;
+		margin-bottom: 6rpx;
 	}
 	.money {
 		font-size: 50rpx;

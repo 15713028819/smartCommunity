@@ -14,7 +14,7 @@
 				filed2(
 					img="/static/icon/user-1.png", 
 					:text="list.author_name", 
-					@click="navigate('/views/action/organiger?id=' + list.author_id + '&type=' + list.type)", 
+					@click="toOrigin", 
 					imgW="23", 
 					imgH="22"
 				)
@@ -73,9 +73,16 @@
 			return {
                 ...SERVICE.data,
 				tag: [{text:'旅游', color: 'orange'}, 'FOOD', {text:'山水', color: '#e37'}],
+				useRedirect: false,
 			}
 		},
 		onLoad(param) {
+			// 返回钩子
+			// let page = getCurrentPages();
+			// console.log('detail page[page.length-3].route', page[page.length-3].route)
+			// console.log('detail page[page.length-2].route', page[page.length-2].route == this.$page.route)
+			// if(page[page.length-3].route.indexOf(page[page.length-1].route) !== -1) { console.log('detail 3'); this.useRedirect = true}
+			// else if(page[page.length-2].route == page[page.length-1].route) { console.log('detail 2'); this.useRedirect = true};
 			/**
 			 * 获取详情页数据
 			 * 
@@ -91,6 +98,12 @@
 			}
 		},
 		methods: {
+			toOrigin() {
+				if(this.useRedirect)
+				this.redirect('/views/action/organiger?id=' + this.list.author_id + '&type=' + this.list.type)
+				else
+				this.navigate('/views/action/organiger?id=' + this.list.author_id + '&type=' + this.list.type)
+			},
 			toastTest() {
 				uni.showToast({title: '暂未开启此功能',icon: 'none'})
 			}

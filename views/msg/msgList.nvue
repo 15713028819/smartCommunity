@@ -9,6 +9,10 @@
 			@click="navigate('/views/msg/detail?id='+item.id)"
 		)
 
+		view.center.py-100(v-if="!list.length && state == 'success'")
+			text.s-34.c-99 暂时没有商家消息
+
+
 </template>
 
 <script>
@@ -20,7 +24,8 @@
 		mixins: [mixinScene],
 		data () {
 			return {
-                ...SERVICE.data,
+				...SERVICE.data,
+				state: 'loading'
 			}
 		},
 		onLoad(param) {
@@ -29,7 +34,7 @@
 			 * 
 			 * @param {number} trade_id		商家的id
 			 */
-			SERVICE.load(this, {trade_id: param.id});
+			SERVICE.load(this, {trade_id: param.id}, ()=>{this.state = 'success'});
 		},
 		methods: {
 			/**

@@ -34,13 +34,21 @@
 					
 		//- 通知消息
 		filed5.tail(
-			img="../static/icon/msg1.png",
-			:title="list.message[0].title", 
-			:mark="list.message[0].created | dateLapse", 
-			dot, 
-			imgRight="list.message[0].img", 
-			@click="navigate('/views/msg/detail?id='+list.message[0].id)"
+			:list="list.message",
+			mark="created",
+			dot="is_read",
+			title="title"
+			@click="notice"
 		)
+
+		//- filed5.tail(
+		//- 	img="../static/icon/msg1.png",
+		//- 	:title="list.message[0].title", 
+		//- 	:mark="list.message[0].created | dateLapse", 
+		//- 	:dot="!list.message[0].is_open", 
+		//- 	imgRight="list.message[0].img", 
+		//- 	@click="navigate('/views/msg/detail?id='+list.message[0].id)"
+		//- )
 		
 		//- 轮播图
 		//-- slider.slider.wing.tail.ra-10.overhide(:show-indicators="true")
@@ -170,6 +178,12 @@
 			}
 		},
 		methods:{
+				notice(index) {
+					this.list.message[index].is_read = 1;
+					uni.navigateTo({
+						url: '/views/msg/detail?id=' + this.list.message[index].id
+					})
+				},
 				onTalk(index) {
 					getApp().globalData.TALKINDEX = index;
 					uni.switchTab({
