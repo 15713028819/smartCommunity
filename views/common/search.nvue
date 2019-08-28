@@ -1,22 +1,22 @@
 <template lang="pug">
 	view.f-1
 
-		
 		//- titlebar
 		navigateBar(bg="#CF1322")
 			image(style="width: 22rpx; height: 38rpx;", src="/static/icon/arrow-left.png", @click="goback()")
 			view.h-60.mx-30.bg-white.ra-max.row.ac.f-1
 				image.ml-28.mr-20(style="width: 29rpx; height: 29rpx;", src="/static/icon/search-1.png")
-				input.h-50.s-28.f-1(placeholder="芒果", placeholder-style="color: #666;", style="font-size: 26rpx;", focus)
-			text.bg-white.c-primary.ra-max.s-28.px-20.py-10(@click="toastTest") 搜索
-
+				input.h-50.s-28.f-1(:placeholder="keywordHot", placeholder-style="color: #666;", style="font-size: 26rpx;", focus, v-model="keyword")
+			text.bg-white.c-primary.ra-max.s-28.px-20.py-10(@click="onSearch()") 搜索
 			
 		scroll-view.f-1.w-750(scroll-y)
-			text.s-32.bold.c-36.wing-xxl.pt-50 搜索历史
+			view.between-wrap.pt-50.wing-xxl
+				text.s-32.bold.c-36 搜索历史
+				view.row.h-30.center(@click="deleteAll")
+					image.w-30.h-30(src="/static/icon/delete.png")
+					text.s-30.c-66.ml-16 清空历史
 			view.wing-xxl.py-30.row-wrap
-				text.mx-10.ba.bc-ce.c-36.s-30.px-24.py-12.ra-max(@click="toastTest") 芒果
-				text.mx-10.ba.bc-ce.c-36.s-30.px-24.py-12.ra-max(@click="toastTest") 荔枝
-				text.mx-10.ba.bc-ce.c-36.s-30.px-24.py-12.ra-max(@click="toastTest") 猕猴桃
+				text.mx-10.ba.bc-ce.c-36.s-30.px-24.py-12.ra-max(v-for="(item, index) in search_list", @longtap="deleteOne(index)", @click="onSearch(item)") {{item}}
 
 </template>
 
@@ -24,28 +24,65 @@
 	import '@/jm.nvue';
 	import SERVICE from '@/services/project/power/reg';
 	import { mixinLife, mixinScene } from '@/mixins';
+	import { setSession, getSession, removeSession, clearSession } from '@/functions/session'
 	export default { 
 		mixins:[mixinLife, mixinScene],
 		data () {
 			return {
                 ...SERVICE.data,
-				
+				keyword: '',
+				keywordHot: '',
+				type: '',
+				search_list: []
 			}
 		},
-		onLoad() {
-			uni.getSystemInfo({
-				success: (res)=> {
-					console.log(res.statusBarHeight)
-					console.log(res.screenWidth)
-					this.statusBarHeight = res.screenWidth / 750 * res.statusBarHeight;
-					
-					console.log('statusBarHeight', this.statusBarHeight)
-				}
-			})
+		onLoad(param) {
+
+			this.search_list = getSession('keywords') ? getSession('keywords') : [];
+			if(param.keyword) this.keyword = param.keyword;
+			if(param.keywordHot) this.keywordHot = param.keywordHot;
+			if(param.type) this.type = param.type;
 		},
 		methods: {
 			toastTest() {
 				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			deleteAll() {
+				clearSession();
+				this.search_list = [];
+			},
+			deleteOne(index) {
+				let key = this.search_list;
+				setSession('')
+			},
+			onSearch(keyword) {
+
+				// 关键词获取
+				keyword = keyword ? keyword : this.keyword ? this.keyword : this.keywordHot;
+				console.log('keyword',keyword)
+
+				// 如果没有关键词，返回并提示
+				if(!keyword) return uni.showToast({
+					title: '请输入搜索关键字',
+					icon: 'none'
+				})
+
+				// 加入历史记录
+				let list = this.search_list;
+				if(list && list.indexOf(keyword) === -1 || !list) {
+					console.log('list', this.search_list)
+					list.unshift(keyword);
+					setSession('keywords', list);
+				}
+				
+				// 跳页搜索
+				let url = '/views/shop/prodList?keyword=' + keyword;
+				if(this.type == 'trade') {
+					url = '/views/trade/trade?keyword=' + keyword
+				};
+				uni.navigateTo({
+					url: url
+				})
 			}
 		}
 	}

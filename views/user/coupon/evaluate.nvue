@@ -1,0 +1,191 @@
+<template lang="pug">
+	view.bg-f3
+		view.flex.wing.bg-white.py-30
+
+			//- 商家信息
+			view.row.py-30
+				image.ra-10.w-70.h-70(:src="list.trade.icon")
+				view.ml-26
+					text.s-30.c-33.lines-1.ellipsis.mb-10.lines-1.ellipsis {{list.trade.name}}
+					text.s-28.c-99.lines-1.ellipsis.lines-1.ellipsis {{list.trade.address}}
+
+			//- 整体评价
+			view.row
+				view.row.ae.py-20
+					text.title 整体评价
+				view.flex.starBox.rel.ml-30.mr-40
+					view.flex.star.abs.top-left-0.row
+						image.starImg(src="/static/icon/star_grey.png" v-for="index of 5", @click="changeIndex(index)")
+					view.flex.starOn.abs.top-left-0.row.overhide
+						image.starImg(src="/static/icon/star.png" v-for="index of starNum", @click="changeIndex(index)")
+				view.row.ae.py-20
+					text.s-28.c-primary {{starNum.toFixed(1)}}
+			
+				
+			inputArea1(placeholder="店家满足你的期待吗？说说他的优点和美中不足的地方吧", size="30", titleSize="32", @input="onInput")
+
+			view.row.mt-20
+				view.row.ae.py-20
+					text.title 点评一下
+					
+			//- 类型点评
+			view.row-wrap.py-30.mb-20
+				text.cateButton.ra-max.s-28.center.mr-24.px-24(v-for="(item, index) in list.trade_comment_cate", :class="[index == cateIndex && 'active']", @click="changeCate(index)") {{item.name}}
+			
+			//- 上传图片
+			//- view.row.ae.py-20
+			//- 	text.title 上传图片
+			//- 	text.desc.ml-10 最多上传3张
+			//- view.flex.upload.ba.bc-ee.mb-20
+
+			//- view.row.py-20
+			//- 	view.row(@click="onChangeNoname")
+			//- 		image.w-34.h-34(:src="is_noname ? '/static/icon/check.png' : '/static/icon/check-on.png'")
+			//- 		text.ml-10.s-32.c-g-6 匿名
+			
+		//- 按钮组
+		view.flex.pt-80.f-1.center
+			text.btn-lg-primary.ra-max(@click="onSubmit") 发布评价
+
+
+</template>
+
+<script>
+	import '@/jm.nvue';
+	import SERVICE from '@/services/project/user/coupon/evaluate';
+	import { mixinLife, mixinScene } from '@/mixins';
+	export default { 
+		mixins:[mixinLife, mixinScene],
+		data () {
+			return {
+				...SERVICE.data,
+				cateIndex: 0,
+				text: '',
+				starNum: 5
+			}
+		},
+		onLoad(param) {
+			let data = {};
+			if(param.id) {
+				data.trade_id = param.id;
+				this.trade_id = param.id;
+			}
+			/**
+			 * 获取用户券详情
+			 * 
+			 * @param trade_id 	商家id
+			 */
+			SERVICE.load(this, data);
+		},
+		computed: {
+		},
+		methods: {
+			changeIndex(index) {
+				this.starNum = index;
+			},
+			onMobile(e) {
+				this.mobile_submit = e.detail.value;
+				
+			},
+			onInput(e) {
+				this.text = e.detail.value;
+			},
+			changeCate(index) {
+				this.cateIndex = index;
+			},
+
+			/**
+			 * 提交评价
+			 * 
+			 * @param cate_id	优惠券id
+			 * @param trade_id	商家id
+			 * @param set_grade	评级
+			 * @param text	评论内容
+			 */
+			onSubmit(id, product_id) {
+				if(!this.text) return uni.showToast({
+					title: '请填写评论内容',
+					icon: 'none'
+				})
+				SERVICE.submit(this,
+					{
+						cate_id: this.list.trade_comment_cate[this.cateIndex].id,
+						text: this.text,
+						set_grade: this.starNum,
+						trade_id: this.trade_id,
+					},
+					()=>{
+						uni.showToast({title: '发布成功'});
+						setTimeout(() => {
+							this.goback();
+						}, 1500);
+					}
+				);
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	
+	.cateButton {
+		height: 60rpx;
+		line-height: 60rpx;
+		text-align: center;
+		color: #666;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #AAAAAA;
+		background-color: #fff;
+	}
+	.active {
+		color: #cf1322 ;
+		border-color: #cf1322 ;
+		background-color: #f1e4e5;
+	}
+	.upload {
+		width: 136rpx;
+		height: 136rpx;
+	}
+	
+	.title {
+		font-size: 32rpx;
+		color: #666;
+		
+	}
+	.desc {
+		font-size: 24rpx;
+		color: #999;
+	}
+
+	// start
+	.starNum {
+		color: #CF1322;
+		font-size: 36rpx;
+		margin-right: 40rpx;
+		margin-left: 10rpx;
+	}
+	.starDesc {
+		font-size: 22rpx;
+		color: #aaa;
+	}
+	.starBox {
+		width: 230rpx;
+		height: 36rpx;
+	}
+	.star {
+		height: 36rpx;
+	}
+	.starOn {
+		height: 36rpx;
+	}
+	.starImg {
+		width: 36rpx;
+		height: 36rpx;
+		margin-right: 10rpx;
+	}
+	.text {
+		font-size: 22rpx;
+		color: #515151;
+	}
+</style>

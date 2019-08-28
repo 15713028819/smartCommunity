@@ -59,6 +59,11 @@
 			}
 		},
 		onLoad() {
+			// 组织参数
+			let data = {};
+			if(param.cate_id) data.cate_id = param.cate_id;
+			if(param.condition) data.condition = param.condition;
+			if(param.keyword) data.keywords = param.keyword;
 			/**
 			 * 商户列表
 			 * 
@@ -66,7 +71,7 @@
 			 * @param condition	排序根据  count_sale  销量  (暂时就一个状态)
 			 * @param keywords	关键字
 			 */
-			SERVICE.load(this);
+			SERVICE.load(this, data);
 		},
 		methods: {
 		}

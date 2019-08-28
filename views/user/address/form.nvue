@@ -36,7 +36,6 @@
 			}
 		},
 		onLoad(param) {
-			if(param.type) this.type = param.type;
 			if(param.id) {
 				this.id = param.id;
 				SERVICE.load(this, {id: param.id});
@@ -77,8 +76,16 @@
 				})
 			},
 			onSubmit() {
-				if(!this.list.name) return uni.showToast({title: '请填写姓名', icon: 'none'});
-				if(!this.list.mobile) return uni.showToast({title: '请填写电话', icon: 'none'});
+				if(!this.list.name){
+					return uni.showToast({title: '请填写姓名', icon: 'none'});
+				}
+				if(!this.list.mobile){
+					return uni.showToast({title: '请填写电话', icon: 'none'});  
+				}
+				if(!(/^1[3456789]\d{9}$/.test(this.list.mobile))){ 
+				       return uni.showToast({title: '请输入正确的手机号码', icon: 'none'});
+				       return false; 
+				    } 
 				if(this.id) {
 					SERVICE.update(this, {
 						id: this.id,
@@ -111,10 +118,6 @@
 							title: '添加成功'
 						})
 						setTimeout(() => {
-							if(this.type)
-							return uni.redirectTo({
-								url: '/views/user/address/index?type=' + this.type
-							})
 							this.goback();
 						}, 1500);
 					});

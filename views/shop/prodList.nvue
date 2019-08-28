@@ -30,7 +30,7 @@
 			let data = {};
 			if(param.cbid) data.cbid = param.cbid;
 			if(param.csid) data.csid = param.csid;
-			if(param.keywords) data.keywords = param.keywords;
+			if(param.keyword) data.keywords = param.keyword;
 			/**
 			 * 获取商品详情
 			 * 

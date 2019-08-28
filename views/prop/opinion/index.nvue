@@ -1,5 +1,5 @@
 <template lang="pug">
-	view.bg-f3
+	view
 	
 		//- tab
 		view.row.tabBar.bg-white.w-750.header
@@ -11,14 +11,23 @@
 		view.bg-f3.my-100
 			view.wing
 				view.tail
+				//- commonItem10.bg-orange.tail(
+				//- 	stateImg="/static/icon/opinion-yihuifu.png", 
+				//- 	:title="item.state | stateFilter", 
+				//- 	:rightTitle="item.created * 1000 | dateFormat('Y-m-d H:i')", 
+				//- 	:text="item.text_submit", 
+				//- 	:img="item.imgs",
+				//- 	@click="()=>navigate('/views/prop/opinion/detail?id=' + item.id)"
+				//- 	v-for="item in list"
+				//- )
 				commonItem10.bg-orange.tail(
-					stateImg="/static/icon/opinion-yihuifu.png", 
+					v-for="item in list",
+					:stateImg="item.state == 1 ? '/static/icon/opinion-yihuifu.png' : '/static/icon/opinion-wait.png'", 
 					:title="item.state | stateFilter", 
 					:rightTitle="item.created * 1000 | dateFormat('Y-m-d H:i')", 
 					:text="item.text_submit", 
 					:img="item.imgs",
 					@click="()=>navigate('/views/prop/opinion/detail?id=' + item.id)"
-					v-for="item in list"
 				)
 
 		//- 底部按钮

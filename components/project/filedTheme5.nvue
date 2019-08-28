@@ -1,6 +1,6 @@
 <template lang="pug">
 	view.between.py-20.wing.box(@click="$emit('click')")
-		image.w-38.h-38(:src="img")
+		image.w-30.h-30(:src="img")
 		text.title.f-1.c-66 {{title}}
 		view.row.ac
 			text.mark(v-if="mark") {{mark}}

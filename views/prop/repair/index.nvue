@@ -2,7 +2,7 @@
 	view.bg-f3
 		view.flex.bg-f3.wing
 			view.flex.tail
-			commonItem10.tail(v-for="item in list", :stateImg="item.state | stateImg", :title="item.state | title", :rightTitle="item.created * 1000 | dateFormat('Y-m-d H-i')", :tag="item.type | tag", :text="item.text_submit", :img="imgs_submit && imgs_submit.split(',')", @click="navigate('/views/prop/repair/detail?id=' + item.id)")
+			commonItem10.tail(v-for="item in list", :stateImg="item.state | stateImg", :title="item.state | title", :rightTitle="item.created * 1000 | dateFormat('Y-m-d H:i')", :tag="item.type | tag", :text="item.text_submit", :img="imgs_submit && imgs_submit.split(',')", @click="navigate('/views/prop/repair/detail?id=' + item.id)")
 		
 		//- 占位
 		view.h-100

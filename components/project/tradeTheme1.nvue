@@ -19,13 +19,13 @@
 							image.starImg(src="/static/icon/star_grey.png" v-for="index of 5")
 						view.flex.starOn.abs.top-left-0.row.overhide(:style="{width: starOnWidth + 'rpx'}")
 							image.starImg(src="/static/icon/star.png" v-for="index of 5")
-					text.starNum {{starNum}}
+					text.starNum {{starNum.toFixed(1)}}
 					text.starDesc {{starDesc}}
 				text.text {{text1}}
 			text.text.mt-10 {{text2}}
 
 			view.flex.row-wrap.as(v-if="tag.length")
-				text.tag.mt-10(v-for="(item, index) in tag", v-if="index < 9" :style="[item.color && {color: item.color, 'border-color': item.color}]") {{item.name ? item.name : item}}
+				text.tag.mt-10(v-for="(item, index) in tag", v-if="index < 5" :style="{color: color, 'border-color': color}") {{item.name ? item.name : item}}
 
 			
 </template>
@@ -77,7 +77,16 @@
 				default: ()=>{}
 			}
 		},
+		data() {
+			return {
+				color_list: [ '#cf1322', '#f5222d', '#fa8c16', '#fadb14', '#a0d911', '#52c41a', '#13c2c2', '#1890ff', '#2f54eb', '#722ed1', '#eb2f96']
+			}
+		},
 		computed: {
+			color: function() {
+				let index = Math.floor(Math.random() * this.color_list.length);
+				return this.color_list[index];
+			},
 			starOnWidth: function() {
 				let diff = this.starNum / this.starMax;
 				console.log('diff',diff)

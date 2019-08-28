@@ -3,16 +3,16 @@
 		view.flex.wing.bg-white.py-30
 				
 			view.row.py-20
-				image.w-34.h-34(:src="is_noname ? '/static/icon/check.png' : '/static/icon/check-on.png'", @click="onChangeNoname")
+				image.w-34.h-34(:src="is_noname ? '/static/icon/check-on.png' : '/static/icon/check.png'", @click="onChangeNoname")
 				text.ml-10.s-32.c-g-6 匿名
-			inputArea1(placeholder="请简单介绍您报修的信息", size="32", @input="onInput")
+			inputArea1(placeholder="请填写您宝贵的意见", size="32", @input="onInput")
 			input1(title="联系电话", placeholder="请输入联系电话", size="32", titleSize="32", @input="onMobile")
 			
 			// 上传图片
-			view.row.ae.py-20
+			view.row.ae.py-20.mt-20
 				text.title 上传图片
 				text.desc.ml-10 最多上传3张
-			view.flex.upload.ba.bc-ee.ra-10
+			view.flex.upload.ba.bc-ee.ra-10.mb-30
 			
 		// 按钮组
 		view.flex.btn-box.ac.pt-80
@@ -58,6 +58,17 @@
 			 * @param imgs 图片 不必传  字符串英文逗号分隔
 			 */
 			onSubmit(id, product_id) {
+				
+				if(!this.text_submit){
+					return uni.showToast({title: '请填写您宝贵的意见', icon: 'none'});
+				}
+				if(!this.is_noname && !this.mobile){
+					return uni.showToast({title: '请输入联系电话', icon: 'none'});
+				}
+				if(!this.is_noname && !(/^1[3456789]\d{9}$/.test(this.mobile))){
+						return uni.showToast({title: '请输入正确的电话号码', icon: 'none'});
+						return false; 
+				} 
 				SERVICE.submit(this,
 					{
 						text_submit: this.text_submit,

@@ -11,7 +11,7 @@
 						image.avatarPage.ra-max.mr-20(:src="list.user_info.head")
 						//- image.avatarPage.ra-max.mr-20(:src="list.user_info.head")
 					view.between.iy.f-1.as
-						text.nick.c-white.mb-8 {{list.user_info.nick}}
+						text.nick.c-white.mb-18 {{list.user_info.nick}}
 						text.location.c-white {{list.user_info.house_info}}
 				view.row.right
 					//- jm-icon.icon-1.c-white &#xe690;

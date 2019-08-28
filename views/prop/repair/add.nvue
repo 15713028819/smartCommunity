@@ -44,6 +44,7 @@
 		methods: {
 			onMobile(e) {
 				this.mobile_submit = e.detail.value;
+				
 			},
 			onInput(e) {
 				this.text_submit = e.detail.value;
@@ -60,6 +61,19 @@
 			 * @param imgs_submit 	图片 不必传  字符串英文逗号分隔
 			 */
 			onSubmit(id, product_id) {
+				if(!this.mobile_submit){
+					return uni.showToast({title: '请输入手机号码', icon: 'none'});
+				}
+				if(!(/^1[3456789]\d{9}$/.test(this.mobile_submit))){
+						return uni.showToast({title: '请输入正确的手机号码', icon: 'none'});
+						return false; 
+					} 
+				if(!this.text_submit){
+					return uni.showToast({title: '请填写保修描述', icon: 'none'});
+				}
+				if(!this.imgs_submit){
+					return uni.showToast({title: '请放入图片', icon: 'none'});
+				}
 				SERVICE.submit(this,
 					{
 						type: this.typeIndex,

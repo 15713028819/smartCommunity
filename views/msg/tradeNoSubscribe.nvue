@@ -19,13 +19,13 @@
 		commonItem1(
 			v-for="(item, key) in list.list",
 			ra="14", 
-			:title="item.title", 
+			:title="item.trade_name", 
 			:desc="item.content", 
 			:time="item.created | dateLapse", 
 			imgW="70", 
 			imgH="70", 
 			:img="item.icon", 
-			@click="navigate('/views/msg/msgList?id=' + item.id)"
+			@click="navigate('/views/msg/msgList?id=' + item.trade_id)"
 		)
 		//-commonItem1(ra="14", title="世纪影城", desc="好看的电影你看过几个？", time="1天前", imgW="70", imgH="70", img="/static/image/logo-5.jpg", @click="navigate('/views/msg/msgList')")
 		//- commonItem1(ra="14", title="电谷", desc="优惠享不停，直到9月30日！", time="1天前", imgW="70", imgH="70", img="/static/image/logo-4.jpg", @click="navigate('/views/msg/msgList')")

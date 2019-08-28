@@ -1,5 +1,5 @@
 <template lang="pug">
-	view.f-1.bg-f3
+	view.bg-f3
 		view.flex.wing-lg.pt-30
 			// 缴费列表
 			view.flex.bg-white.ra-30.tail(@click="navigate('/views/prop/fee/detail?id=' + item.id)", v-for="item in list")

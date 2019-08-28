@@ -43,53 +43,56 @@
 		// 满减券
 		view.flex.mx-20.pt-30(v-if="tabIndex == 0")
 			coupon3.mt-20.bg-f6(
-			v-for="(item, index) in list.coupon_list",
-			leftText="满减券",
-			:title="item.name",
-			:text1="'原价' + item.price",
-			:text2="item.time_start | time_start_end(item.time_end)", 
-			:money="item.discount", 
-			@btnFun="toastTest", 
-			@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')", 
-			@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')")
+				v-for="(item, index) in list.coupon_list",
+				leftText="满减券",
+				:title="item.name",
+				:text1="'原价' + item.price",
+				:text2="item.time_start | time_start_end(item.time_end)", 
+				:money="item.discount", 
+				@btnFun="toastTest", 
+				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')", 
+				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')"
+			)
 		
 		// 套餐券
 		view.flex.mx-20.pt-30(v-if="tabIndex == 1")
 			coupon3.mt-20.bg-f6(
-			v-for="(item, index) in list.package_list",
-			leftText="套餐券", 
-			:title="item.name", 
-			:text1="'原价' + item.old_price", 
-			:text2="item.time_start | time_start_end(item.time_end)", 
-			:money="item.now_price",
-			@btnFun="toastTest", 
-			@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')", 
-			@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')")
+				v-for="(item, index) in list.package_list",
+				leftText="套餐券", 
+				:title="item.name", 
+				:text1="'原价' + item.old_price", 
+				:text2="item.time_start | time_start_end(item.time_end)", 
+				:money="item.now_price",
+				@btnFun="toastTest", 
+				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')", 
+				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')"
+			)
 		
 		// 尊享券
 		view.flex.mx-20.pt-30(v-if="tabIndex == 2")
 			coupon4.mt-20.bg-f6(
-			v-for="(item, index) in list.vip_list",
-			:title="'满' + item.enough + '减' + item.discount", 
-			:desc="'最多可使用'+ item.count +'次'", 
-			:integral="'+' + item.countnum", 
-			tradeLogo="../../static/image/logo.jpg", 
-			:tradeName="item.name", 
-			:text="'每1天可使用' + item.limitnum + '次'", 
-			:progress="400", 
-			:max="600", 
-			:btnText="item.price +'元抢购'", 
-			@btnFun="toastTest", 
-			@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')", 
-			@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')")
+				v-for="(item, index) in list.vip_list",
+				:title="'满' + item.enough + '减' + item.discount", 
+				:desc="'最多可使用'+ item.count +'次'", 
+				:integral="'+' + item.countnum", 
+				tradeLogo="../../static/image/logo.jpg", 
+				:tradeName="item.name", 
+				:text="'每1天可使用' + item.limitnum + '次'", 
+				:progress="400", 
+				:max="600", 
+				:btnText="item.price +'元抢购'", 
+				@btnFun="toastTest", 
+				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')", 
+				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')"
+			)
 		
 		// 评价
 		view.flex.mx-20.pt-30(v-if="tabIndex == 3")
 		
 			// 评价标签
 			view.flex.row-wrap.evaluateTagBox
-				text.evaluateTag(@click="changeComment('all')", :class="[ commentKey == 'all' && 'bg-primary c-white' ]") 全部
-				text.evaluateTag(v-for="(item, key) in comment_list", @click="changeComment(key)", :class="[ key == commentKey && 'bg-primary c-white' ]") {{item.name}}
+				text.evaluateTag(@click="changeComment('all')", :class="[ commentKey == 'all' && 'bg-primary', commentKey == 'all' && 'c-white' ]") 全部
+				text.evaluateTag(v-for="(item, key) in comment_list", @click="changeComment(key)", :class="[ key == commentKey && 'bg-primary', key == commentKey && 'c-white' ]") {{item.name}}
 		
 			// 评论列表
 			view(v-for="(item, key) in comment_list")
@@ -140,6 +143,7 @@
 	import '@/jm.nvue';
 	import SERVICE from '@/services/project/trade/tradeDetail';
 	import { mixinLife, mixinScene } from '@/mixins';
+	import { dateFormat } from '@/functions/date'
 	export default { 
 		mixins:[mixinLife, mixinScene],
 		data () {
@@ -192,9 +196,11 @@
 				let diff = this.list.grade / this.starMax;
 				return diff * 122;
 			},
-			filters: function(start, end) {
-				start = start | dateFormat('Y.m.d');
-				end = end | dateFormat('Y.m.d');
+		},
+		filters:{
+			time_start_end: function(start, end) {
+				start = dateFormat('Y.m.d', start);
+				end = dateFormat('Y.m.d', end);
 				return start + '-' + end;
 			},
 		},
@@ -432,14 +438,14 @@
 		margin-left: -18rpx;
 	}
 	.evaluateTag {
-		font-size: 24rpx;
+		font-size: 26rpx;
 		color: #CF1322;
 		border-style: solid;
 		border-width: 1rpx;
 		border-color: #CF1322;
-		padding: 0 17rpx;
-		height: 38rpx;
-		line-height: 38rpx;
+		padding: 0 19rpx;
+		height: 42rpx;
+		line-height: 42rpx;
 		margin-left: 18rpx;
 		margin-top: 18rpx;
 		border-radius: 30rpx;

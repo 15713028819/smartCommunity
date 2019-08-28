@@ -5,7 +5,7 @@
 		navigateBar(bg="#CF1322")
 			image(style="width: 22rpx; height: 38rpx;", src="/static/icon/arrow-left.png", @click="goback()")
 			text.c-white.s-34.ml-30 周边商家
-			view.h-60.ml-30.bg-white.ra-max.row.ac.f-1(@click="navigate('/views/common/search')")
+			view.h-60.ml-30.bg-white.ra-max.row.ac.f-1(@click="navigate('/views/common/search?type=trade&keywordHot=' + searchWord)")
 				image.ml-28.mr-20(style="width: 29rpx; height: 29rpx;", src="/static/icon/search-1.png")
 				text.h-60.lh-60.s-28.f-1.c-66 {{searchWord}}
 				//- input.h-60.s-28.f-1(placeholder="芒果", placeholder-style="color: #666;", style="font-size: 28rpx;")
@@ -16,7 +16,7 @@
 			//- 热搜词
 			view.flex.px-80.pt-30.row.center(v-if="list.hot_sreach")
 				text.c-primary.s-30.mr-10 热搜：
-				text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(v-for="(item, index) in list.hot_sreach", v-if="index < 5", @click="navigate('/views/shop/prodList?keyword=' + item.name)") {{item.name}}
+				text.s-24.ra-max.tc.row.ac.w-100.lh-36.bg-primary.c-white.mr-8.h-36(v-for="(item, index) in list.hot_sreach", v-if="index < 5", @click="navigate('/views/trade/trade?keyword=' + item.name)") {{item.name}}
 			//- 轮播图
 			view.center.pt-30(v-if="list.swiper")
 				swiper.slider.wing.tail.ra-10.overhide(:indicator-dots="list.swiper.length - 1", autoplay, indicator-color="#fff", indicator-active-color="#CF1322", circular)

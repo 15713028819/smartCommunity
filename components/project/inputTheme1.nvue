@@ -92,7 +92,6 @@
 			},
 			cursor: {
 				type: Number,
-				default: '',
 			},
 			"selection-start": {
 				type: Number,
