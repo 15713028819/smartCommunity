@@ -90,7 +90,7 @@
 				default: '剩余：'
 			},
 			progressWidth: {
-				type: String,
+				type: [String, Number],
 				default: 580
 			},
 			borderColor: {

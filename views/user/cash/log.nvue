@@ -7,7 +7,7 @@
 				v-for="item in list.list",
 				:img="item.count > 0 ? '/static/icon/listtype-chongzhi.png' : '/static/icon/listtype-shop.png'",
 				:title="item.des",
-				:desc="item.created | dateFormat('Y-m-d H:i')",
+				:desc="item.created * 1000 | dateFormat('Y-m-d H:i')",
 				:text="item.count",
 				:add="item.count > 0"
 			)

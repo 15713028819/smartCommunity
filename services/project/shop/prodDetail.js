@@ -6,7 +6,9 @@ export default {
 	
 	// 数据
 	data: {
-		list: []
+		list: [],
+		// 购物车商品数量
+		cartNum: 0,
 	},
 	
 	// 模拟
@@ -59,6 +61,35 @@ export default {
 			parse: PARSE.restful,
 			success(res, vue) {
 				uni.showToast({title: '添加成功'})
+
+                // 回调函数
+                if(typeof callback === 'function') callback(res);
+			},
+			fail: {
+				power: PIPE.alert('权限出错'),
+				logic: PIPE.alert('逻辑出错'),
+				error: PIPE.alert('系统出错'),
+				network: PIPE.alert('网络出错'),
+				offline: PIPE.alert('未联网')
+			}
+		});
+	},
+
+	
+	/**
+	 * 获取购物车数量
+	 */
+	getCartNum: (vue, data, callback)=> {
+		httpGet({
+			vue,
+			preurl: URL.data,
+			url: 'views/order/cart.php?action=buycart_count',
+			data,
+			loader: LOADER.loading,
+			parse: PARSE.restful,
+			success(res, vue) {
+				getApp().globalData.CARTNUM = res.data.data;
+				vue.cartNum = res.data.data;
 
                 // 回调函数
                 if(typeof callback === 'function') callback(res);

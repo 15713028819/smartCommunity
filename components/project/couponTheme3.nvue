@@ -1,5 +1,5 @@
 <template lang="pug">
-	view.flex.ra-20.overhide
+	view.flex.ra-20.overhide 
 
 		view.between.box.ac
 			view.flex.left.column.px-10.jc.ac(@click="$emit('click')")
@@ -8,14 +8,18 @@
 					text.money {{money}}
 				text.leftText {{leftText}}
 			view.flex.f-1.column.as
-				text.title(@click="$emit('click')") {{title}}
+				text.f-1.title(@click="$emit('click')") {{title}}
+				
 				view.row(@click="$emit('click')")
 					text.text {{text1}}
 					text.text.ml-20 {{text2}}
 				view.row(@click="$emit('moreFun')")
 					text.more.mr-8 查看详情
 					image.w-10.h-18(src="/static/icon/arrow-right-6.png")
-			view.flex.btnBox.center(v-if="btn")
+			view.column.flex.btnBox.iy(v-if="btn")
+				view.row.mt-40.mb-30
+					image.mr-10(style="width: 26rpx; height: 26rpx;", :src="icon")
+					text.integral {{integral}}
 				text.couponBtn.center(@click="btnFun") {{btnText}}
 				
 		view.row.bottomBox.px-30.py-20(v-if="progress", :style="{'border-top-color': borderColor}", @click="$emit('click')")
@@ -43,6 +47,14 @@
 				type: String,
 				default: 'title',
 				require: true
+			},
+			icon: {
+				type: String,
+				default: '../../static/icon/jifen-2.png'
+			},
+			integral: {
+				type: String,
+				default: 'integral'
 			},
 			text1: {
 				type: String,
@@ -123,7 +135,7 @@
 	.moneyLeft {
 		font-size: 20rpx;
 		color: #CF1322;
-		margin-bottom: 6rpx;
+		margin-bottom: 5rpx;
 	}
 	.money {
 		font-size: 50rpx;
@@ -134,7 +146,10 @@
 		font-size: 22rpx;
 		color: #CF1322;
 	}
-	
+	.integral {
+		font-size: 24rpx;
+		color: #F6AB49;
+	}
 	// 中间内容
 	.title {
 		font-size: 30rpx;
@@ -157,14 +172,14 @@
 	// 按钮
 	.btnBox {
 		width: 190rpx;
-		height: 190rpx;
 	}
 	.couponBtn {
-		font-size: 20rpx;
+		font-size: 24rpx;
 		color: #fff;
 		background-color: #CF1322;
-		padding: 10rpx 16rpx;
-		border-radius: 38rpx;
+		padding: 13rpx 20rpx;
+		border-radius: 40rpx;
+		margin-bottom: 10rpx;
 	}
 	
 	// 底部进度条

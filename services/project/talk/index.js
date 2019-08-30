@@ -26,7 +26,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/talk/index.php?action=load',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.slient,
 			parse: PARSE.restful,
 			success(res, vue) {
 				vue.list = res.data

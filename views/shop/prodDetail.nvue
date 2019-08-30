@@ -13,9 +13,7 @@
 				view.row
 					text.c-primary.s-30 ￥
 					text.c-primary.s-50 {{list.stand[standIndex].price.toFixed(2)}}
-					text.through
-						text.s-18.ml-16.c-g-6 ￥
-						text.s-26.c-g-6 {{list.stand[standIndex].old_price.toFixed(2)}}
+					text.s-26.c-66.through.ml-16 ￥{{list.stand[standIndex].old_price.toFixed(2)}}
 				text.s-40.py-10.c-33 {{list.info.name}}
 				//- text.s-24.c-66 原产地直供，全网热销
 
@@ -50,9 +48,10 @@
 			view.column.ml-50.jc.ac.h-100(@click="toastTest")
 				image.mb-10.w-36.h-46(src="/static/icon/kefu.png")
 				text.c-66.tc.s-22 客服
-			view.column.mx-50.jc.ac.h-100(@click="navigate('/views/order/cart')")
+			view.column.mx-50.jc.ac.h-100.rel(@click="navigate('/views/order/cart')")
 				image.mb-10.w-48.h-44(src="/static/icon/gouwuche-2.png")
 				text.c-66.tc.s-22 购物车
+				text.abs.right-0.bg-primary.ra-max.c-white.px-10.h-30.lh-30.s-22(v-if="cartNum", style="top: 2rpx;") {{cartNum}} 
 			text.f-1.bg-warn.c-white.tc.s-36.h-100(style="line-height: 100rpx;", @click="onAddCart") 加入购物车
 			text.f-1.bg-primary.c-white.tc.s-36.h-100(style="line-height: 100rpx;", @click="navigate('/views/order/submit')") 立即购买
 
@@ -78,7 +77,12 @@
 			 * 
 			 * @param id 商品id
 			 */
-			SERVICE.load(this, {id: param.id});
+			SERVICE.load(this, {id: param.id}, ()=>{
+				SERVICE.getCartNum(this);
+			});
+		},
+		onShow() {
+			this.cartNum = getApp().globalData.CARTNUM;
 		},
 		methods: {
 			changeIndex(index) {
@@ -95,7 +99,11 @@
 			 * @param stid			商品id	规格id（非规格设置id）
 			 */
 			onAddCart() {
-				SERVICE.add_cart(this, {product_id: this.list.info.id, stid: this.list.stand[this.standIndex].id});
+				SERVICE.add_cart(this, {product_id: this.list.info.id, stid: this.list.stand[this.standIndex].id}, ()=>{
+					// console.log('111',this.cartNum)
+					getApp().globalData.CARTNUM += 1; 
+					this.cartNum += 1;
+				});
 			}
 		}
 	}

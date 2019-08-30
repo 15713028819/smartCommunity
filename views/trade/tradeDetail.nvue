@@ -8,14 +8,14 @@
 			image.abs.top-left-0.w-750.h-350(src="/static/image/swiper3.png")
 			
 			// 商家卡片
-			view.flex.rel.mx-20.pt-50
-				view.flex.bg-white.wing-sm.ra-20.pt-10.pb-20.ba.bc-f3
-					text.title {{list.name}}
-					
+			view.flex.rel.mx-20.pt-50.mt-10
+				view.flex.bg-white.wing-sm.ra-20.pt-20.pb-20.ba.bc-f3
+					text.mb-10.title {{list.name}}
+					   
 					view.row.py-6
 						text.tradeType.mr-20 {{list.link_name}}
-						text.text 3.6公里
-					view.row.ac.py-6.py-6
+						text.mb-10.text 3.6公里
+					view.mb-10.row.ac.py-6.py-6
 						view.flex.starBox.rel
 							view.flex.star.abs.top-left-0.row
 								image.starImg(src="/static/icon/star_grey.png" v-for="index of 5")
@@ -23,17 +23,17 @@
 								image.starImg(src="/static/icon/star.png" v-for="index of 5")
 						text.starNum {{(list.grade / 10).toFixed(1)}}
 						text.starDesc {{'月售' + list.count_sale}}
-					view.row
-						text.notice.f-1.pr-40 {{'公告' + list.content}}
+					view.row.mb-10
+						text.notice.f-1.pr-40 {{'公告:' + list.content}}
 						image.arrow-down.mx-20(src="/static/icon/arrow-down-8.png")
 						
 				// 商家头像
-				view.flex.abs.top-0.w-100.h-30.h-150(style="right: 30rpx;")
-					image.ra-20.w-100.h-100(:src="list.icon")
+				view.mt-10.flex.abs.top-0.w-100.h-30.h-150(style="right: 30rpx;")
+					image.mb-10.ra-20.w-100.h-100(:src="list.icon")
 					text.center.follow.mt-10(:class="[list.is_follow && 'follow_on']", @click="onFollow") {{list.is_follow ? '已关注' : '+ 关注'}}
 		
 		// 商家列表 -- tab
-		view.flex.mx-20.between
+		view.flex.ml-70.mr-60.between
 			view.column(v-for="(item, index) in tab", @click="changeTab(index)", style="align-items: center;")
 				view.row
 					text.tabText(:class="[index == tabIndex && 'activeText']") {{item.title}}
@@ -41,11 +41,12 @@
 				view.flex.tabItem(:class="[index == tabIndex && 'activeItem']")
 				
 		// 满减券
-		view.flex.mx-20.pt-30(v-if="tabIndex == 0")
+		view.flex.mx-40.pt-30.tail(v-if="tabIndex == 0")
 			coupon3.mt-20.bg-f6(
 				v-for="(item, index) in list.coupon_list",
 				leftText="满减券",
 				:title="item.name",
+				:integral="'+' + item.get_point", 
 				:text1="'原价' + item.price",
 				:text2="item.time_start | time_start_end(item.time_end)", 
 				:money="item.discount", 
@@ -55,11 +56,12 @@
 			)
 		
 		// 套餐券
-		view.flex.mx-20.pt-30(v-if="tabIndex == 1")
+		view.flex.mx-40.pt-30.tail(v-if="tabIndex == 1")
 			coupon3.mt-20.bg-f6(
 				v-for="(item, index) in list.package_list",
 				leftText="套餐券", 
 				:title="item.name", 
+				:integral="'+' + item.get_point", 
 				:text1="'原价' + item.old_price", 
 				:text2="item.time_start | time_start_end(item.time_end)", 
 				:money="item.now_price",
@@ -69,12 +71,12 @@
 			)
 		
 		// 尊享券
-		view.flex.mx-20.pt-30(v-if="tabIndex == 2")
+		view.flex.mx-40.pt-30.tail(v-if="tabIndex == 2")
 			coupon4.mt-20.bg-f6(
 				v-for="(item, index) in list.vip_list",
 				:title="'满' + item.enough + '减' + item.discount", 
 				:desc="'最多可使用'+ item.count +'次'", 
-				:integral="'+' + item.countnum", 
+				:integral="'+' + item.get_point", 
 				tradeLogo="../../static/image/logo.jpg", 
 				:tradeName="item.name", 
 				:text="'每1天可使用' + item.limitnum + '次'", 
@@ -87,7 +89,7 @@
 			)
 		
 		// 评价
-		view.flex.mx-20.pt-30(v-if="tabIndex == 3")
+		view.flex.mx-40.pt-30(v-if="tabIndex == 3")
 		
 			// 评价标签
 			view.flex.row-wrap.evaluateTagBox
@@ -101,7 +103,7 @@
 						text.bottomTag {{item.name}}
 						//- text.bottomText 浏览413
 		// 商家
-		view.flex(v-if="tabIndex == 4")
+		view.flex.tail(v-if="tabIndex == 4")
 			view.flex.greyStrip
 			
 			// 第一栏 商家简介
@@ -113,7 +115,7 @@
 					view.center.imgBL.cardRight(@click="phoneCall(String(list.link_mobile))")
 						image(style="width: 36rpx; height: 36rpx", src="/static/icon/phone-2.png")
 				scroll-view.row.js.ac.commonBT(:scroll-x="true", style="height: 170rpx;", :show-scrollbar="true")
-					image(v-for="(item, index) in list.imgs.split(',')", style="width: 187rpx; height: 123rpx;", :class="[index && 'ml-md']", :src="item")
+					image.pr-10(v-for="(item, index) in list.imgs.split(',')", style="width: 187rpx; height: 123rpx;", :class="[index && 'ml-md']", :src="item")
 				view.row.ac.py-20.commonBT
 					image.mr-20(style="width: 32rpx; height: 32rpx", src="/static/icon/dengdai-1.png")
 					text.cardTitle {{list.time_busess}}
@@ -193,14 +195,14 @@
 		},
 		computed: {
 			starOnWidth: function() {
-				let diff = this.list.grade / 10 / this.starMax;
+				let diff = this.list.grade / this.starMax;
 				return diff * 122;
 			},
 		},
 		filters:{
 			time_start_end: function(start, end) {
-				start = dateFormat('Y.m.d', start);
-				end = dateFormat('Y.m.d', end);
+				start = dateFormat('m.d', start);
+				end = dateFormat('m.d', end);
 				return start + '-' + end;
 			},
 		},

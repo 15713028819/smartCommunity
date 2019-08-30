@@ -57,11 +57,11 @@
 			},
 			zanOff: {
 				type: String,
-				default: '../../static/icon/zan-off.png'
+				default: '/static/icon/zan-off.png'
 			},
 			zanOn: {
 				type: String,
-				default: '../../static/icon/zan-on.png'
+				default: '/static/icon/zan-on.png'
 			},
 			zanPerson: {
 				type: String,
@@ -69,7 +69,7 @@
 			},
 			pinglun: {
 				type: String,
-				default: '../../static/icon/pinglun.png'
+				default: '/static/icon/pinglun.png'
 			}
 		},
 		

@@ -80,10 +80,11 @@
 		computed: {
 			searchWord: function() {
 				if(this.list.search_rec && this.list.search_rec.length) {
-					let random = Math.round(Math.random() * this.list.search_rec.length);
+					let random = Math.floor(Math.random() * this.list.search_rec.length);
 					return this.list.search_rec[random].keyword;
 				}
 				else return '请输入关键词搜索';
+				console.log('searchWord end')
 			}
 		},
 		methods: {
@@ -115,7 +116,9 @@
 			 * @param stid			规格id（非规格设置id） 非必传
 			 */
 			addcart(product_id) {
-				SERVICE.addcart(this, {product_id});
+				SERVICE.addcart(this, {product_id}, ()=>{
+					getApp().globalData.CARTNUM += 1;
+				});
 			},
 		}
 	}

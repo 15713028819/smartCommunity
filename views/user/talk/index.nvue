@@ -65,6 +65,20 @@
 			good(item) {
 				SERVICE.good(this, {neighbor_id: item.id},()=>{
 					item.is_good = !item.is_good;
+					if(item.is_good) {
+						item.count_goods += 1;
+						item.goods.push({
+							nick: this.list.userinfo.nick
+						})
+					}
+					else {
+						item.count_goods -= 1;
+						for(let index in item.goods) {
+							if(item.goods[index].nick == this.list.userinfo.nick) 
+							return item.goods.splice(index, 1);
+						}
+						
+					}
 				});
 			},
 			/**

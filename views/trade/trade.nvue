@@ -61,7 +61,7 @@
 		onLoad() {
 			// 组织参数
 			let data = {};
-			if(param.cate_id) data.cate_id = param.cate_id;
+			if(param.id) data.cate_id = param.id;
 			if(param.condition) data.condition = param.condition;
 			if(param.keyword) data.keywords = param.keyword;
 			/**

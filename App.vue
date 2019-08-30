@@ -22,6 +22,9 @@
 			STORE: {},
 			// 邻里menu的选中项索引，在系统首页和邻里首页有使用
 			TALKINDEX: 0,
+
+			// 购物车数量
+			CARTNUM: 0
 		},
 	}
 </script>

@@ -68,15 +68,27 @@
 					text.store.ml-10.s-28.c-66 社区商城
 
 				//- 商品列表
-				view.flex.tail-line.pb-20
+				view.flex.pb-20
 					view.flex.py-20.wing
 						prod3(
-							:img="dir.shop_prod(order.img)", 
-							:title="order.name", 
-							:tag="['满减']", 
-							num="1", 
-							price="25"
+							v-for="item in order.item",
+							:img="dir.shop_prod(item.img)", 
+							:title="item.name", 
+							:stand="item.stand", 
+							:num="item.count", 
+							:price="item.price",
+							class="py-14 px-20",
+							:line="index < order.item.length - 1",
 						)
+
+				//- 留言
+				view.flex.pb-20.px-30.tail-line(v-if="order.mark")
+					view.row.px-10.pb-10.pt-20.at.top-line
+						view.h-40.center
+							image.w-28.h-28.ml-10.mr-18.pt-4.op-8(src="/static/icon/msg3.png")
+						view.f-1
+							text.s-24.c-66.h-46.lh-46 买家留言
+							text.s-24.c-39.lh-46 {{order.mark}}
 
 				//- 商品相关统计信息
 				view.flex.wing
@@ -86,19 +98,22 @@
 					view.between.py-10
 						text.text 配送费用
 						text.text ￥{{order.fare}}
-					view.between.py-10
-						text.text 使用优惠券优惠金额
-						text.text ￥100
+					//- view.between.py-10
+					//- 	text.text 使用优惠券优惠金额
+					//- 	text.text ￥100
 					view.between.py-10
 						text.title1  订单总价
 						text.title1 ￥{{order.amount + order.fare}}
 					view.flex.py-10.tail-line
-					view.between.pb-10.pt-20
-						text.title3  已优惠金额
-						text.text3 -100
+					//- view.between.pb-10.pt-20
+					//- 	text.title3  已优惠金额
+					//- 	text.text3 -100
 					view.between.pt-10.pb-30
 						text.title1  实付款
 						text.text1 ￥{{order.amount + order.fare}}
+					
+					
+
 
 			//- 订单统计信息
 			view.flex.wing.bg-white.tail-lg.py-20
@@ -112,16 +127,16 @@
 					text.text {{order.status | status}}
 				view.between.py-10
 					text.text 下单时间
-					text.text {{order.time_submit | dateFormat('Y-m-d H:i')}}
+					text.text {{order.time_submit * 1000 | dateFormat('Y-m-d H:i')}}
 				view.between.py-10(v-if="order.time_receive")
 					text.text 收货时间
-					text.text {{order.time_receive | dateFormat('Y-m-d H:i')}}
+					text.text {{order.time_receive * 1000 | dateFormat('Y-m-d H:i')}}
 				view.between.py-10(v-if="order.time_completed")
 					text.text 完成时间
-					text.text {{order.time_completed | dateFormat('Y-m-d H:i')}}
+					text.text {{order.time_completed * 1000 | dateFormat('Y-m-d H:i')}}
 				view.between.py-10(v-if="order.time_cancel")
 					text.text 取消时间
-					text.text {{order.time_cancel | dateFormat('Y-m-d H:i')}}
+					text.text {{order.time_cancel * 1000 | dateFormat('Y-m-d H:i')}}
 				view.between.py-10
 					text.text 支付方式
 					text.text {{order.paytype | paytype}}
@@ -242,7 +257,7 @@
 <style lang="scss">
 
 	.text {
-		font-size: 22rpx;
+		font-size: 24rpx;
 		color: #999;
 	}
 	.title1 {
@@ -268,6 +283,11 @@
 	.border-top {
 		border-top-style: solid;
 		border-top-width: 1px;
+		border-top-color: #f3f3f3;
+	}
+	.top-line {
+		border-top-style: solid;
+		border-top-width: 1rpx;
 		border-top-color: #f3f3f3;
 	}
 </style>

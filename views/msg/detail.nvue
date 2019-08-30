@@ -6,7 +6,8 @@
 			text.ml-20.s-24.c-c3 {{list.created*1000 | dateFormat('Y年m月d日')}}
 			
 		
-		view.py-24(v-html="list.content")
+		view.py-24()
+			text.s-40.c-26 {{list.content}}
 		//- view.py-24
 		
 			text.mb-16.s-32.c-39.lh-60         相信大家都有碰到过这种现象，就是我们住的小区突然发生停水，特别像一些比较老的小区，这样发现频率会比较高一些，那么修理前一定要先找到原因来。下面小编就来给大家介绍一下小区停水怎么办。

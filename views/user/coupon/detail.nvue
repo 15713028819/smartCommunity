@@ -114,7 +114,7 @@
 
 		//- 底部按钮
 		text.footer.btn-full-page.bg-primary.c-white(v-if="pagetype == 'user'", @click="navigate('/views/user/coupon/evaluate?id=' + list.trade.id + '&type=' + type)") 立即使用
-		text.footer.btn-full-page.bg-primary.c-white(v-else, @click="toastTest") 立即领取
+		text.footer.btn-full-page.bg-primary.c-white(v-else, @click="get_card") 立即领取
 		//- text.btn-full-page.footer.bg-primary.c-white 立即使用
 </template>
 
@@ -160,6 +160,15 @@
 			},
 			toastTest() {
 				uni.showToast({title: '暂未开启此功能',icon: 'none'})
+			},
+			// 领取优惠券
+			get_card: function(){
+				SERVICE.get_card(this, {id: this.list.info.id, type: this.type});
+				// toast 提示
+				uni.showToast({
+				title: '领取成功',
+				icon: 'none',
+				})
 			}
 		}
 	}

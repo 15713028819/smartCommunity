@@ -53,10 +53,19 @@
 		},
 		onNavigationBarButtonTap(e) {
 			let indexs = [];
+			let num = 0;
 			for(let item in this.list) {
-				if(this.list[item].checked) indexs.unshift(item);
+				if(this.list[item].checked) {
+					indexs.unshift(item)
+					num += this.list[item].count;
+				};
 			}
-			console.log('indexs', indexs)
+			if(!indexs.length) {
+				return uni.showToast({
+					title: '请先选择商品',
+					icon: 'none'
+				})
+			}
 			uni.showModal({
 				title: "删除",
 				content: "确认删除吗？",
@@ -67,13 +76,14 @@
 								this.list.splice(index,1);
 							}
 							this.count_total();
+							// 全局变量 购物车数量改变
+							getApp().globalData.CARTNUM -= num;
 						});
 					}
 				}
 			})
 		},
-		onLoad() {
-			console.log('this.dir',this.dir)
+		onShow() {
 			/**
 			 * 获取购物车列表
 			 */
@@ -121,6 +131,9 @@
 				SERVICE.addpro(this, {id: item.id, index}, ()=>{
 					// 计算总额
 					this.count_total();
+
+					// 全局变量 购物车数量改变
+					getApp().globalData.CARTNUM += 1;
 				});
 
 			},
@@ -138,6 +151,9 @@
 				SERVICE.reducepro(this, {id: item.id, index}, ()=>{
 					// 计算总额
 					this.count_total();
+
+					// 全局变量 购物车数量改变
+					getApp().globalData.CARTNUM -= 1;
 				});
 			},
 			count_total(){
@@ -151,9 +167,14 @@
 			},
 			check_by_ids() {
 				let ids = '';
+				let num = 0;
 				for(let item of this.list) {
-					if(item.checked) ids += item.id + ',' 
+					if(item.checked) {
+						ids += item.id + ',';
+						num += item.count;
+					}
 				}
+				if(!ids) return uni.showToast({title: '请先选择商品', icon: 'none'})
 				ids = ids.slice(0, ids.length - 1);
 
 				SERVICE.check_by_ids(this, {ids}, ()=>{

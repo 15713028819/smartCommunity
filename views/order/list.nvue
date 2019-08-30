@@ -22,21 +22,26 @@
 					text.type {{tabs[item.status + 1]}}
 				
 				//- 商品
-				view.flex.pa-20
+				view.flex.pa-20.wing
 					prod3(
-						:img="dir.shop_prod(item.img)", 
-						:title="item.name", 
-						:tag="['满减']", 
-						num="1", 
-						price="25", 
-						@click="navigate('/views/order/detail?id=' + item.id)"
+						v-for="(prod, index) in item.item",
+						:img="dir.shop_prod(prod.img)", 
+						:title="prod.name", 
+						:stand="prod.stand", 
+						:num="prod.count", 
+						:price="prod.price",
+						class="py-14 px-20",
+						:line="index < item.item.length - 1",
 					)
 					
 				//- 底部 统计和 按钮
 				view.column.jc.ae.wing
 					view.row(@click="navigate('/views/order/detail?id=' + item.id)")
 						text.text 共1件商品
-						text.text.ml-30 合计:￥{{item.amount}}
+						text.text.ml-30 配送费:￥{{item.fare}}
+						view.row.ml-30
+							text.text 合计:
+							text.text.bold ￥{{item.amount}}
 					view.row.mt-20.mb-30
 						text.s-22.px-28.py-14.lh-22.ba.c-33.bc-99.bg-white.ra-max(v-if="item.status == 1 || item.status == 0", @click="onCancel(item,index)") 取消订单
 						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 2", @click="toastTest") 确认收货
@@ -77,13 +82,15 @@
 		},
 		methods: {
 			changeTab(index) {
+				let data = {};
 				this.tabIndex = index;
+				if(index) data.status = index - 1;
 				/**
 				 * 获取订单列表数据
 				 * 
 				 * @param {number} status	不传 返回所有数据   0:未付款, 1:未发货, 2:已发货, 3:已完成, 4:已取消, 5:已退货
 				 */
-				SERVICE.load(this, {status: index - 1});
+				SERVICE.load(this, data);
 			},
 			toastTest() {
 				uni.showToast({title: '暂未开启此功能',icon: 'none'})

@@ -1,44 +1,52 @@
 <template lang="pug">
 	view.flex.bg-f3
 
-		// 顶部 快捷入口
-		view.flex.pt-30.center.tail-sm
-			itemY.mx-20(
-			v-for="(item,index) in tablist",
-			:img="item.img", 
-			:text="item.text", imgSize="120", imgW="72", imgH="72" @click="changeTab(index)")
+		//- view.flex.pt-30.center.tail-sm
+		//- 	itemY.mx-20(
+		//- 		v-for="(item,index) in tablist",
+		//- 		:img="item.img", 
+		//- 		:text="item.text", imgSize="120", imgW="72", imgH="72",
+		//- 		@click=""
+		//- 	)
 
 		// 满减券
-		view(v-if="tabIndex == 0")
+		view.pt-10
 			view.between.pt-30.pb-20.wing
 				text.title 满减券
-				
+				view.ix(v-if="coupon < list.user_trade_coupon.length", @click="changeMax('coupon', 'user_trade_coupon')")
+					text.text.mr-10 查看全部
+					image(style="width: 25rpx; margin-top: 5rpx; height: 25rpx;", src="/static/icon/arrow-down-1.png")
+
 			view.flex.wing.tail-sm
 				coupon3.mt-20.bg-white(
-				v-for="(item, index) in list.user_trade_coupon",
-				
-				leftText="满减券",
-				:title="item.name", 
-				:text1="'原价：'+item.enough", 
-				:text2="item.time_start*1000 | couponTime(item.time_end * 1000)", 
-				:money="item.price", 
-				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
-				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
-				borderColor="#f3f3f3",
-				:btn="false")
+					v-for="(item, index) in list.user_trade_coupon",
+					v-if="index < coupon",
+					leftText="满减券",
+					:title="item.name", 
+					:text1="'原价：'+item.enough", 
+					:text2="item.time_start*1000 | couponTime(item.time_end * 1000)", 
+					:money="item.price", 
+					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
+					@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
+					borderColor="#f3f3f3",
+					:btn="false"
+				)
 
 		// 套餐资格券
-		view(v-if="tabIndex == 1")
+		view
 			view.between.pt-30.pb-20.wing
 				text.title 套餐资格券
-				
+				view.ix(v-if="package < list.user_trade_package.length", @click="changeMax('package', 'user_trade_package')")
+					text.text.mr-10 查看全部
+					image(style="width: 25rpx; margin-top: 5rpx; height: 25rpx;", src="/static/icon/arrow-down-1.png")
+					
 			view.flex.wing.tail-sm
 				coupon3.mt-20.bg-white(
 					v-for="(item, index) in list.user_trade_package",
-					
+					v-if="index < package",
 					leftText="套餐资格券", 
 					:title="item.name", 
-					:text1="'原价' + item.old_price",
+					:text1="'原价：' + item.old_price",
 					:text2="item.time_start*1000 | couponTime(item.time_end * 1000)", 
 					:money="item.now_price", 
 					borderColor="#f3f3f3", 
@@ -48,13 +56,17 @@
 				)
 
 		// 尊享券
-		view(v-if="tabIndex == 2")
+		view
 			view.between.pt-30.pb-20.wing
 				text.title 尊享券
-				
+				view.ix(v-if="vip < list.user_trade_vip.length", @click="changeMax('vip', 'user_trade_vip')")
+					text.text.mr-10 查看全部
+					image(style="width: 25rpx; margin-top: 5rpx; height: 25rpx;", src="/static/icon/arrow-down-1.png")
+					
 			view.flex.wing.tail
 				coupon4.mt-20.bg-white(
 					v-for="(item, index) in list.user_trade_vip",
+					v-if="index < vip",
 					:title="'满' + item.enough +'减' + item.discount", 
 					:desc="item.name", 
 					integral="", 
@@ -84,10 +96,12 @@
                 ...SERVICE.data,
 				tablist:[
 					{'img':'/static/icon/coupon-1.png','text':'满减券'},
-					{'img':'/static/icon/coupon-3.png','text':'套餐资格券'},
-					{'img':'/static/icon/coupon-2.png','text':'尊享券'},
-					
-				]
+					{'img':'/static/icon/coupon-2.png','text':'套餐资格券'},
+					{'img':'/static/icon/coupon-3.png','text':'尊享券'},
+				],
+				coupon: 2,
+				package: 2,
+				vip: 2
 			}
 		},
 		onLoad() {
@@ -102,6 +116,9 @@
 			}
 		},
 		methods: {
+			changeMax(count, list) {
+				this[count] = this.list[list].length;
+			},
 			changeTab(index) {
 				this.tabIndex = index;
 			},
@@ -118,5 +135,12 @@
 	.text {
 		font-size: 24rpx;
 		color: #999999;
+	}
+	
+	.ra-8 {
+		border-radius: 8rpx;
+	}
+	.bg-aa {
+		background-color: #aaa;
 	}
 </style>

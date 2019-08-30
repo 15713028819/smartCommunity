@@ -126,7 +126,7 @@
 		computed: {
 			searchWord: function() {
 				if(this.list.hot_sreach && this.list.hot_sreach.length) {
-					let random = Math.round(Math.random() * this.list.hot_sreach.length);
+					let random = Math.floor(Math.random() * this.list.hot_sreach.length);
 					return this.list.hot_sreach[random].name;
 				}
 				else return '请输入关键词搜索';

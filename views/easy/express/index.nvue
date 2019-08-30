@@ -52,10 +52,13 @@
 			
 		},
 		onShow() {
+			let data = {};
+			if(this.tabIndex) data.state = this.tabIndex-1;
+
 			/**
 			 * 获取获取快递首页
 			 */
-			SERVICE.load(this);
+			SERVICE.load(this, data);
 		},
 		filters: {
 			send_des: (value) => {

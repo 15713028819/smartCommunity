@@ -31,15 +31,15 @@
 						:img="dir.shop_prod(item.img)", 
 						:title="item.name", 
 						:stand="item.standname", 
-						num="1", 
-						price="25",
+						:num="item.count", 
+						:price="item.price",
 						class="py-14 px-20",
 						:line="index < list.cart_list.length - 1",
 						@click="navigate('/views/shop/prodDetail?id=' + item.product_id)"
 					)
 
 			//- 留言
-			view.flex.tail-line.pb-20.mx-30.pt-20
+			view.flex.tail-line.pb-20.pt-20
 				view.row.bg-f3.h-50.px-10.py-10.ac
 					image.w-28.h-28.ml-10.mr-18.pt-4.op-8(src="/static/icon/msg3.png")
 					input.s-28.c-63.h-50.lh-50.f-1(v-model="mark", type="text", placeholder='给卖家留言')
@@ -118,14 +118,15 @@
 				let data = {
 					takeid: this.list.take.id,
 					paytype: 1,
-					mark: this.list.mark,
 					isusecash: this.useCash
 				};
+				if(this.mark) data.mark = this.mark;
 
 				SERVICE.get_pay(this, data, ()=>{
 					uni.showToast({
 						title: '等待对接支付'
 					})
+					// this.navigate('/views/order/detail')
 				});
 			},
 			/**

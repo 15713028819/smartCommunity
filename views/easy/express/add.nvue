@@ -85,6 +85,34 @@
 			 * @param {string} imgs			图片(字符串路径，以逗号分隔，最后一位不能是逗号)
 			 */
 			onSubmit() {
+				if(!this.send_name){
+					return uni.showToast({title: '请填写发货人姓名', icon: 'none'});
+				}
+				if(!this.send_mobile){
+					return uni.showToast({title: '请输入发货人电话', icon: 'none'});
+				}
+				if(!this.send_mobile && !(/^1[3456789]\d{9}$/.test(this.send_mobile))){
+						return uni.showToast({title: '请输入正确的电话号码', icon: 'none'});
+						return false; 
+				} 
+				if(!this.send_address){
+					return uni.showToast({title: '请输入详细地址', icon: 'none'});
+				}
+				if(!this.take_name){
+					return uni.showToast({title: '请输入收件人电话', icon: 'none'});
+				}
+				
+				
+				if(!this.take_mobile){
+					return uni.showToast({title: '请输入收件人电话', icon: 'none'});
+				}			
+				if(!this.take_mobile && !(/^1[3456789]\d{9}$/.test(this.take_mobile))){
+						return uni.showToast({title: '请输入正确的电话号码', icon: 'none'});
+						return false; 
+				}
+				if(!this.take_address){
+					return uni.showToast({title: '请输入详细地址', icon: 'none'});
+				}
 				SERVICE.submit(this,
 				{
 					send_name: this.send_name,

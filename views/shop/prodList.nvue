@@ -48,7 +48,9 @@
 			 * @param stid			商品id	规格id（非规格设置id） 非必传
 			 */
 			addcart(product_id) {
-				SERVICE.addcart(this, {product_id});
+				SERVICE.addcart(this, {product_id}, ()=>{
+					getApp().globalData.CARTNUM += 1;
+				});
 			},
 		}
 	}
