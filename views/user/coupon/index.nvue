@@ -1,49 +1,52 @@
 <template lang="pug">
 	view.flex.bg-f3
 
+		// 顶部 快捷入口
 		//- view.flex.pt-30.center.tail-sm
 		//- 	itemY.mx-20(
 		//- 		v-for="(item,index) in tablist",
+		//- 		imgRa="8",
 		//- 		:img="item.img", 
-		//- 		:text="item.text", imgSize="120", imgW="72", imgH="72",
-		//- 		@click=""
+		//- 		:imgSize="80",
+		//- 		:imgW="40",
+		//- 		:imgH="40",
+		//- 		:background="tabIndex == index ? '#CF1322' : '#aaaaaa'",
+		//- 		:text="item.text", imgSize="120", imgW="72", imgH="72" @click="changeTab(index)"
 		//- 	)
+		view.flex.py-20.px-50.around.bg-white.mb-30.rb-30
+			view.column.ac(v-for="(item, index) in tablist", @click="changeTab(index)")
+				view.ra-8.w-80.h-80.center(:class="[index == tabIndex ? 'bg-primary' : 'bg-aa']")
+					image(style="width: 40rpx; height: 40rpx", :src="item.img")
+				text.s-28.mt-18.tc(:class="[index == tabIndex ? 'c-primary' : 'c-66']") {{item.text}}
 
 		// 满减券
-		view.pt-10
-			view.between.pt-30.pb-20.wing
-				text.title 满减券
-				view.ix(v-if="coupon < list.user_trade_coupon.length", @click="changeMax('coupon', 'user_trade_coupon')")
-					text.text.mr-10 查看全部
-					image(style="width: 25rpx; margin-top: 5rpx; height: 25rpx;", src="/static/icon/arrow-down-1.png")
-
+		view(v-if="tabIndex == 0")
+			//- view.between.pt-30.pb-20.wing
+			//- 	text.title 满减券
+				
 			view.flex.wing.tail-sm
 				coupon3.mt-20.bg-white(
-					v-for="(item, index) in list.user_trade_coupon",
-					v-if="index < coupon",
-					leftText="满减券",
-					:title="item.name", 
-					:text1="'原价：'+item.enough", 
-					:text2="item.time_start*1000 | couponTime(item.time_end * 1000)", 
-					:money="item.price", 
-					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
-					@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
-					borderColor="#f3f3f3",
-					:btn="false"
-				)
+				v-for="(item, index) in list.user_trade_coupon",
+				
+				leftText="满减券",
+				:title="item.name", 
+				:text1="'原价：'+item.enough", 
+				:text2="item.time_start*1000 | couponTime(item.time_end * 1000)", 
+				:money="item.price", 
+				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
+				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon&pagetype=user')", 
+				borderColor="#f3f3f3",
+				:btn="false")
 
 		// 套餐资格券
-		view
+		view(v-if="tabIndex == 1")
 			view.between.pt-30.pb-20.wing
 				text.title 套餐资格券
-				view.ix(v-if="package < list.user_trade_package.length", @click="changeMax('package', 'user_trade_package')")
-					text.text.mr-10 查看全部
-					image(style="width: 25rpx; margin-top: 5rpx; height: 25rpx;", src="/static/icon/arrow-down-1.png")
-					
+				
 			view.flex.wing.tail-sm
 				coupon3.mt-20.bg-white(
 					v-for="(item, index) in list.user_trade_package",
-					v-if="index < package",
+					
 					leftText="套餐资格券", 
 					:title="item.name", 
 					:text1="'原价：' + item.old_price",
@@ -56,17 +59,13 @@
 				)
 
 		// 尊享券
-		view
+		view(v-if="tabIndex == 2")
 			view.between.pt-30.pb-20.wing
 				text.title 尊享券
-				view.ix(v-if="vip < list.user_trade_vip.length", @click="changeMax('vip', 'user_trade_vip')")
-					text.text.mr-10 查看全部
-					image(style="width: 25rpx; margin-top: 5rpx; height: 25rpx;", src="/static/icon/arrow-down-1.png")
-					
+				
 			view.flex.wing.tail
 				coupon4.mt-20.bg-white(
 					v-for="(item, index) in list.user_trade_vip",
-					v-if="index < vip",
 					:title="'满' + item.enough +'减' + item.discount", 
 					:desc="item.name", 
 					integral="", 
@@ -95,13 +94,11 @@
 				tabIndex: 0,
                 ...SERVICE.data,
 				tablist:[
-					{'img':'/static/icon/coupon-1.png','text':'满减券'},
-					{'img':'/static/icon/coupon-2.png','text':'套餐资格券'},
-					{'img':'/static/icon/coupon-3.png','text':'尊享券'},
-				],
-				coupon: 2,
-				package: 2,
-				vip: 2
+					{'img':'/static/icon/coupon-6.png','text':'满减券'},
+					{'img':'/static/icon/coupon-5.png','text':'套餐资格券'},
+					{'img':'/static/icon/coupon-4.png','text':'尊享券'},
+					
+				]
 			}
 		},
 		onLoad() {
@@ -116,9 +113,6 @@
 			}
 		},
 		methods: {
-			changeMax(count, list) {
-				this[count] = this.list[list].length;
-			},
 			changeTab(index) {
 				this.tabIndex = index;
 			},

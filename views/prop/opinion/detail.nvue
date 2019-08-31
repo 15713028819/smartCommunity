@@ -2,7 +2,7 @@
 	view.bg-f3.f-1
 		view.flex.bg-f3
 			//- 状态栏
-			status1.tail(text="已回复", color="#389E0D", stateImg="/static/icon/opinion-yihuifu.png")
+			status1.tail(:text="list.state ? '已反馈' : '已查看'", :color="list.state == 1 ? '#389E0D' : '#F38145'", :stateImg="list.state == 1 ? '/static/icon/opinion-yihuifu.png' : '/static/icon/opinion-wait.png'")
 
 			//- 意见信息
 			view.flex.bg-white.tail
@@ -24,7 +24,7 @@
 				view.flex.wing.pb-20
 					text.pa-10.pt-20.c-66.s-30.lh-40 {{list.text_return}}
 					view.row.je
-						text.s-28.c-99 {{list.time_return * 1000 | dateFormat('Y-m-d H-i')}}
+						text.s-28.c-99 {{list.time_return * 1000 | dateFormat('Y-m-d H:i')}}
 
 		//- 底部按钮
 		view.row.bottom.footer.h-100

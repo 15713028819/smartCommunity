@@ -32,20 +32,21 @@
 						:price="prod.price",
 						class="py-14 px-20",
 						:line="index < item.item.length - 1",
+						@click="navigate('/views/order/detail?id=' + item.id)"
 					)
 					
 				//- 底部 统计和 按钮
 				view.column.jc.ae.wing
 					view.row(@click="navigate('/views/order/detail?id=' + item.id)")
-						text.text 共1件商品
-						text.text.ml-30 配送费:￥{{item.fare}}
+						text.text 共{{item.buycount}}件商品
+						text.text.ml-30 配送费:￥{{item.fare ? item.fare.toFixed(2) : '免费'}}
 						view.row.ml-30
 							text.text 合计:
-							text.text.bold ￥{{item.amount}}
+							text.text.bold ￥{{item.amount.toFixed(2)}}
 					view.row.mt-20.mb-30
 						text.s-22.px-28.py-14.lh-22.ba.c-33.bc-99.bg-white.ra-max(v-if="item.status == 1 || item.status == 0", @click="onCancel(item,index)") 取消订单
-						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 2", @click="toastTest") 确认收货
-						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 0", @click="onPay") 去支付
+						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 1 || item.status == 2", @click="get_ok(index, item.orderid)") 确认收货
+						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 0", @click="onPay(index, item.id, item.orderid)") 去支付
 						text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.ml-20(v-if="item.status == 3", @click="onComment") 去评价
 					
 </template>
@@ -125,16 +126,35 @@
 			 * 
 			 * @param {number} id	订单id
 			 */
-			onPay(id, product_id) {
-				SERVICE.get_pay(this, {id: 1});
+			onPay(index, id, orderid) {
+				SERVICE.get_pay(this, {id}, ()=>{
+					// 改变订单状态
+					SERVICE.pay_ok(this, {code: orderid}, ()=>{
+						this.list.splice(index, 1)
+					});
+					uni.showToast({
+						title: '待整合支付功能',
+						icon: 'none'
+					})
+				});
 			},
 			/**
 			 * 支付成功
 			 * 
 			 * @param code		订单号码
 			 */
-			pay_ok(id, product_id) {
-				SERVICE.pay_ok(this, {code: 'MDPE1565331736'});
+			pay_ok(orderid) {
+				SERVICE.pay_ok(this, {code: orderid});
+			},
+			/**
+			 * 确认收货
+			 * 
+			 * @param code		订单号码
+			 */
+			get_ok(index, orderid) {
+				SERVICE.get_ok(this, {code: orderid}, ()=>{
+					this.list.splice(index, 1)
+				});
 			}
 		}
 	}

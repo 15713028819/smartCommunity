@@ -1,21 +1,12 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		// {
-		// 	"path": "views/test",
-		// 	"style": {
-		// 		"navigationBarTitleText": "功能测试"
-		// 	}
-		// },
-		
-		
-
 		{
 			"path": "views/index",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
-					"background": "#f00"
+					"background": "#f3f3f3"
 				}
 			}
 		},

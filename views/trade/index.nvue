@@ -1,5 +1,10 @@
 <template lang="pug">
-	view.flex.bg-f3
+	//- 加载中 场景
+	view.f-1.center(v-if="SCENE == 'loading'")
+		text.s-34.c-99 正在加载…
+
+	//- 成功场景
+	view.flex.bg-f3(v-else-if="SCENE == 'success'")
 	
 		//- titlebar
 		navigateBar(bg="#CF1322")
@@ -34,39 +39,15 @@
 			view.between.py-20
 				text.c-33.s-32.title-home 推荐商家优惠券
 				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/trade')") 更多优惠券
-			view.between.tail
-				coupon1.r-8(
-					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[0].id + '&type=coupon')",
-					bg="#9B1FDD",
-					:itemText="list.coupon_list[0].time_start | couponTime(list.coupon_list[0].time_end)",
-					:money="list.coupon_list[0].price",
-					:name="list.coupon_list[0].trade_name",
-					:desc="list.coupon_list[0].name"
-				)
-				coupon1(
-					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[1].id + '&type=coupon')",
-					bg="#B42676",
-					:itemText="list.coupon_list[1].time_start | couponTime(list.coupon_list[1].time_end)",
-					:money="list.coupon_list[1].price",
-					:name="list.coupon_list[1].trade_name",
-					:desc="list.coupon_list[1].name"
-				)
-			view.between.tail
-				coupon1.mr-8(
-					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[2].id + '&type=coupon')",
-					bg="#5FA56D",
-					:itemText="list.coupon_list[2].time_start | couponTime(list.coupon_list[2].time_end)",
-					:money="list.coupon_list[2].price",
-					:name="list.coupon_list[2].trade_name",
-					:desc="list.coupon_list[2].name"
-				)
-				coupon1(
-					@click="navigate('/views/user/coupon/detail?id='+ list.coupon_list[3].id + '&type=coupon')",
-					bg="#B42626",
-					:itemText="list.coupon_list[3].time_start | couponTime(list.coupon_list[3].time_end)",
-					:money="list.coupon_list[3].price",
-					:name="list.coupon_list[3].trade_name",
-					:desc="list.coupon_list[3].name"
+			view.between-wrap
+				coupon1.tail(
+					v-for="(item, index) in list.coupon_list"
+					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')",
+					:bg="couponColor[index]",
+					:itemText="item.time_start | couponTime(item.time_end)",
+					:money="item.discount",
+					:name="item.trade_name",
+					:desc="item.name"
 				)
 			view.between.tail
 
@@ -74,11 +55,21 @@
 			view.between.py-20
 				text.c-33.s-32.title-home 推荐商家会员卡
 				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/trade')") 更多优惠券
-			view.between.tail
+			//- view.between.tail
 				coupon2(@click="navigate('/views/user/coupon/detail?id=' + list.vip_list[0].id + '&type=vip')", :name="list.vip_list[0].name", :money="list.vip_list[0].price",:trade="list.vip_list[0].trade_name",:descText1="list.vip_list[0].limitday  + '天'",:descText2="'每天限用' + list.vip_list[0].limitnum + '次'")
 				coupon2(@click="navigate('/views/user/coupon/detail?id=' + list.vip_list[1].id + '&type=vip')", :name="list.vip_list[1].name", :money="list.vip_list[1].price",:trade="list.vip_list[1].trade_name",:descText1="list.vip_list[1].limitday  + '天'",:descText2="'每天限用' + list.vip_list[1].limitnum + '次'")
 				coupon2(@click="navigate('/views/user/coupon/detail?id=' + list.vip_list[2].id + '&type=vip')", :name="list.vip_list[2].name", :money="list.vip_list[2].price",:trade="list.vip_list[2].trade_name",:descText1="list.vip_list[2].limitday  + '天'",:descText2="'每天限用' + list.vip_list[2].limitnum + '次'")
-
+			view.between.tail
+				coupon2(
+					v-for="(item, index) in list.vip_list"
+					v-if="index < 3",
+					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')",
+					:name="item.name",
+					:money="item.discount",
+					:trade="item.trade_name",
+					:descText1="item.limitday  + '天'",
+					:descText2="'每天限用' + item.limitnum + '次'",
+				)
 			//- 商家列表 -- tab
 			view.row.py-20
 				view.column.mr-30(v-for="(item, index) in list.trade_list", @click="changeTab(index)", style="align-items: center;")
@@ -117,6 +108,7 @@
 			return {
 				...SERVICE.data,
 				tabIndex: 1,
+				couponColor: ['#9B1FDD', '#B42676', "#5FA56D", "#B42626"]
 			}
 		},
 		onLoad() {
@@ -134,9 +126,9 @@
 		},
 		filters: {			
 			couponTime(start, end) {
-				start = dateFormat('m月d日', start);
-				end = dateFormat('m月d日', end);
-				return '活动时间：' + start + '到' + end;
+				start = dateFormat('m.d', start);
+				end = dateFormat('m.d', end);
+				return '活动时间：' + start + ' - ' + end;
 			}
 		},
 		methods: {

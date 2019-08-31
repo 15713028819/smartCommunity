@@ -23,7 +23,7 @@
 						view.flex.left.ac.mb-8(v-if="type == 'package'")
 							view.ix
 								text.moneyLeft ￥
-								text.money {{list.info.price}}
+								text.money {{list.info.now_price}}
 							text.leftText2.through 原价{{list.info.old_price}}
 						view.flex.f-1
 							text.name.py-6 {{list.info.name}}
@@ -68,16 +68,16 @@
 						view.row.left
 							image.ra-max(style="width: 100rpx; height: 100rpx;", :src="list.trade.icon")
 						view.flex.f-1
-							view.row
-								view.center(style="width: 36rpx; height: 24rpx;")
+							view.row.as
+								view.center(style="width: 36rpx; height: 42rpx;")
 									image(style="width: 19rpx; height: 18rpx;", src="/static/icon/shangjia-1.png")
 								text.text1.py-6 {{list.trade.name}}
-							view.row
-								view.center(style="width: 36rpx; height: 24rpx;")
+							view.row.as
+								view.center(style="width: 36rpx; height: 38rpx;")
 									image(style="width: 15rpx; height: 21rpx;", src="/static/icon/location-4.png")
 								text.text2.py-6 地址：{{list.trade.address}}
-							view.row
-								view.center(style="width: 36rpx; height: 24rpx;")
+							view.row.as
+								view.center(style="width: 36rpx; height: 38rpx;")
 									image(style="width: 17rpx; height: 17rpx;", src="/static/icon/phone-3.png")
 								text.text2.py-6 联系电话：{{list.trade.link_mobile}}
 						image(style="width: 15rpx; height: 27rpx;", src="/static/icon/arrow-right-6.png")
@@ -114,7 +114,7 @@
 
 		//- 底部按钮
 		text.footer.btn-full-page.bg-primary.c-white(v-if="pagetype == 'user'", @click="navigate('/views/user/coupon/evaluate?id=' + list.trade.id + '&type=' + type)") 立即使用
-		text.footer.btn-full-page.bg-primary.c-white(v-else, @click="get_card") 立即领取
+		text.footer.btn-full-page.bg-primary.c-white(v-else, @click="get_card") {{list.info.price ? list.info.price + '元购买' : '立即领取'}}
 		//- text.btn-full-page.footer.bg-primary.c-white 立即使用
 </template>
 

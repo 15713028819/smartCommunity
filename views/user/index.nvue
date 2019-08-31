@@ -1,5 +1,7 @@
 <template lang="pug">
-	view.flex
+	view.f-1.center(v-if="SCENE == 'loading'")
+		text.s-34.c-99 正在加载…
+	view.flex(v-else-if="SCENE == 'success'")
 		//- 头部
 		view.flex.wing-lg.bg-primary.headerBox(style="padding-bottom: 20rpx;")
 			//- 个人信息
@@ -11,7 +13,7 @@
 					text.tc.emphasis.c-white {{list.cash.toFixed(2)}}
 					text.s-28.tc.menu.c-white.bold.among 余额
 				view.column(@click="navigate('/views/user/coupon/index')")
-					text.tc.emphasis.c-white {{list.count_card.toFixed(2)}}
+					text.tc.emphasis.c-white {{list.count_card}}
 					text.s-28.tc.menu.c-white.bold.among 卡券
 				view.column(@click="navigate('/views/user/point/index')")
 					text.tc.emphasis.c-white {{list.point.toFixed(2)}}

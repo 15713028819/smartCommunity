@@ -67,7 +67,8 @@ function mock(req) {
     if (req.mock) {
 		
 		// 启动加载器
-		req.loader.start(undefined, req.vue);
+        req.loader.start(undefined, req.vue);
+        
 
         // 计算全部概率，和各起始点和终结点
         const randSuccess = MOCK.random.success;
@@ -189,6 +190,8 @@ function request(req, method, isComputeURL = false) {
 
     // 启动加载器
     req.loader.start(undefined, req.vue);
+    // console.log('loader')
+    // console.log(req.loader.start)
 
     // 设置method
     req['method'] = method;

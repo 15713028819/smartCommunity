@@ -28,7 +28,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/shop/index.php?action=load',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.scene,
 			parse: PARSE.restful,
 			success(res, vue) {
 				vue.list = res.data
@@ -55,7 +55,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/shop/index.php?action=load_area',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.slient,
 			parse: PARSE.restful,
 			success(res, vue) {
 				vue.areaList = res.data
@@ -85,7 +85,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/shop/index.php?action=set_area',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.slient,
 			parse: PARSE.restful,
 			success(res, vue) {
 

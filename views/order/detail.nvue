@@ -152,11 +152,11 @@
 
 		//- 底部按钮栏
 		view.row.bg-white.ac.je.h-100.footer.w-750.border-top
-			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(@click="goback") 返回列表
+			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(@click="goback()") 返回列表
 			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 0 || order.status == 1", @click="onCancel") 取消订单
 			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 3", @click="toastTest") 评论
-			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 0", @click="toastTest") 支付
-			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 2", @click="toastTest") 确认收货</template>
+			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 0", @click="onPay") 支付
+			text.s-22.px-30.py-16.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mr-20(v-if="order.status == 1 || order.status == 2", @click="get_ok") 确认收货</template>
 
 <script>
 	import '@/jm.nvue';
@@ -239,8 +239,17 @@
 			 * 
 			 * @param {number} id	订单id
 			 */
-			onPay() {
-				SERVICE.get_pay(this, {id: 1});
+			onPay(id, orderid) {
+				SERVICE.get_pay(this, {id: this.order.id}, ()=>{
+					// 改变订单状态
+					SERVICE.pay_ok(this, {code: this.order.orderid}, ()=>{
+						this.order.status = 1;
+					});
+					uni.showToast({
+						title: '待整合支付功能',
+						icon: 'none'
+					})
+				});
 			},
 			/**
 			 * 支付成功
@@ -248,7 +257,17 @@
 			 * @param code		订单号码
 			 */
 			pay_ok() {
-				SERVICE.pay_ok(this, {code: 'MDPE1565331736'});
+				SERVICE.pay_ok(this, {code: this.order.orderid});
+			},
+			/**
+			 * 确认收货
+			 * 
+			 * @param code		订单号码
+			 */
+			get_ok() {
+				SERVICE.get_ok(this, {code: this.order.orderid}, ()=>{
+					this.order.status = 3;
+				});
 			}
 		}
 	}

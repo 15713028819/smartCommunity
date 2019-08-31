@@ -28,7 +28,7 @@
 					:text="item.text_submit", 
 					:img="item.imgs",
 					:color="item.state == 1 ? '#389E0D' : '#F38145'",
-					@click="()=>navigate('/views/prop/opinion/detail?id=' + item.id)"
+					@click="navigate('/views/prop/opinion/detail?id=' + item.id)"
 				)
 
 		//- 底部按钮

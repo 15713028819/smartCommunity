@@ -20,9 +20,9 @@
 				view.row.mt-40.mb-30
 					image.mr-10(style="width: 26rpx; height: 26rpx;", :src="icon")
 					text.integral {{integral}}
-				text.couponBtn.center(@click="btnFun") {{btnText}}
+				text.couponBtn.center(@click="$emit('btnFun')") {{btnText}}
 				
-		view.row.bottomBox.px-30.py-20(v-if="progress", :style="{'border-top-color': borderColor}", @click="$emit('click')")
+		view.row.bottomBox.px-30.py-20(v-if="progress !== 'undefinde'", :style="{'border-top-color': borderColor}", @click="$emit('click')")
 			text.bottomText.f-1 {{bottomText}}
 			view.flex.progress.rel.overhide.center(:style="{width: progressWidth + 'rpx'}")
 				view.flex.progressOn.abs.top-left-0(:style="{width: progressOnWidth + 'rpx'}")
@@ -97,19 +97,8 @@
 			},
 			progressWidth: {
 				type: String,
-				default: 580
+				default: 520
 			},
-			
-			// 方法
-			btnFun: {
-				type: Function,
-				default: ()=>{}
-			},
-			moreFun: {
-				type: Function,
-				default: ()=>{}
-			}
-			
 		},
 		computed: {
 			progressOnWidth: function() {

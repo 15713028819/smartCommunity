@@ -1,11 +1,11 @@
 <template lang="pug">
 	view.between.height
-		view.flex.left.ra-10.bg-grey-4.overhide.height
+		view.flex.left.ra-10.bg-grey-4.overhide.height(@click="navigate('/views/trade/trade?id=4')")
 			image.left.height.bg-e3(:src="src[0]")
 		view.column.jb.height
-			view.flex.right-item.ra-10.bg-grey-3.overhide
-				image.right-item.bg-e3(:src="src[1]")
-			view.flex.right-item.ra-10.bg-grey-3.overhide
+			view.flex.right-item.ra-10.bg-grey-3.overhide(@click="navigate('/views/trade/trade?id=5')")
+				image.right-item.bg-e3(:src="src[1]" )
+			view.flex.right-item.ra-10.bg-grey-3.overhide(@click="navigate('/views/trade/trade?id=9')")
 				image.right-item.bg-e3(:src="src[2]")
 </template>
 

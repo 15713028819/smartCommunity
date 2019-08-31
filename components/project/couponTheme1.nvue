@@ -4,7 +4,7 @@
 			view.row
 				text.moneyLeft.c-white.bold.pt-20 ￥
 				text.money.c-white.bold {{money}}
-				view.column.as.ml-20
+				view.column.as.ml-20.f-1
 					text.name.c-white.lines-1.ellipsis.w-150 {{name}}
 					text.desc.w-150.c-white.lines-1.ellipsis {{desc}}
 			view.flex.item.ra-5.jc.ac(class="bg-orange", :style="{'background-color': itemColor}")
@@ -74,18 +74,19 @@
 	.content {
 		border-top-width: 1px;
 		border-top-style: dashed;
-		border-top-color: #EBEBEB;
+		border-top-color: #ddd;
 		border-bottom-width: 1px;
 		border-bottom-style: dashed;
-		border-bottom-color: #EBEBEB;
+		border-bottom-color: #ddd;
 		padding: 0 5rpx;
 		height: 132rpx;
+		width: 290rpx;
 	}
 	.moneyLeft {
 		font-size: 34rpx;
 	}
 	.money {
-		font-size: 70rpx;
+		font-size: 64rpx;
 	}
 	.name {
 		font-size: 28rpx;

@@ -21,7 +21,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/trade/index.php?action=load',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.scene,
 			parse: PARSE.restful,
 			success(res, vue) {
 				vue.list = res.data

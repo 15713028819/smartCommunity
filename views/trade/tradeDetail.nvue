@@ -1,13 +1,13 @@
 <template lang="pug">
 	view.flex.bg-white
 	
-		// 头部
+		//- 头部
 		view.flex.rel.tail(style="padding-top: 230rpx;")
 		
-			// 背景图
+			//- 背景图
 			image.abs.top-left-0.w-750.h-350(src="/static/image/swiper3.png")
 			
-			// 商家卡片
+			//- 商家卡片
 			view.flex.rel.mx-20.pt-50.mt-10
 				view.flex.bg-white.wing-sm.ra-20.pt-20.pb-20.ba.bc-f3
 					text.mb-10.title {{list.name}}
@@ -27,12 +27,12 @@
 						text.notice.f-1.pr-40 {{'公告:' + list.content}}
 						image.arrow-down.mx-20(src="/static/icon/arrow-down-8.png")
 						
-				// 商家头像
+				//- 商家头像
 				view.mt-10.flex.abs.top-0.w-100.h-30.h-150(style="right: 30rpx;")
 					image.mb-10.ra-20.w-100.h-100(:src="list.icon")
 					text.center.follow.mt-10(:class="[list.is_follow && 'follow_on']", @click="onFollow") {{list.is_follow ? '已关注' : '+ 关注'}}
 		
-		// 商家列表 -- tab
+		//- 商家列表 -- tab
 		view.flex.ml-70.mr-60.between
 			view.column(v-for="(item, index) in tab", @click="changeTab(index)", style="align-items: center;")
 				view.row
@@ -40,22 +40,25 @@
 					text.tabRightNum(v-if="item.rightNum") {{item.rightNum}}
 				view.flex.tabItem(:class="[index == tabIndex && 'activeItem']")
 				
-		// 满减券
+		//- 满减券
 		view.flex.mx-40.pt-30.tail(v-if="tabIndex == 0")
 			coupon3.mt-20.bg-f6(
 				v-for="(item, index) in list.coupon_list",
 				leftText="满减券",
 				:title="item.name",
 				:integral="'+' + item.get_point", 
-				:text1="'原价' + item.price",
+				text1="有效期",
 				:text2="item.time_start | time_start_end(item.time_end)", 
 				:money="item.discount", 
-				@btnFun="toastTest", 
+				:progress="item.get_count", 
+				:max="item.count", 
+				@btnFun="get_card(item, 'coupon')", 
 				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')", 
-				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')"
+				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')",
+				:btnText="item.price ? '立即抢购' : '立即领取'"
 			)
 		
-		// 套餐券
+		//- 套餐券
 		view.flex.mx-40.pt-30.tail(v-if="tabIndex == 1")
 			coupon3.mt-20.bg-f6(
 				v-for="(item, index) in list.package_list",
@@ -65,48 +68,51 @@
 				:text1="'原价' + item.old_price", 
 				:text2="item.time_start | time_start_end(item.time_end)", 
 				:money="item.now_price",
-				@btnFun="toastTest", 
+				:progress="item.get_count", 
+				:max="item.count", 
+				@btnFun="get_card(item, 'package')", 
 				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')", 
-				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')"
+				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=package')",
+				:btnText="item.price ? '立即抢购' : '立即领取'"
 			)
 		
-		// 尊享券
+		//- 尊享券
 		view.flex.mx-40.pt-30.tail(v-if="tabIndex == 2")
 			coupon4.mt-20.bg-f6(
 				v-for="(item, index) in list.vip_list",
 				:title="'满' + item.enough + '减' + item.discount", 
-				:desc="'最多可使用'+ item.count +'次'", 
+				:desc="'最多可使用'+ item.countnum +'次'", 
 				:integral="'+' + item.get_point", 
 				tradeLogo="../../static/image/logo.jpg", 
 				:tradeName="item.name", 
 				:text="'每1天可使用' + item.limitnum + '次'", 
-				:progress="400", 
-				:max="600", 
-				:btnText="item.price +'元抢购'", 
-				@btnFun="toastTest", 
+				:progress="item.get_count", 
+				:max="item.count", 
+				@btnFun="get_card(item, 'vip')", 
 				@moreFun="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')", 
-				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')"
+				@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')",
+				:btnText="item.price ? '立即抢购' : '立即领取'"
 			)
 		
-		// 评价
+		//- 评价
 		view.flex.mx-40.pt-30(v-if="tabIndex == 3")
 		
-			// 评价标签
+			//- 评价标签
 			view.flex.row-wrap.evaluateTagBox
 				text.evaluateTag(@click="changeComment('all')", :class="[ commentKey == 'all' && 'bg-primary', commentKey == 'all' && 'c-white' ]") 全部
 				text.evaluateTag(v-for="(item, key) in comment_list", @click="changeComment(key)", :class="[ key == commentKey && 'bg-primary', key == commentKey && 'c-white' ]") {{item.name}}
 		
-			// 评论列表
+			//- 评论列表
 			view(v-for="(item, key) in comment_list")
 				talkItem1.px-20(v-if="key == commentKey || commentKey === 'all'", v-for="comment in item.list", :avatar="comment.head", :name="comment.nick", :text="comment.text", :picture="['../../static/image/avatar1.png', '../../static/image/avatar1.png', '../../static/image/avatar1.png']", :time="comment.created * 1000 | dateFormat('Y.m.d')", :starNum="comment.set_grade / 10")
 					view.between.mt-30.ac
 						text.bottomTag {{item.name}}
 						//- text.bottomText 浏览413
-		// 商家
+		//- 商家
 		view.flex.tail(v-if="tabIndex == 4")
 			view.flex.greyStrip
 			
-			// 第一栏 商家简介
+			//- 第一栏 商家简介
 			view.flex.pl-30.bg-white
 				view.between.ac.py-20
 					view.row.ac
@@ -121,7 +127,7 @@
 					text.cardTitle {{list.time_busess}}
 			view.flex.greyStrip
 			
-			// 商家资质
+			//- 商家资质
 			view.flex.pl-30.bg-white
 				view.between.ac.py-20
 					view.row.ac
@@ -131,7 +137,7 @@
 					image.f-1(style="height: 380rpx", :src="list.licenseimgs")
 			view.flex.greyStrip
 			
-			// 商家信息
+			//- 商家信息
 			view.flex.pl-30.bg-white
 				view.between.ac.py-20
 					view.row.ac
@@ -254,14 +260,25 @@
 			load_comment() {
 				SERVICE.load_comment(this, {trade_id: 1});
 			},
-			/**
-			 * 获取优惠券
-			 * 
-			 * @param id	优惠券id
-			 * @param type	类型coupon  package vip
-			 */
-			get_card() {
-				SERVICE.get_card(this, {id: 5, type: 'coupon'});
+			get_card(item, type) {
+				if(item.get_count == item.count) return uni.showToast({
+					title: '剩余卡券不足',
+					icon: 'none'
+				})
+				/**
+				 * 获取优惠券
+				 * 
+				 * @param id	优惠券id
+				 * @param type	类型coupon  package vip
+				 */
+				SERVICE.get_card(this, {id: item.id, type}, ()=>{
+					item.get_count += 1;
+					uni.showModal({
+						title: '领取成功',
+						content: '等待对接支付功能',
+						showCancel: false
+					})
+				});
 			},
 			/**
 			 * 支付成功

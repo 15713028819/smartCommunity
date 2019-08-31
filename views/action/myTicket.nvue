@@ -87,7 +87,7 @@
 	
 	// tab
 	.tabTitle {
-		font-size: 32rpx;
+		font-size: 30rpx;
 		color: #333;
 		height: 80rpx;
 		line-height: 80rpx;

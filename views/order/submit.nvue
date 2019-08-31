@@ -122,7 +122,14 @@
 				};
 				if(this.mark) data.mark = this.mark;
 
+				let num = 0;
+
+				for(let item of this.list.cart_list) {
+					num += item.count;
+				}
+
 				SERVICE.get_pay(this, data, ()=>{
+					getApp().globalData.CARTNUM -= num;
 					uni.showToast({
 						title: '等待对接支付'
 					})

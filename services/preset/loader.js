@@ -29,7 +29,7 @@ export default {
             that.gotoLoading();
         },
         end: function(res, that) {
-            const arr = ['success', 'failPower', 'failLogic', 'failError', 'failNetwork', 'failOffline'];
+            const arr = ['Success', 'FailPower', 'FailLogic', 'FailError', 'FailNetwork', 'FailOffline'];
             that['goto' + arr[res.code]]();
         }
     }

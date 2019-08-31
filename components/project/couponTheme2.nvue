@@ -114,10 +114,10 @@
 		font-size: 24rpx;
 		border-top-width: 1px;
 		border-top-style: dashed;
-		border-top-color: #E9E9E9;
+		border-top-color: #ddd;
 		border-bottom-width: 1px;
 		border-bottom-style: dashed;
-		border-bottom-color: #E9E9E9;
+		border-bottom-color: #ddd;
 		padding: 8rpx 0;
 	}
 	.btnText, .btnIcon {

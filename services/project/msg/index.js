@@ -23,7 +23,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/msg/index.php?action=load',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.scene,
 			parse: PARSE.restful,
 			success(res, vue) {
 				// 返回system_msg（系统消息），community_msg（小区消息），trade_msg（商家消息）

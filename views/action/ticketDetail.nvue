@@ -11,13 +11,19 @@
 					view.row
 						text.bg-success.c-white.px-10.py-6.mr-20.ra-6.s-20 {{list.info.state | state}}
 						text.c-primary(style="font-size: 28rpx;") ￥{{list.info.price}}
+				
+				
 				view.flex.jc.ac.py-30
-					image.mb-20(style="width: 280rpx; height: 280rpx;", src="/static/image/qrcode1.png")
+					view.rel
+						image.mb-20.op-6(style="width: 280rpx; height: 280rpx;", src="/static/image/qrcode1.png")
+						image.abs.top-right-0(v-if="list.info.state == 0 " , style="width: 100rpx; height: 100rpx;", src="/static/icon/ticket-pay.png")
+						image.abs.top-right-0(v-if="list.info.state == 5" , style="width: 100rpx; height: 100rpx;", src="/static/icon/ticket-back.png")
 					text.mb-10.c-99.tc.s-20 为了保障您的合法权益
 					text.mb-20.c-99.tc.s-20 请勿在使用之前随意分享给其他人
-					view.between.w-450
+					view.between.w-450(v-if="list.info.state != 0 && list.info.state != 4 && list.info.state != 5 ")
 						text.c-66.s-28 取票码
 						text.c-33.s-28 {{list.info.code}}
+							
 				
 				//- 分割线
 				view.centerCircle.between
@@ -68,15 +74,20 @@
 						text.text {{list.info.apply_mobile}}
 
 			//- 底部信息
-			view.between.wing.py-30
+			view.between.wing.py-30(v-if="list.info.state != 0 ")
 				text.bottomText 购票时间：{{list.info.time_pay * 1000 | dateFormat('Y-m-d H:i')}}
-				text.bottomText(@click="toastTest") 申请退票
+				text.bottomText(v-if="list.info.state != 3 && list.info.state != 4 && list.info.state != 5" ,  @click="toastTest") 申请退票
 
 			//- 按钮
-			view.between.pt-80.wing(style='padding-bottom: 80rpx;')
-				text.btnOnly(@click="toastTest") 继续购票
+			view.between.pt-80.wing(v-if="list.info.state != 5 " , style='padding-bottom: 80rpx;')
+				text.btnOnly(v-if="list.info.state == 0 " , @click="toastTest") 立即付款
+				text.btnOnly(v-if="list.info.state == 1 " , @click="toastTest") 立即参加
+				text.btnOnly(v-if="list.info.state == 2 " , @click="toastTest") 返回
+				text.btnOnly(v-if="list.info.state == 3 " , @click="toastTest") 继续购票
+				text.btnOnly(v-if="list.info.state == 4 " , @click="toastTest") 返回
+				text.btnOnly(v-if="list.info.state == 5 " , @click="toastTest") 继续购票
+				text.btnOnly(v-if="list.info.state == 6 " , @click="toastTest") 返回
 				text.btnOnly(@click="toastTest") 邀请好友参加
-
 
 </template>
 

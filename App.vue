@@ -1,9 +1,20 @@
 <script lang="ts">
 	export default {
+		// data() {
+		// 	return {
+		// 		time: 'tiem'
+		// 	}
+		// },
 		onLaunch: function() {
+			this.globalData.TEST.UP = new Date().getTime()
+			console.log(this.globalData.TEST.UP)
+			// getApp().globalData.TEST.TIME = new Date().getTime();
 			console.log('App Launch')
 		},
 		onShow: function() {
+			console.log('APP 启动时间', new Date().getTime() - this.globalData.TEST.UP + '毫秒')
+			// console.log('APP启动时间', new Date().getTime() - getApp().globalData.TEST.TIME)
+			// console.log('APP启动时间', new Date().getTime() - getApp().globalData.TEST.TIME)
 			console.log('App Show')
 		},
 		onHide: function() {
@@ -15,7 +26,8 @@
 		 */
 		globalData: {
 			TEST: {
-				TIME: {}
+				TIME: {},
+				UP: 0
 			},
 			TRACE: {},
 			SESSION: {},

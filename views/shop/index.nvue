@@ -1,5 +1,11 @@
 <template lang="pug">
-	view.f-1
+
+	//- 加载中 场景
+	view.f-1.center(v-if="SCENE == 'loading'")
+		text.s-34.c-99 正在加载…
+
+	//- 成功场景
+	view.f-1(v-else-if="SCENE == 'success'")
 		
 		//- titlebar
 		navigateBar(bg="#CF1322")

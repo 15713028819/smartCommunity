@@ -58,7 +58,7 @@
                 ...SERVICE.data,
 			}
 		},
-		onLoad() {
+		onLoad(param) {
 			// 组织参数
 			let data = {};
 			if(param.id) data.cate_id = param.id;

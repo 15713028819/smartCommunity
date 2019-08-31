@@ -61,7 +61,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/talk/index.php?action=good',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.slient,
 			parse: PARSE.restful,
 			success(res, vue) {
 
@@ -90,7 +90,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/talk/index.php?action=add_comment',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.slient,
 			parse: PARSE.restful,
 			success(res, vue) {
 
@@ -118,7 +118,7 @@ export default {
 			preurl: URL.data,
 			url: 'views/talk/index.php?action=delete_comment',
 			data,
-			loader: LOADER.loading,
+			loader: LOADER.slient,
 			parse: PARSE.restful,
 			success(res, vue) {
 

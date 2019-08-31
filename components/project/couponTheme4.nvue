@@ -91,7 +91,7 @@
 			},
 			progressWidth: {
 				type: [String, Number],
-				default: 580
+				default: 520
 			},
 			borderColor: {
 				type: String,

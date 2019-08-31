@@ -1,5 +1,7 @@
 <template lang="pug">
-	view.flex.bg-f3
+	view.f-1.center(v-if="SCENE == 'loading'")
+		text.s-34.c-99 正在加载…
+	view.flex.bg-f3(v-else-if="SCENE == 'success'")
 		view.flex.py-20.px-50.around.bg-white.mb-30
 			view.column(v-for="(item, index) in tabs", @click="changeTab(index)")
 				view.ra-8.w-80.h-80.center(:class="[index == tabIndex ? 'bg-primary' : 'bg-aa']")

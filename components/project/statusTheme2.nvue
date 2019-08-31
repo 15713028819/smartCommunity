@@ -6,7 +6,7 @@
 		view.row.space(v-if="text1 || text2 || text3 || text4 ")
 			text.textGrey(v-if="text1") {{text1}}
 			text.textRed(v-if="text2") {{text2}}
-			text.textGrey(v-if="text1") {{text1}}
+			text.textGrey.ml-20(v-if="text3") {{text3}}
 			text.textRed(v-if="text4") {{text4}}
 		view.row
 			text.s-22.px-28.py-14.lh-22.ba.c-primary.bc-primary.bg-white.ra-max.mx-10(v-if="btn1", :class="[btn1.colorClass && 'c-' + colorClass + ' bc-' + colorClass]", :style="[btn1.colorStyle && {color: colorStyle, 'border-color': colorStyle}]", @click="btnFun(btn1)") {{btn1.text ? btn1.text : btn1}}
@@ -91,14 +91,12 @@
 	.textGrey {
 		font-size: 30rpx;
 		color: #999999;
-		margin-left: 7rpx;
-		margin-right: 7rpx;
 	}
 	.textRed {
 		font-size: 30rpx;
 		color: #CF1322;
-		margin-left: 7rpx;
-		margin-right: 7rpx;
+		margin-left: 0rpx;
+		margin-right: 0rpx;
 	}
 	.space {
 		margin: 34rpx 0;

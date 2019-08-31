@@ -1,5 +1,5 @@
 <template lang="pug">
-	view.bg-f3
+	view
 
 		//- 头部
 		view.flex.wing-lg.bg-primary.headerBox
@@ -64,46 +64,46 @@
 		view.flex.wing
 		
 			//- 广告位
-			ADBtheme1.tail(:src="[list.adleft[0].img,list.adright[0].img,list.adright[1].img]")
+			ADBtheme1.tail(:src="[list.adleft[0].img, list.adright[0].img, list.adright[1].img]")
 			
 			//- 优惠券
 			view.between.py-20
 				text.c-33.s-32.title-home 推荐商家优惠券
 				text.c-99.s-28.title-home-right(@click="navigate('/views/trade/trade')") 更多优惠券
-			view.between.tail
-				coupon1(
-					@click="navigate('/views/user/coupon/detail?id=' + list.coupon[0].id + '&type=coupon')",
-					bg="#9B1FDD",
-					:itemText="list.coupon[0].time_start | couponTime(list.coupon[0].time_end)",
-					:money="list.coupon[0].price",
-					:name="list.coupon[0].trade_name",
-					:desc="list.coupon[0].name"
+			view.between-wrap
+				coupon1.tail(
+					v-for="(item, index) in list.coupon"
+					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=coupon')",
+					:bg="coupon[index]",
+					:itemText="item.time_start | couponTime(item.time_end)",
+					:money="item.discount",
+					:name="item.trade_name",
+					:desc="item.name"
 				)
-				coupon1(
-					@click="navigate('/views/user/coupon/detail?id=' + list.coupon[1].id + '&type=coupon')",
-					bg="#B42676",
-					:itemText="list.coupon[1].time_start | couponTime(list.coupon[1].time_end)",
-					:money="list.coupon[1].price",
-					:name="list.coupon[1].trade_name",
-					:desc="list.coupon[1].name"
-				)
-			view.between.tail
-				coupon1(
-					@click="navigate('/views/user/coupon/detail?id=' + list.coupon[2].id + '&type=coupon')",
-					bg="#5FA56D",
-					:itemText="list.coupon[2].time_start | couponTime(list.coupon[2].time_end)",
-					:money="list.coupon[2].price",
-					:name="list.coupon[2].trade_name",
-					:desc="list.coupon[2].name"
-				)
-				coupon1(
-					@click="navigate('/views/user/coupon/detail?id=' + list.coupon[3].id + '&type=coupon')",
-					bg="#B42626",
-					:itemText="list.coupon[3].time_start | couponTime(list.coupon[3].time_end)",
-					:money="list.coupon[3].price",
-					:name="list.coupon[3].trade_name",
-					:desc="list.coupon[3].name"
-				)
+				//- coupon1(
+				//- 	@click="navigate('/views/user/coupon/detail?id=' + list.coupon[1].id + '&type=coupon')",
+				//- 	bg="#B42676",
+				//- 	:itemText="list.coupon[1].time_start | couponTime(list.coupon[1].time_end)",
+				//- 	:money="list.coupon[1].discount",
+				//- 	:name="list.coupon[1].trade_name",
+				//- 	:desc="list.coupon[1].name"
+				//- )
+				//- coupon1(
+				//- 	@click="navigate('/views/user/coupon/detail?id=' + list.coupon[2].id + '&type=coupon')",
+				//- 	bg="#5FA56D",
+				//- 	:itemText="list.coupon[2].time_start | couponTime(list.coupon[2].time_end)",
+				//- 	:money="list.coupon[2].discount",
+				//- 	:name="list.coupon[2].trade_name",
+				//- 	:desc="list.coupon[2].name"
+				//- )
+				//- coupon1(
+				//- 	@click="navigate('/views/user/coupon/detail?id=' + list.coupon[3].id + '&type=coupon')",
+				//- 	bg="#B42626",
+				//- 	:itemText="list.coupon[3].time_start | couponTime(list.coupon[3].time_end)",
+				//- 	:money="list.coupon[3].discount",
+				//- 	:name="list.coupon[3].trade_name",
+				//- 	:desc="list.coupon[3].name"
+				//- )
 			
 			//- 尊享券
 			view.between.py-20
@@ -115,7 +115,7 @@
 					v-if="index < 3",
 					@click="navigate('/views/user/coupon/detail?id=' + item.id + '&type=vip')",
 					:name="item.name",
-					:money="item.price",
+					:money="item.discount",
 					:trade="item.trade_name",
 					:descText1="item.limitday  + '天'",
 					:descText2="'每天限用' + item.limitnum + '次'",
@@ -128,19 +128,28 @@
 					prod1(@click="()=>navigate('/views/shop/prodDetail')", name="绿鲜知 上海青 小油菜 小青菜 约400g 火锅食材 新鲜蔬菜", src="../static/image/product2.png", money="16.2")
 					prod1(@click="()=>navigate('/views/shop/prodDetail')", name="绿鲜知 上海青 小油菜 小青菜 约400g 火锅食材 新鲜蔬菜", src="../static/image/product2.png", money="16.2")
 		view.flex.wing
-		
+
+			//- 邻里互动
+			view.row.py-20
+				text.title-home.c-33.s-32 邻里互动
+			view.between-wrap.tag-home-box.tail
+				text.tag-home(v-for="(item,index) in list.neighbor_cate", @click="onTalk(item.id)") # {{item.name}} #
+
+
 			//- 活动
 			view.row.py-20
 				text.title-home.c-33.s-32 最新活动
-			view.pb-10
-				view.row.h-70.ac(v-for="(item,index) in list.activity")
-					text.bg-primary.c-white.w-36.h-36.ra-10.tc.lh-36.mr-16.s-22 新
-					text.s-28.c-33.f-1.lines-1.ellipsis(@click="navigate('/views/action/detail?id=' + item.id)") {{item.name}}
+			view.bg-white.wing.among.ra-15
+				view.between.h-70.ac(v-for="(item, index) in list.activity", @click="navigate('/views/action/detail?id=' + item.id)")
+					view.row
+						text.bold.s-28.c-cc {{index + 1}}
+						text.mx-20.s-28.c-33 {{item.name.length > 18 ? item.name + '…' : item.name}}
+						text.c-primary.ba.bc-primary.ra-5.w-28.h-28.lh-28.s-20.tc(style='background-color: #FCF1F1;', v-if="index < 2") 热
+					text.s-28.c-99 {{item.time_start | dateFormat('m.d')}}
+		
 
-			view.row.py-20
-				text.title-home.c-33.s-32 邻里互动
-			view.between-wrap.tag-home-box
-				text.tag-home(v-for="(item,index) in list.neighbor_cate", @click="onTalk(item.id)") # {{item.name}} #
+		view.h-50
+
 		
 </template>
 
@@ -156,18 +165,19 @@
 		mixins:[mixinLife, mixinScene],
 		data () {
 			return {
-                ...SERVICE.data,
+				...SERVICE.data,
+				coupon: ['#9B1FDD', '#B42676', '#5FA56D', '#B42626']
 			}
 		},
-		created() {
-
-		},
 		onLoad() {
+			this.__start('start-up');
 			/**
 			 * 获取首页数据
 			 */
-			SERVICE.load(this, {}, ()=>{
-			});
+			SERVICE.load(this);
+		},
+		onReady() {
+			this.__end('start-up');
 		},
 		mounted() {
 			this.check_update();
@@ -176,7 +186,7 @@
 			couponTime(start, end) {
 				start = dateFormat('m.d', start);
 				end = dateFormat('m.d', end);
-				return '活动时间：' + start + '到' + end;
+				return '活动时间：' + start + ' - ' + end;
 			}
 		},
 		methods:{
@@ -208,7 +218,7 @@
 								version:Info.version,
 								name:Info.name,
 							},
-							loader: LOADER.loading,
+							loader: LOADER.slient,
 							parse: PARSE.restful,
 							success: (res, vue) => {
 								// console.log('首页', res)
